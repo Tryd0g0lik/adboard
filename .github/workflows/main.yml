@@ -113,7 +113,6 @@ jobs:
     strategy:
       matrix:
         python-version: [ '3.x' ]
-    needs:  cleaning_code
     env:
       DEPLOY_HOST: ${{ secrets.SSH_HOST }}
       DEPLOY_USER: ${{ secrets.SSH_USER }}
