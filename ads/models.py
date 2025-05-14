@@ -12,6 +12,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
+
 # Create your models here.
 
 
@@ -42,6 +43,17 @@ class CustomUser(AbstractUser):
 
 
 class Category(models.Model):
+    pass
+
+    # NEW = _("Новое"),
+    # USED = _("Использованное"),
+    class Meta:
+        db_table = "categories"
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+
+class CategoryPath(models.Model):
     # This is the basis templates of category
     SPORT = "categories/sport/index.html"
     TECH = "categories/tech/index.html"
@@ -68,9 +80,9 @@ class Category(models.Model):
         return "%s" % (self.path)
 
     class Meta:
-        db_table = "categories"
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
+        db_table = "paths"
+        verbose_name = _("Path")
+        verbose_name_plural = _("Paths")
 
 
 class Ad(models.Model):
@@ -139,16 +151,21 @@ before 100 symbols.\n Min length is the 3 symbols."
 the public page it means that True"
         ),
     )
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,
-        related_name="categories",
-    )
+
+    # category = models.ForeignKey(
+    #     Category,
+    #     on_delete=models.CASCADE,
+    #     related_name="categories",
+    # )
 
     def __str__(self):
-        return "%s, %s" % (self.title, self.category)
+        return "%s" % (self.title)
 
     class Meta:
         db_table = "ads"
         verbose_name = _("Ad")
         verbose_name_plural = _("Ads")
+
+
+# class ExchangeProposal:
+#     ad_sender
