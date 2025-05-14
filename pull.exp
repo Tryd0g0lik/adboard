@@ -1,12 +1,14 @@
 #!/bin/bash/expect
+# ФАЙЛ НУЖЕН ЕСЛИ  НАДО ВВЕСТИ ПАРОЛЬ
 # Включаем запись лога в файл (перезаписывается при каждом запуске)
 log_file -noappend logging.log
 # Или добавляем в конец существующего файла
 # log_file -append /tmp/expect_pull.log
-
+# запускаем
 spawn /home/denis/adboard/pull.sh
-#expect "password"
-#send -- "123\r"
+expect "password"
+send -- "123\r"
+№ или
 #expect {
 #    "password" { send -- "123\r"; exp_continue }  # Ждёт новые "password"
 #    "sudo"     { send -- "456\r"; exp_continue }  # Или "sudo"

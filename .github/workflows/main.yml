@@ -95,4 +95,4 @@ jobs:
           username: ${{ secrets.SSH_USER }} # пользователь сервера
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            expect /home/denis/adboard/pull.exp
+            expect /home/denis/adboard/pull.sh
