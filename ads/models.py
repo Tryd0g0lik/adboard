@@ -2,102 +2,16 @@
 ads/models.py
 """
 
-from django.contrib.auth.models import AbstractUser
 from django.core.validators import (
     MaxLengthValidator,
     MinLengthValidator,
     RegexValidator,
+    MinValueValidator,
 )
 from django.db import models
-from django.contrib.auth.models import User
+
+# from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
-
-
-# Create your models here.
-
-
-class CustomUser(AbstractUser):
-    """
-    This class for storing all the users and customization of users
-    """
-
-    username = (models.CharField("username", max_length=150),)
-    groups = models.ManyToManyField(
-        "auth.Group",
-        related_name="%(class)s_groups",
-        blank=True,
-        help_text=_(
-            "The groups this user belongs to. A user will get all permissions "
-            "granted to each of their groups."
-        ),
-        verbose_name="groups",
-    )
-    user_permissions = models.ManyToManyField(
-        "auth.Permission",
-        related_name="%(class)s_user_permissions",
-        # Уникальное имя для обратной связи
-        blank=True,
-        help_text=_("Specific permissions for this user."),
-        verbose_name="user permissions",
-    )
-
-
-# class Meta:
-#     # Add this if you haven't already ','
-#     swappable = "AUTH_USER_MODEL"
-
-
-class Category(models.Model):
-    """
-    This class is for storing all the categories
-    """
-
-    CATEGORY_STATUS = {
-        "NEW": _("Новое"),
-        "USED": _("Использованное"),
-        "UNKNOWN": _("Неизвестно"),
-    }
-
-    class Meta:
-        db_table = "categories"
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
-
-
-class CategoryPath(models.Model):
-    """
-    This class is for storing the path's templates
-    """
-
-    # This is the basis templates of category
-    SPORT = "categories/sport/index.html"
-    TECH = "categories/tech/index.html"
-    HOME = "categories/home/index.html"
-    CLOTHES = "categories/clothes/index.html"
-    BOOKS = "categories/books/index.html"
-    CARS = "categories/cars/index.html"
-
-    PAGE_TEMPLATES = [
-        (SPORT, _("Спорт")),
-        (TECH, _("Техника")),
-        (HOME, _("Дом и сад")),
-        (CLOTHES, _("Одежда и обувь")),
-        (BOOKS, _("Книги")),
-        (CARS, _("Авто")),
-    ]
-    path = models.CharField(
-        default=TECH,
-        choices=PAGE_TEMPLATES,
-        verbose_name=_("Here is the choose category for publication."),
-    )
-
-    def __str__(self):
-        return "%s" % (self.path)
-
-    class Meta:
-        db_table = "paths"
-        verbose_name = _("Path")
-        verbose_name_plural = _("Paths")
 
 
 class Ad(models.Model):
@@ -105,8 +19,14 @@ class Ad(models.Model):
     This class for storing all the ads.
     """
 
-    user = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, null=True, related_name="author"
+    user = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("Publisher"),
+        help_text=_("This is Index from the publisher of the ad"),
+        # validators=[
+        #     MinValueValidator(1, message=_("Min value is the 1"))
+        # ]
     )
     title = models.CharField(
         max_length=100,
@@ -179,16 +99,38 @@ you want the public page it means that True"
         ),
         verbose_name=_("Status"),
     )
-    category_path = models.ForeignKey(
-        CategoryPath,
-        on_delete=models.CASCADE,
-        related_name="path",
+    # This is the basis templates of category
+    SPORT = "categories/sport/index.html"
+    TECH = "categories/tech/index.html"
+    HOME = "categories/home/index.html"
+    CLOTHES = "categories/clothes/index.html"
+    BOOKS = "categories/books/index.html"
+    CARS = "categories/cars/index.html"
+
+    PAGE_TEMPLATES = [
+        (SPORT, _("Спорт")),
+        (TECH, _("Техника")),
+        (HOME, _("Дом и сад")),
+        (CLOTHES, _("Одежда и обувь")),
+        (BOOKS, _("Книги")),
+        (CARS, _("Авто")),
+    ]
+    path = models.CharField(
+        default=TECH,
+        choices=PAGE_TEMPLATES,
+        verbose_name=_("Here is the choose category for publication."),
     )
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,
-        related_name="categories",
+    category_path = models.CharField(
+        default=str(PAGE_TEMPLATES[3]),
+        choices=PAGE_TEMPLATES,
+        help_text="pathname",
     )
+    CATEGORY_STATUS = [
+        ("NEW", _("Новое")),
+        ("USED", _("Использованное")),
+        ("UNKNOWN", _("Неизвестно")),
+    ]
+    category = models.CharField(default="UNKNOWN", choices=CATEGORY_STATUS)
 
     def __str__(self):
         return "%s, %s" % (self.title, self.category)
@@ -200,6 +142,14 @@ you want the public page it means that True"
 
 
 class ExchangeProposal(models.Model):
+    """
+    This class for storing all the exchange proposals
+
+    "ACCEPTED": This is the status when the buyer accepted offer the seller,\
+    "DECLINED": This is the status when the buyer decline the seller offer,\
+    "WATING": This is the status when the seller or buyer has \
+    not made a decision,
+    """
 
     comment = models.TextField(
         help_text=_("Text of the comment. Min. 150 and Max. 1200. "),
@@ -219,32 +169,35 @@ class ExchangeProposal(models.Model):
         help_text=_("Date when the comment was created"),
     )
 
+    EXCHANGE_STATUS = [
+        ("ACCEPTED", _("Принял")),
+        ("DECLINED", _("Отклонен")),
+        ("WATING", _("Ожидает")),
+    ]
 
-class MiddleExchange(models.Model):
-    """"
-    This class for storing the exchange status.\
-    "ACCEPTED": This is the status when the buyer accepted offer the seller,\
-    "DECLINED": This is the status when the buyer decline the seller offer,
-    "WATING": This is the status when the seller or buyer has not made a decision,
-    """
-
-    EXCHANGE_STATUS = {
-        "ACCEPTED": _("Принял"),
-        "DECLINED": _("Отклонен"),
-        "WATING": _("Ожидает"),
-    }
     status = models.CharField(
-        default=EXCHANGE_STATUS.WATING,
+        default="WATING",
         choices=EXCHANGE_STATUS,
         verbose_name=_("Status"),
         help_text=_("Status for the exchange"),
     )
-    ad_sender = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, null=True, related_name="sender"
+    ad_sender = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("Sender"),
+        help_text=_("This the index of sender"),
+        # validators=[
+        #     MinValueValidator(1, _("Min value of id is the 1")),
+        # ]
     )
-
-    ad_receiver = models.DateField(
-        CustomUser, on_delete=models.CASCADE, null=True, related_name="receiver"
+    ad_receiver = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("Receiver"),
+        help_text=_("This the index of receiver"),
+        # validators=[
+        #     MinValueValidator(1, _("Min value of id is the 1")),
+        # ]
     )
 
     def clean(self):
