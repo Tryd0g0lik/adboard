@@ -9,43 +9,35 @@ from django.core.validators import (
     RegexValidator,
 )
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
 
-class CustomUser(AbstractUser):
-    groups = models.ManyToManyField(
-        "auth.Group",
-        related_name="%(class)s_groups",
-        blank=True,
-        help_text=_(
-            "The groups this user belongs to. A user will get all permissions "
-            "granted to each of their groups."
-        ),
-        verbose_name="groups",
-    )
-    user_permissions = models.ManyToManyField(
-        "auth.Permission",
-        related_name="%(class)s_user_permissions",
-        # Уникальное имя для обратной связи
-        blank=True,
-        help_text=_("Specific permissions for this user."),
-        verbose_name="user permissions",
-    )
+# class CustomUser(User):
+#     groups = models.ManyToManyField(
+#         "auth.Group",
+#         related_name="%(class)s_groups",
+#         blank=True,
+#         help_text=_(
+#             "The groups this user belongs to. A user will get all permissions "
+#             "granted to each of their groups."
+#         ),
+#         verbose_name="groups",
+#     )
+#     user_permissions = models.ManyToManyField(
+#         "auth.Permission",
+#         related_name="%(class)s_user_permissions",
+#         # Уникальное имя для обратной связи
+#         blank=True,
+#         help_text=_("Specific permissions for this user."),
+#         verbose_name="user permissions",
+#     )
 
-    class Meta:
-        # Add this if you haven't already
-        swappable = "AUTH_USER_MODEL"
-
-
-# class Category(models.TextChoices):
-#     BOOKS = ("BOOKS", _("Books")),
-#     TECHNICAL = ("TECHNICAL", _("Technical")),
-#     ELECTRONICS = ("ELECTRONICS", _("Electronics")),
-#     CLOTHES = ("CLOTHES", _("Clothes")),
-#     HOME_AND_GARDEN = ("HOME_AND_GARDEN", _("Home and garden")),
-#     SPORTS_AND_RECREATION = ("SPORTS_AND_RECREATION", _("Sports and recreation")),
+# class Meta:
+#     # Add this if you haven't already
+#     swappable = "AUTH_USER_MODEL"
 
 
 class Category(models.Model):
@@ -81,9 +73,9 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    user = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, null=True, related_name="author"
-    )
+    # user = models.ForeignKey(
+    #     CustomUser, on_delete=models.CASCADE, null=True, related_name="author"
+    # )
     title = models.CharField(
         max_length=100,
         unique=True,
