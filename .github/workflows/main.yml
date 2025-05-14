@@ -69,6 +69,7 @@ jobs:
       - name: Linting
           # run: flake8 ads/ --exclude=migrations/,__init__.py,urls.py,settings.py, __pycache__/
         run: |-
+           cat .pre-commit-config.yaml
            pre-commit
 #          flake8 adds/ --exclude=ads/__pachcache__,ads/migrations/
 
