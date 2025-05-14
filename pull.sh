@@ -11,5 +11,6 @@ git pull --ff-only origin dev  || exit 2
 git add * || exit 3
 # git commit -m "Update" || exit 1
 sudo systemctl restart gunicorn  || exit 5
+sudo systemctl restart nginx  || exit 6
 echo "Deployment completed successfully"
 
