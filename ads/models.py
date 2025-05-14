@@ -43,10 +43,13 @@ class CustomUser(AbstractUser):
 
 
 class Category(models.Model):
-    pass
 
-    # NEW = _("Новое"),
-    # USED = _("Использованное"),
+    CATEGORY_STATUS = {
+        "NEW": _("Новое"),
+        "USED": _("Использованное"),
+        "UNKNOWN": _("Неизвестно"),
+    }
+
     class Meta:
         db_table = "categories"
         verbose_name = _("Category")
@@ -151,15 +154,19 @@ before 100 symbols.\n Min length is the 3 symbols."
 the public page it means that True"
         ),
     )
-
-    # category = models.ForeignKey(
-    #     Category,
-    #     on_delete=models.CASCADE,
-    #     related_name="categories",
-    # )
+    category_path = models.ForeignKey(
+        CategoryPath,
+        on_delete=models.CASCADE,
+        related_name="path",
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name="categories",
+    )
 
     def __str__(self):
-        return "%s" % (self.title)
+        return "%s, %s" % (self.title, self.category)
 
     class Meta:
         db_table = "ads"
