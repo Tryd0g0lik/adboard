@@ -1,0 +1,84 @@
+version: 1.1.{build}-{branch}
+
+branches:
+  only:
+    - tests
+
+# Visual Studio 2019
+image: Ubuntu
+
+environment:
+  SECRET_KEY_DJ: django-insecure-u(z84ocgmtrt31cg5ce)#5%kl2=@1&2ahim*=gy^m=0p#fmg@@
+  POSTGRES_DB: manuapp
+  POSTGRES_PASSWORD: 123
+  POSTGRES_USER: postgres
+  POSTGRES_HOST: 127.0.0.1
+  POSTGRES_PORT: 5432
+  superuser: root
+  superuser_password: 123
+#  DATABASE_URL: postgres://postgres:123@localhost:5432/manuapp
+
+platform:
+  - x64
+
+
+stack: python >= 3.10
+#  matrix: |-
+#    TOXENV: py310
+#    PY_PYTHON: 3.10
+#    TOXENV: ruff
+
+
+cache:
+  - venv
+
+
+services:
+  - postgresql
+
+install:
+#   - cmd: py -m pip install tox
+#   - pip
+   #  - python -m pip install --upgrade pip setuptools wheel
+  # Устанавливаем PostgreSQL
+#  - sudo apt-get install -y postgresql-client
+#  - choco install postgresql15 --params='/Postgres:postgres' -y --no-progress
+#  - set PATH=C:\Program Files\PostgreSQL\15\bin;%PATH%
+#  - psql --version
+  - #  -U postgres
+#  - psql -U postgres -c "DROP DATABASE IF EXISTS manuapp;"
+#  - psql -U postgres -c "CREATE DATABASE manuapp;"
+  - sudo apt-get update
+  - sudo apt-get install -y postgresql-client
+
+  # Создание БД (если не существует)
+  - psql -U postgres -h localhost -c "SELECT 1 FROM pg_database WHERE datname='manuapp'" | grep -q 1 || psql -U postgres -h localhost -c "CREATE DATABASE manuapp;"
+  # Устанавливаем Python и зависимости
+#  - set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+  - python -m pip install --upgrade pip
+  - pip install -r requirements.txt
+
+  # Устанавливаем зависимости для фронтенда (если используется npm)
+#  - cmd: npm install
+#  - cmd: npm run build
+
+
+build: off
+
+
+before_build:
+  - cmd: py manage.py migrate
+
+after_build:
+    # Собираем статику
+    - cmd: python manage.py collectstatic --noinput
+
+
+
+deploy_script:
+  - git config --global credential.helper store #включает кеширование учетных данных
+  - git config --global user.name Tryd0g0lik
+  - git config --global user.email work80@mail.ru
+  - ps: Write-Host "https://$GITHUB_TOKEN:x-oauth-basic@github.com" > "$HOME/.git-credentials" -NoNewline
+
+#  - npm install push-dir -W --dir=dist --branch=tests
