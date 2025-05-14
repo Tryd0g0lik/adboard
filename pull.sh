@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/denis/adboard || exit 1
-git pull --ff-only origen remotes/origin/dev  || exit 1
+git pull --ff-only origin remotes/origin/dev  || exit 1
 #git pull origin tests  || exit 1
 #git fetch origin tests
 # git reset --hard origin/test
