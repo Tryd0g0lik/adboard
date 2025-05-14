@@ -69,7 +69,8 @@ jobs:
       - name: Linting
           # run: flake8 ads/ --exclude=migrations/,__init__.py,urls.py,settings.py, __pycache__/
         run: |-
-          flake8 adds/ --exclude = ads/migrations/
+          pip install flake8
+          flake8 adds/ --config=.flake8
 
 
   cicd_deploy:
