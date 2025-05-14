@@ -1,0 +1,149 @@
+name: Django_pages
+
+on:
+  push:
+    branches: ['tests']
+
+jobs:
+  deploy_menu:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.x' ]
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DEBUG: "0"
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      DB_ENGINE: ${{ secrets.DB_ENGINE }}
+      DEPLOY_HOST: ${{ secrets.SSH_HOST }}
+      DEPLOY_USER: ${{ secrets.SSH_USER }}
+      DEPLOY_KEY: ${{ secrets.SSH_KEY }}
+      DEPLOY_PASSWORD : ${{ secrets.SSH_PASSWORD }}
+
+    services:
+      postgres_main:
+        image: postgres:15
+        env:
+          POSTGRES_DB: 'postgres'
+          POSTGRES_USER: 'postgres' # ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: '123' # ${{ env.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+
+        options:
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+#        script: >
+#          bash -c "
+#          echo 'Waiting for PostgreSQL to start...';
+#          while ! pg_isready -U postgres; do sleep 1; done;
+#          echo 'Creating database menuapp...';
+#          psql -U postgres -c 'CREATE DATABASE menuapp;';
+#          echo 'Database created successfully';
+#          docker-entrypoint.sh postgres
+#          "
+    steps:
+      # cache remove
+      - name: Clear GitHub Actions cache
+        run: rm -rf $HOME/.cache/actions
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install_Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          # ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
+          pip-cache: true
+#      - name: Create database
+#        run: |-
+#          PGPASSWORD=123 psql -h localhost -U postgres -c "CREATE DATABASE menuapp;"
+
+      - name: Install_dependencies
+        run: |-
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Collect static files
+        run: |
+          python manage.py collectstatic --no-input
+
+#      - name: Apply database migrations
+#        run: |-
+#          python manage.py migrate
+#          python manage.py runserver
+  cleaning_code:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.x' ]
+    needs: deploy_menu
+    steps:
+#      - name: Pre-commit_install
+#        run: pip install pre-commit
+      - name: Clear GitHub Actions cache
+        run: rm -rf $HOME/.cache/actions
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install_Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          # ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
+          pip-cache: true
+      - name: Install_dependencies
+        run: |-
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Run pre-commit
+        run: pre-commit run
+
+#      - name: flake8-commit
+#        run: |-
+#          flake8 ./menu_app/
+#          cat .pre-commit-config.yaml
+#          pre-commit
+      # https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-python#testing-your-code
+#      - name: Run-Pytest
+#        run: |- Надо создать сами тесты
+#          pip install pytest pytest-cov
+#          pytest --rootdir=./__tests__
+#        env:
+#          SECRET_KEY: ${{ env.SECRET_KEY }}
+#          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+#          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+#          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+#          DB_ENGINE: ${{ env.DB_ENGINE }}
+      #- name: Run+Django_tests
+      #  run: |-
+      #    python manage.py test
+          
+  cicd_deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.x' ]
+    needs:  cleaning_code
+    env:
+      DEPLOY_HOST: ${{ secrets.SSH_HOST }}
+      DEPLOY_USER: ${{ secrets.SSH_USER }}
+      DEPLOY_KEY: ${{ secrets.SSH_KEY }}
+      DEPLOY_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: appleboy/ssh-action@master
+        with:
+          host:  ${{ secrets.SSH_HOST }} # API или домен сервере
+          username: ${{ secrets.SSH_USER }} # пользователь сервера
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            expect /home/denis/module_menu_app/pull.exp
