@@ -60,21 +60,16 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           pip-cache: true
-#
+
       - name: Install_dependencies
         run: |-
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-#      - name: Collect static files
-#        run: |
-#          python manage.py collectstatic --no-input
-
-      - name: Apply database migrations
+      - name: Linting
+          # run: flake8 ads/ --exclude=migrations/,__init__.py,urls.py,settings.py, __pycache__/
         run: |-
-          python manage.py migrate
-          python manage.py runserver
-
+          run: flake8 ads/ -c .flake8
 
 
   cicd_deploy:
@@ -87,6 +82,7 @@ jobs:
       DEPLOY_USER: ${{ secrets.SSH_USER }}
       DEPLOY_KEY: ${{ secrets.SSH_KEY }}
       DEPLOY_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+    needs: deploy_menu
     steps:
       - name: Deploy to GitHub Pages
         uses: appleboy/ssh-action@master
