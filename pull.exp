@@ -12,7 +12,7 @@ spawn /home/denis/adboard/pull.sh
 expect {
     "password" { send -- "123\r";  }  # Ждёт новые "password" exp_continue
     "sudo"     { send -- "at6rAzLSYCrMr48F\r"; }  # Или "sudo"
-#    eof  # Выход при завершении
+    eof  # Выход при завершении
 }
 log_file    # Закрываем лог
 expect eof
