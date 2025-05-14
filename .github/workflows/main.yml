@@ -94,5 +94,7 @@ jobs:
           host:  ${{ secrets.SSH_HOST }} # API или домен сервере
           username: ${{ secrets.SSH_USER }} # пользователь сервера
           password: ${{ secrets.SSH_PASSWORD }}
+          # bash /home/denis/adboard/pull.sh
           script: |
-            bash /home/denis/adboard/pull.sh
+            expect /home/denis/adboard/pull.exp
+            
