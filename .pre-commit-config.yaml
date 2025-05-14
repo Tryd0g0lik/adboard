@@ -45,11 +45,11 @@ repos:
 #        types: [python]
 #        require_serial: true
 
-  - repo: https://github.com/PyCQA/isort
-    # https://pycqa.github.io/isort/docs/configuration/pre-commit.html
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        files: \.py$
-#        language_version: "3.10"
-        name: isort (python)
+#  - repo: https://github.com/PyCQA/isort
+#    # https://pycqa.github.io/isort/docs/configuration/pre-commit.html
+#    rev: 5.13.2
+#    hooks:
+#      - id: isort
+#        files: \.py$
+##        language_version: "3.10"
+#        name: isort (python)

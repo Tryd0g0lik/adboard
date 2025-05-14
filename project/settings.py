@@ -12,13 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv_ import (SECRET_KEY_DJ,
-                     POSTGRES_DB,
-                     POSTGRES_PASSWORD,
-                     POSTGRES_USER,
-                     POSTGRES_HOST,
-                     POSTGRES_PORT,
-                     DB_ENGINE)
+
+from dotenv_ import (DB_ENGINE, POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER,
+                     SECRET_KEY_DJ)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -143,7 +140,7 @@ STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DEFAULT_CHARSET = "utf-8"
-AUTTH_USER_MODEL = "ads.CustomUser"
+AUTH_USER_MODEL = "ads.CustomUser"
 
 # '''CORS'''
 # False - это значение по умолчанию и означает, что сервер не будет
