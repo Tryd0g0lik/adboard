@@ -12,6 +12,7 @@ exclude =
     old/,
     build,
     venv/,
+    env/,
     tests/,
     main.py,
     menu_app/migrations,
