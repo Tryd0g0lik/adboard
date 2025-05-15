@@ -273,11 +273,8 @@ class ImageStorage(models.Model):
         editable=False,
         auto_now_add=True,
     )
-    from datetime import datetime
-
-    datetime.now().timestamp()
     file_path = models.ImageField(
-        upload_to=f"media/uploads/{user.pk}/%Y/%m/%d/",
+        upload_to="media/uploads/",
         verbose_name=_("Image"),
         help_text=_(
             "Upload image/files. Pathname has a template format is: 'media/<user_pk>/%Y/%m/%d/' "
@@ -291,6 +288,11 @@ class ImageStorage(models.Model):
 
     def __str__(self):
         return self.original_name
+
+    def save(self, *args, **kwargs):
+        new_path_of_source = f"media/uploads/{self.user.pk}/%Y/%m/%d/"
+        self.file_path.upload_to = new_path_of_source
+        super().save(*args, **kwargs)
 
 
 class FileAd(models.Model):
