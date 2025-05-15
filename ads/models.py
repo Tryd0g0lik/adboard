@@ -237,7 +237,7 @@ class Exchange(models.Model):
         # ]
     )
     file_id = models.ForeignKey(
-        "FileStorage",
+        "ImageStorage",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
