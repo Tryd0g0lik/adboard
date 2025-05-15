@@ -172,11 +172,11 @@ class ExchangeProposal(models.Model):
     EXCHANGE_STATUS = [
         ("ACCEPTED", _("Принял")),
         ("DECLINED", _("Отклонен")),
-        ("WATING", _("Ожидает")),
+        ("WAITING", _("Ожидает")),
     ]
 
     status = models.CharField(
-        default="WATING",
+        default="WAITING",
         choices=EXCHANGE_STATUS,
         verbose_name=_("Status"),
         help_text=_("Status for the exchange"),
