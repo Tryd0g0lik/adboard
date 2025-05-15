@@ -91,14 +91,6 @@ before 100 symbols.\n Min length is the 3 symbols."
 the public page it means that True"
         ),
     )
-    status = models.BooleanField(
-        default=False,
-        help_text=_(
-            "Default is False (not activated), if \
-you want the public page it means that True"
-        ),
-        verbose_name=_("Status"),
-    )
     # This is the basis templates of category
     SPORT = "categories/sport/index.html"
     TECH = "categories/tech/index.html"
@@ -120,11 +112,11 @@ you want the public page it means that True"
         choices=PAGE_TEMPLATES,
         verbose_name=_("Here is the choose category for publication."),
     )
-    category_path = models.CharField(
-        default=str(PAGE_TEMPLATES[3]),
-        choices=PAGE_TEMPLATES,
-        help_text="pathname",
-    )
+    # category_path = models.CharField(
+    #     default=str(PAGE_TEMPLATES[3]),
+    #     choices=PAGE_TEMPLATES,
+    #     help_text="pathname",
+    # )
     CATEGORY_STATUS = [
         ("NEW", _("Новое")),
         ("USED", _("Использованное")),
@@ -173,6 +165,7 @@ class ExchangeProposal(models.Model):
         ("ACCEPTED", _("Принял")),
         ("DECLINED", _("Отклонен")),
         ("WAITING", _("Ожидает")),
+        ("READED", _("Прочитано")),
     ]
 
     status = models.CharField(
@@ -199,6 +192,12 @@ class ExchangeProposal(models.Model):
         #     MinValueValidator(1, _("Min value of id is the 1")),
         # ]
     )
+
+    class Meta:
+        default_permissions = ["add", "change", "view"]
+        db_table = "exchange_proposals"
+        verbose_name = _("Exchange Proposal")
+        verbose_name_plural = _("Exchange Proposals")
 
     def clean(self):
         if self.ad_sender == self.ad_receiver:
