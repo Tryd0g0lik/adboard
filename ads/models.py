@@ -8,9 +8,9 @@ from django.core.validators import (
     RegexValidator,
     MinValueValidator,
 )
-from django.db import models
+from django.db import models, transaction
 
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 
@@ -132,6 +132,14 @@ the public page it means that True"
         verbose_name = _("Ad")
         verbose_name_plural = _("Ads")
 
+    def delete(self, using=None, keep_parents=False):
+        with transaction.atomic():
+            # The every one of ads removing
+            ExchangeProposal.objects.filter(exchange__ad_id=self).delete()
+            # The every one of exchange proposals removing
+            Exchange.objects.filter(ad_id=self).delete()
+            super().delete(using, keep_parents)
+
 
 class ExchangeProposal(models.Model):
     """
@@ -161,6 +169,14 @@ class ExchangeProposal(models.Model):
         help_text=_("Date when the comment was created"),
     )
 
+    class Meta:
+        # default_permissions = ["add", "change", "view"]
+        db_table = "exchange_proposals"
+        verbose_name = _("Exchange Proposal")
+        verbose_name_plural = _("Exchange Proposals")
+
+
+class Exchange(models.Model):
     EXCHANGE_STATUS = [
         ("ACCEPTED", _("Принял")),
         ("DECLINED", _("Отклонен")),
@@ -174,7 +190,24 @@ class ExchangeProposal(models.Model):
         verbose_name=_("Status"),
         help_text=_("Status for the exchange"),
     )
-    ad_sender = models.IntegerField(
+    # Объявление не можем про-так удалить пока есть комментария.
+    ad_id = models.ForeignKey(
+        Ad,
+        on_delete=models.PROTECT,
+    )
+    # Разрешаем удаление комментария
+    comment_id = models.ForeignKey(
+        ExchangeProposal,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_("Proposal"),
+        help_text=_("This the index of comment (Exchange proposal)"),
+    )
+    # Запрещаем удаление User
+    ad_sender = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
         blank=True,
         null=True,
         verbose_name=_("Sender"),
@@ -183,7 +216,11 @@ class ExchangeProposal(models.Model):
         #     MinValueValidator(1, _("Min value of id is the 1")),
         # ]
     )
-    ad_receiver = models.IntegerField(
+
+    # Пользователя не можем про-так удалить, пока есть объявления и комментарии.
+    ad_receiver = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
         blank=True,
         null=True,
         verbose_name=_("Receiver"),
@@ -194,10 +231,10 @@ class ExchangeProposal(models.Model):
     )
 
     class Meta:
-        default_permissions = ["add", "change", "view"]
-        db_table = "exchange_proposals"
-        verbose_name = _("Exchange Proposal")
-        verbose_name_plural = _("Exchange Proposals")
+        # default_permissions = ["add", "change", "view"]
+
+        verbose_name = _("Exchange")
+        verbose_name_plural = _("Exchanges")
 
     def clean(self):
         if self.ad_sender == self.ad_receiver:
