@@ -194,6 +194,7 @@ class Exchange(models.Model):
     ad_id = models.ForeignKey(
         Ad,
         on_delete=models.PROTECT,
+        related_name="ad",
     )
     # Разрешаем удаление комментария
     comment_id = models.ForeignKey(
@@ -203,6 +204,7 @@ class Exchange(models.Model):
         null=True,
         verbose_name=_("Proposal"),
         help_text=_("This the index of comment (Exchange proposal)"),
+        related_name="comment_id",
     )
     # Запрещаем удаление User
     ad_sender = models.ForeignKey(
@@ -212,6 +214,7 @@ class Exchange(models.Model):
         null=True,
         verbose_name=_("Sender"),
         help_text=_("This the index of sender"),
+        related_name="ad_sender",
         # validators=[
         #     MinValueValidator(1, _("Min value of id is the 1")),
         # ]
@@ -225,6 +228,7 @@ class Exchange(models.Model):
         null=True,
         verbose_name=_("Receiver"),
         help_text=_("This the index of receiver"),
+        related_name="ad_receiver",
         # validators=[
         #     MinValueValidator(1, _("Min value of id is the 1")),
         # ]
