@@ -18,7 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from ads.views import main_page
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path('api/v1/')
+    path("", main_page, name="main"),
 ]

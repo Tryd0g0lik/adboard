@@ -18,3 +18,7 @@ from ads.serializers import AdSerializer
 class asyncCreateAdView(ViewSet):
     ads = Ad.objects.all()
     serializer_class = AdSerializer
+
+
+def main_page(request):
+    return render(request, template_name="index.html")

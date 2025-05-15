@@ -15,4 +15,6 @@ router = DefaultRouter()
 router.register("ads", asyncCreateAdView, basename="ads")
 
 # The API URL's defined by the ads router
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = [
+    path("", include(router.urls)),
+]
