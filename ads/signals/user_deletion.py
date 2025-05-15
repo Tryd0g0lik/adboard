@@ -23,10 +23,14 @@ def project_user_deletion(sender, instance, **kwargs):
         Stop check
         """
         return
-
+    """
+    Невозможно удалить пользователя пока есть комментарии которые он отправляет и (или) получает.
+    И в комментариях есть изображения принадлежащие пользователю
+    """
     if (
         Exchange.objects.filter(ad_sender=instance).exists()
         or Exchange.objects.filter(ad_receiver=instance).exists()
+        or Exchange.objects.filter(file_id=instance).exists()
     ):
         raise PermissionDenied(
             _(

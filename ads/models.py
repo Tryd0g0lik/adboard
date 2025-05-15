@@ -19,14 +19,13 @@ class Ad(models.Model):
     This class for storing all the ads.
     """
 
-    user = models.IntegerField(
-        blank=True,
-        null=True,
-        verbose_name=_("Publisher"),
-        help_text=_("This is Index from the publisher of the ad"),
-        # validators=[
-        #     MinValueValidator(1, message=_("Min value is the 1"))
-        # ]
+    # Не возможно удалить пользователя пока не удалим его объявления и прочее.
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name=_("Sender"),
+        help_text=_("This the index of sender"),
+        related_name="author",
     )
     title = models.CharField(
         max_length=100,
@@ -138,6 +137,10 @@ the public page it means that True"
             ExchangeProposal.objects.filter(exchange__ad_id=self).delete()
             # The every one of exchange proposals removing
             Exchange.objects.filter(ad_id=self).delete()
+            # Delete the Image's collection
+            object_list = FileAd.objects.filter(ad_id=self)
+            for file in object_list:
+                file.delete()
             super().delete(using, keep_parents)
 
 
@@ -233,6 +236,13 @@ class Exchange(models.Model):
         #     MinValueValidator(1, _("Min value of id is the 1")),
         # ]
     )
+    file_id = models.ForeignKey(
+        "FileStorage",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Image upload path"),
+    )
 
     class Meta:
         # default_permissions = ["add", "change", "view"]
@@ -243,3 +253,57 @@ class Exchange(models.Model):
     def clean(self):
         if self.ad_sender == self.ad_receiver:
             raise ValueError("ad_sender and ad_receiver cannot be the same")
+
+
+class ImageStorage(models.Model):
+    """ "
+    File upload path model
+    """
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    original_name = models.CharField(_("File name"), max_length=100)
+    size = models.PositiveIntegerField(
+        _("File weight"),
+    )
+    upload_date = models.DateField(
+        _("Date upload"),
+        editable=False,
+        auto_now_add=True,
+    )
+    from datetime import datetime
+
+    datetime.now().timestamp()
+    file_path = models.ImageField(
+        upload_to=f"media/uploads/{user.pk}/%Y/%m/%d/",
+        verbose_name=_("Image"),
+        help_text=_(
+            "Upload image/files. Pathname has a template format is: 'media/<user_pk>/%Y/%m/%d/' "
+        ),
+    )
+
+    class Meta:
+        db_table = "image_storage"
+        verbose_name = _("Path to image")
+        verbose_name_plural = _("Paths to images")
+
+    def __str__(self):
+        return self.original_name
+
+
+class FileAd(models.Model):
+    file_id = models.ForeignKey(
+        ImageStorage,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Image upload path"),
+    )
+    ad_id = models.ForeignKey(
+        Ad,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )

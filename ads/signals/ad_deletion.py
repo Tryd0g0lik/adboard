@@ -17,5 +17,8 @@ def project_ad_deletion(sender, instance, **kwargs):
         """
         return
 
-    if Exchange.objects.filter(ad_id=instance).exists():
+    if (
+        Exchange.objects.filter(ad_id=instance).exists()
+        or Exchange.objects.filter(ad_id=instance).exists()
+    ):
         raise PermissionDenied(_("Cannot delete this ad if have exists an exchanges"))
