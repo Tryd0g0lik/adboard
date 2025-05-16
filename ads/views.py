@@ -41,6 +41,9 @@ class asyncCreateAdView(ViewSet):
 
 
 def main_page(request):
+    theme = request.GET.get("theme", "dark")
+    if theme == "dark":
+        css_file = "styles/index.css"
     # Forms
     form = adCreatForm()
     # if request.method == 'POST':
@@ -48,4 +51,8 @@ def main_page(request):
     #     pass
     #     if not form_data.is_valid():
     #        pass
-    return render(request, template_name="index.html", context={"form": form})
+    return render(
+        request,
+        template_name="index.html",
+        context={"form": form, "css_file": css_file},
+    )
