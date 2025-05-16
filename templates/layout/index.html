@@ -8,7 +8,11 @@
 <head>
   <meta charset = "UTF-8">
   <meta name="viewpost" content="width-device-width, initial-scale=1">
-
+  <link re  l="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <title>{% block title %}{ {texts} }{% endblock title %} - Page</title>
 
   {% bootstrap_css %}
@@ -21,13 +25,52 @@
 
 </head>
 <header>
-  <h1>Вход</h1>
+  <div class="navbar bg-base-100 shadow-sm">
+
+    <nav class="navbar-nav navbar-toggler navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Навбар</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Главная</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Ссылка</a>
+        </li>
+        <!-- li class="nav-item dropdown">
+        https://bootstrap-4.ru/docs/5.3/components/navbar/
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Выпадающий список
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Действие</a></li>
+            <li><a class="dropdown-item" href="#">Другое действие</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Что-то еще здесь</a></li>
+          </ul>
+        </li -->
+
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
+        <button class="btn btn-outline-success" type="submit">Поиск</button>
+      </form>
+    </div>
+  </div>
+</nav>
+    </div>
+
+
 </header>
-<body class=".container">
+<body class="container">
 
 <section class="form">
   <div class="mb-3">
-  <form class="ads-form">
+  <form class="ads-form row g-3 needs-validation">
     {% csrf_token %}
     {% for field in form %}
      <div  class="mb-3">
@@ -41,6 +84,18 @@
     {% endfor %}
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+  </div>
+  <div class="pagination">
+    <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
+    <nav aria-label="Пример навигации по страницам">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
+    </ul>
+  </nav>
   </div>
 </section>
 </body>

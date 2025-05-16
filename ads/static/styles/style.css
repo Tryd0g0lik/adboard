@@ -1,12 +1,30 @@
+p, a, h1, h2, h3, h4, h5, h6, span, label, button, textarea,
+a:not([href]):not([class]),
+ input[type="text"], input[type="password"], input[type="email"],
+  input[type="file"], input[type="number"], input[type="checkbox"], select {
+  color: var(--bs-body-color);
+  }
+
 body{
 background-color : var(--bs-body-bg);
 }
-input[type=text], input[type=password], select, textarea.ad-full__description, input[type="file"] {
+nav ul,  nav a, nav a:visited,nav a:hover,nav a:active,
+ input[type=text], input[type=password], select,
+ textarea.ad-full__description,textarea.ad-full__description:focus,
+ textarea.ad-full__description:focus,
+ textarea.ad-full__description:hover,textarea.ad-full__description:active,
+   input[type="file"] {
 background: var(--bs-tertiary-bg);
+}
+a.page-link{
+    border-color: var(--bs-border-color);
 }
 .ads-form{
   display: block;
   width: 250px;
+}
+div.hidden{
+  display: block;
 }
 :root,
 [data-bs-theme=dark] {

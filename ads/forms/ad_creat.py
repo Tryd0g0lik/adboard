@@ -21,14 +21,18 @@ PAGE_TEMPLATES = [
 
 class adCreatForm(forms.ModelForm):
     title = forms.CharField(
-        max_length=100, widget=forms.TextInput(attrs={"placeholder": "Enter the title"})
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Enter the title is-valid",
+                "id": "validationServer01",
+            }
+        ),
     )
     files = forms.CharField(
         required=False,
         widget=forms.ClearableFileInput(
-            attrs={
-                "class": "form-control",
-            }
+            attrs={"class": "form-control", "id": "validationServer02"}
         ),
         help_text="Формат: 'jpg', 'jpeg', 'png'",
         validators=[
@@ -39,7 +43,9 @@ class adCreatForm(forms.ModelForm):
     )
     description = forms.CharField(
         max_length=1000,
-        widget=forms.Textarea(attrs={"class": "form-control ad-full__description"}),
+        widget=forms.Textarea(
+            attrs={"class": "form-control ad-full__description is-valid"}
+        ),
         help_text="Текст объявления",
     )
     category = forms.CharField(
@@ -50,7 +56,9 @@ class adCreatForm(forms.ModelForm):
         help_text="Укажите состояние товара",
     )
     path = forms.CharField(
-        widget=forms.Select(choices=PAGE_TEMPLATES, attrs={"class": "form-select"}),
+        widget=forms.Select(
+            choices=PAGE_TEMPLATES, attrs={"class": "form-select is-valid"}
+        ),
         help_text="Укажите категорию товара",
     )
 
