@@ -16,12 +16,12 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import path, include
+from ads.urls import urlpatterns as ads_urls
 from ads.views import main_page
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path('api/v1/')
+    path("api/v1/", include(ads_urls), name="ads"),
     path("", main_page, name="main"),
 ]

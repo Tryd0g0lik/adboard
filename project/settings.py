@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'corsheaders',
     'adrf',
+    "webpack_loader",
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -134,7 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATICFILES_DIRS = [
 ]
-STATIC_ROOT = os.path.join(BASE_DIR,  "ads/static/")
+TIC_ROOT = os.path.join(BASE_DIR,  "ads/static/")
 STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 
 # Default primary key field type
@@ -176,5 +177,37 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+# '''WEBPACK_LOADER'''
+
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "CACHE": not DEBUG,
+        # 'BUNDLE_DIR_NAME': '..\\frontend\\src\\bundles',
+        "BUNDLE_DIR_NAME": "ads\\static",
+        "STATS_FILE": os.path.join(
+            BASE_DIR, "ads\\static\\bundles\\webpack-stats.json"
+        ),
+
+        "POLL_INTERVAL": 0.1,
+        "TIMEOUT": None,
+        "TEST": {
+            "NAME": "test_cloud",
+        },
+        "IGNORE": [
+            # '.+\.map$'
+            r".+\.hot-update.js",
+            r".+\.map",
+        ],
+        "LOADER_CLASS": "webpack_loader.loader.WebpackLoader",
+    }
+}
 if DEBUG:  # Только в режиме разработки
     SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
+# if not DEBUG:
+# WEBPACK_LOADER['DEFAULT'].update({
+#         'BUNDLE_DIR_NAME': 'bundles\\',
+#         'STATS_FILE': os.path.join(BASE_DIR, 'bundles\\webpack-stats.json')
+#     })
