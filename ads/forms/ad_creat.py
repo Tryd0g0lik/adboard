@@ -2,26 +2,73 @@ from django import forms
 from django.core import validators
 from django.utils.translation import gettext_lazy as _
 
+from ads.models import Ad, FileAd
 
-class adCreatForm(forms.Form):
+CATEGORY_STATUS = [
+    ("NEW", _("Новое")),
+    ("USED", _("Использованное")),
+    ("UNKNOWN", _("Неизвестно")),
+]
+PAGE_TEMPLATES = [
+    ("SPORT", _("Спорт")),
+    ("TECH", _("Техника")),
+    ("HOME", _("Дом и сад")),
+    ("CLOTHES", _("Одежда и обувь")),
+    ("BOOKS", _("Книги")),
+    ("CARS", _("Авто")),
+]
+
+
+class adCreatForm(forms.ModelForm):
     title = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={"placeholder": "Enter the title"}),
+        max_length=100, widget=forms.TextInput(attrs={"placeholder": "Enter the title"})
     )
-    content = forms.CharField(widget=forms.Textarea)
-    image_field = forms.ImageField(
-        widget=forms.ClearableFileInput(attrs={"multiple": True}),
+    files = forms.CharField(
         required=False,
-        help_text="Your file must be one from these: 'jpg', 'jpeg', 'png'",
+        widget=forms.ClearableFileInput(
+            attrs={
+                "class": "form-control",
+            }
+        ),
+        help_text="Формат: 'jpg', 'jpeg', 'png'",
         validators=[
             validators.FileExtensionValidator(
                 allowed_extensions=["jpg", "jpeg", "png"]
             ),
         ],
     )
+    description = forms.CharField(
+        max_length=1000,
+        widget=forms.Textarea(attrs={"class": "form-control ad-full__description"}),
+        help_text="Текст объявления",
+    )
+    category = forms.CharField(
+        widget=forms.Select(
+            choices=CATEGORY_STATUS,
+            attrs={"class": "form-select"},
+        ),
+        help_text="Укажите состояние товара",
+    )
+    path = forms.CharField(
+        widget=forms.Select(choices=PAGE_TEMPLATES, attrs={"class": "form-select"}),
+        help_text="Укажите категорию товара",
+    )
 
-    # def clean_image_field(self):
-    #     files = self.image_field
-    #     pass
-    # if (len(files) > 5):
-    #     raise forms.ValidationError(_("Maximum quantity of files is 5!"))
+    class Meta:
+        model = Ad
+        fields = ["title", "description", "category"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for file_name, field in self.fields.items():
+
+            help_text = getattr(
+                field,
+                "help_text",
+            )
+            field.help_text = f'<div id=emailHelp"\
+class="form-text">{help_text}</div>'
+
+    def clean_image_field(self):
+        # images = self.files
+        pass

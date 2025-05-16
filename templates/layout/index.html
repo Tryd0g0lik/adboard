@@ -4,7 +4,7 @@
 {% bootstrap_javascript jquery='full' %}
 {% load static %}
 
-<html lang = "ru">
+<html lang = "ru" data-ds-theme='dark'>
 <head>
   <meta charset = "UTF-8">
   <meta name="viewpost" content="width-device-width, initial-scale=1">
@@ -23,6 +23,25 @@
 <header>
   <h1>Вход</h1>
 </header>
-<body>
+<body class=".container">
+
+<section class="form">
+  <div class="mb-3">
+  <form class="ads-form">
+    {% csrf_token %}
+    {% for field in form %}
+     <div  class="mb-3">
+
+       {% if field.help_text %}
+          {{ filed.help_text|safe }}
+       {% endif %}
+       {{field}}
+
+     </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  </div>
+</section>
 </body>
 </html>
