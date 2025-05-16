@@ -2,6 +2,8 @@
 ads/views.py
 """
 
+import os
+from project.settings import BASE_DIR
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import action
@@ -42,8 +44,11 @@ class asyncCreateAdView(ViewSet):
 
 def main_page(request):
     theme = request.GET.get("theme", "dark")
-    if theme == "dark":
-        css_file = "styles/index.css"
+    files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+    css_file = "styles/index.css"
+    if theme == "lite":
+        css_file = "styles/lite.css"
+
     # Forms
     form = adCreatForm()
     # if request.method == 'POST':
@@ -54,5 +59,5 @@ def main_page(request):
     return render(
         request,
         template_name="index.html",
-        context={"form": form, "css_file": css_file},
+        context={"form": form, "css_file": css_file, "js_files": files},
     )
