@@ -30,6 +30,8 @@
 <!--          integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
 
 </head>
+
+<body class="container" id="root">
 <header>
   <div class="navbar bg-base-100 shadow-sm">
 
@@ -72,11 +74,9 @@
 
 
 </header>
-<body class="container">
-
 <section class="form">
   <div class="mb-3">
-  <form class="ads-form row g-3 needs-validation"  action="/api/v1/ads/" method="post">
+  <form class="ads-form row g-3 needs-validation" >
     {% csrf_token %}
     {% for field in form %}
      <div  class="mb-3">

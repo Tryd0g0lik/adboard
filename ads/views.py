@@ -3,6 +3,9 @@ ads/views.py
 """
 
 import os
+import logging
+
+from logs import configure_logging
 from project.settings import BASE_DIR
 from django.shortcuts import render
 from rest_framework import status
@@ -18,16 +21,21 @@ from ads.models import Ad
 from ads.serializers import AdSerializer
 
 
+configure_logging(logging.INFO)
+log = logging.getLogger(__name__)
+log.info("START")
 # Create your views here.
 
 
 class asyncCreateAdView(ViewSet):
-    # ads = Ad.objects.all()
-    # serializer_class = AdSerializer
+    ads = Ad.objects.all()
+    serializer_class = AdSerializer
 
     async def list(self, request):
+        log.info("START LIST of VIEWS.py")
         queryset = Ad.objects.all()
         serializer = AdSerializer(queryset, many=True)
+        log.warning("SERIALIZER", serializer)
         if serializer.is_valid():
             return Response(request, serializer.data, status=status.HTTP_200_OK)
         else:
@@ -36,10 +44,16 @@ class asyncCreateAdView(ViewSet):
             )
 
     async def create(self, request):
+        log.info("START CREATE of VIEWS.py")
+
         serializer = AdSerializer(data=request.data)
+        log.warning("SERIALIZER", serializer)
         if serializer.is_valid():
+            log.warning("SERIALIZER", str(serializer.data.__dict__))
             serializer.save()
             return Response(request, serializer.data, status=status.HTTP_200_OK)
+
+        return Response(request, serializer.data, status=status.HTTP_401_UNAUTHORIZED)
 
 
 def main_page(request):

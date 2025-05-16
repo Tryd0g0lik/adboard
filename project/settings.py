@@ -154,6 +154,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://83.166.245.197",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "http://127.0.0.1:8080",
 
 ]
 # разрешить cookie в HTTP запросах
@@ -202,6 +203,22 @@ WEBPACK_LOADER = {
         ],
         "LOADER_CLASS": "webpack_loader.loader.WebpackLoader",
     }
+}
+# '''Logging'''
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
 }
 if DEBUG:  # Только в режиме разработки
     SECURE_CROSS_ORIGIN_OPENER_POLICY = None

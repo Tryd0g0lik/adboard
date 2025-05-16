@@ -21,3 +21,4 @@ exclude =
     */settings
     dotenv_,
     manage,
+    logs.py,
