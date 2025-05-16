@@ -7,12 +7,12 @@ from rest_framework.routers import DefaultRouter
 
 # https://www.django-rest-framework.org/tutorial/6-viewsets-and-routers/#using-routers
 
-from ads.views import asyncCreateAdView
+from ads.views import AsyncCreateAdView
 
 
 # Create a router
 router = DefaultRouter()
-router.register("ads", asyncCreateAdView, basename="ads")
+router.register("ads", AsyncCreateAdView, basename="ads")
 
 # The API URL's defined by the ads router
 urlpatterns = [

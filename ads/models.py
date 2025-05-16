@@ -22,6 +22,8 @@ class Ad(models.Model):
     # Не возможно удалить пользователя пока не удалим его объявления и прочее.
     user = models.ForeignKey(
         User,
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
         verbose_name=_("Sender"),
         help_text=_("This the index of sender"),
@@ -60,6 +62,8 @@ before 100 symbols.\n Min length is the 3 symbols."
         verbose_name=_("Description"),
     )
     image_url = models.CharField(
+        null=True,
+        blank=True,
         max_length=100,
         help_text=_("The path to the image"),
         validators=[
@@ -82,12 +86,14 @@ before 100 symbols.\n Min length is the 3 symbols."
         editable=False,
         verbose_name=_("Created at"),
     )
-    condition = models.BooleanField(
-        default=False,
+    STATE = [("ACTIVATED", _("Опубликовано")), ("DEACTIVATED", _("Не опубликовано"))]
+    condition = models.CharField(
+        default="Не опубликовано",
+        choices=STATE,
         verbose_name=_("Activated"),
         help_text=_(
-            "Default is False (not activated), if you want \
-the public page it means that True"
+            "By default is state 'Не опубликовано, if you want to public \
+your ad choose  'Опубликовано'. This means what your ad wil be public."
         ),
     )
     # This is the basis templates of category
@@ -263,6 +269,8 @@ class ImageStorage(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
     original_name = models.CharField(_("File name"), max_length=100)
     size = models.PositiveIntegerField(

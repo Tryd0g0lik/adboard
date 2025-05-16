@@ -5,20 +5,25 @@ ads/views.py
 import os
 import logging
 
+from asgiref.sync import sync_to_async
+from django.http import JsonResponse
+
+from ads.serialisers_all.ad.serializers import AdSerializer
+from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
 from project.settings import BASE_DIR
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework import views, generics, viewsets, decorators
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from adrf.viewsets import ViewSet
+
 
 from ads.forms.ad_creat import adCreatForm
 
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
-from ads.models import Ad
-from ads.serializers import AdSerializer
+from ads.models import Ad, ImageStorage
 
 
 configure_logging(logging.INFO)
@@ -27,33 +32,48 @@ log.info("START")
 # Create your views here.
 
 
-class asyncCreateAdView(ViewSet):
-    ads = Ad.objects.all()
+class AsyncCreateAdView(viewsets.ModelViewSet):
+    queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
-    async def list(self, request):
-        log.info("START LIST of VIEWS.py")
-        queryset = Ad.objects.all()
-        serializer = AdSerializer(queryset, many=True)
-        log.warning("SERIALIZER", serializer)
-        if serializer.is_valid():
-            return Response(request, serializer.data, status=status.HTTP_200_OK)
-        else:
+    def create(self, request, *args, **kwargs):
+        log.info("START CREATE of VIEWS.py")
+        log.error("REQUEST DATA: %s", request.data)
+
+        # new_image_file = request.data.get("file_path")
+        if len(request.data["file_path"]) > 0:
+            log.info("SERIALIZER IMAGE %s", request.data["file_path"])
+            serializer_image = ImageStorageSerializer(data=request.data)
+            if serializer_image.is_valid():
+                """SAVE IMAGE FILE"""
+                log.info("SERIALIZER IMAGE VALID: %s", serializer_image.data)
+                new_image_file = ImageStorage(serializer_image.data)
+                log.info("SERIALIZER IMAGE SAVE")
+                new_image_file.save()
+                request.data.pop("file_path")
+            else:
+                """INVALID IMAGE FILE - NOT SAVE"""
+                log.error("SERIALIZER IMAGE ERROR: %s", serializer_image.errors)
+                request.data.pop("file_path")
+                pass
+
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            log.error("SERIALIZER ERROR: %s", serializer.errors)
             return Response(
-                request, serializer.data, status=status.HTTP_401_UNAUTHORIZED
+                {"detail": "Invalid data", "errors": serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
-    async def create(self, request):
-        log.info("START CREATE of VIEWS.py")
-
-        serializer = AdSerializer(data=request.data)
-        log.warning("SERIALIZER", serializer)
-        if serializer.is_valid():
-            log.warning("SERIALIZER", str(serializer.data.__dict__))
-            serializer.save()
-            return Response(request, serializer.data, status=status.HTTP_200_OK)
-
-        return Response(request, serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            self.perform_create(serializer)
+            log.info("Ad created successfully: %s", serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            log.exception("ERROR => %s", e)
+            return Response(
+                {"detail": "Server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 def main_page(request):

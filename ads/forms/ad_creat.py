@@ -5,17 +5,29 @@ from django.utils.translation import gettext_lazy as _
 from ads.models import Ad, FileAd
 
 CATEGORY_STATUS = [
+    ("UNKNOWN", _("Неизвестно")),
     ("NEW", _("Новое")),
     ("USED", _("Использованное")),
-    ("UNKNOWN", _("Неизвестно")),
 ]
+# This is the basis templates of category
+SPORT = "categories/sport/index.html"
+TECH = "categories/tech/index.html"
+HOME = "categories/home/index.html"
+CLOTHES = "categories/clothes/index.html"
+BOOKS = "categories/books/index.html"
+CARS = "categories/cars/index.html"
+
 PAGE_TEMPLATES = [
-    ("SPORT", _("Спорт")),
-    ("TECH", _("Техника")),
-    ("HOME", _("Дом и сад")),
-    ("CLOTHES", _("Одежда и обувь")),
-    ("BOOKS", _("Книги")),
-    ("CARS", _("Авто")),
+    (SPORT, _("Спорт")),
+    (TECH, _("Техника")),
+    (HOME, _("Дом и сад")),
+    (CLOTHES, _("Одежда и обувь")),
+    (BOOKS, _("Книги")),
+    (CARS, _("Авто")),
+]
+STATE = [
+    ("DEACTIVATED", _("Не опубликовано")),
+    ("ACTIVATED", _("Опубликовано")),
 ]
 
 
@@ -29,7 +41,7 @@ class adCreatForm(forms.ModelForm):
             }
         ),
     )
-    files = forms.CharField(
+    file_path = forms.CharField(
         required=False,
         widget=forms.ClearableFileInput(
             attrs={"class": "form-control", "id": "validationServer02"}
@@ -54,6 +66,9 @@ class adCreatForm(forms.ModelForm):
             attrs={"class": "form-select"},
         ),
         help_text="Укажите состояние товара",
+    )
+    condition = forms.CharField(
+        widget=forms.Select(choices=STATE, attrs={"class": "form-select"})
     )
     path = forms.CharField(
         widget=forms.Select(
