@@ -2,7 +2,7 @@
 ads/models.py
 """
 
-import uuid
+import datetime
 
 from django.core.validators import (
     MaxLengthValidator,
@@ -263,15 +263,25 @@ class Exchange(models.Model):
             raise ValueError("ad_sender and ad_receiver cannot be the same")
 
 
+def receive_image_path(instance, filename):
+    """ "
+    Path to image files.
+    """
+    list_of_date = str(datetime.date.today()).split("-")
+    path = (
+        "uploads/" + "999".zfill(4) + "/"
+        if instance.user is None
+        else str(instance.user.pk) + "/"
+    )
+    path += "/{}/{}/{}/".format(list_of_date[0], list_of_date[1], list_of_date[2])
+    return f"{path}/images/{filename}"
+
+
 class ImageStorage(models.Model):
     """ "
     File upload path model
     """
 
-    id = models.IntegerField(
-        primary_key=True,
-        verbose_name=_("ID"),
-    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -288,7 +298,7 @@ class ImageStorage(models.Model):
         auto_now_add=True,
     )
     file_path = models.FileField(
-        upload_to="media/uploads/",
+        upload_to=receive_image_path,
         verbose_name=_("Image"),
         help_text=_(
             "Upload image/files. Pathname has a template format is: 'media/<user_pk>/%Y/%m/%d/' "
@@ -301,12 +311,7 @@ class ImageStorage(models.Model):
         verbose_name_plural = _("Paths to images")
 
     def __str__(self):
-        return self.original_name
-
-    def save(self, *args, **kwargs):
-        new_path_of_source = f"media/uploads/{self.user.pk}/%Y/%m/%d/"
-        self.file_path.upload_to = new_path_of_source
-        super().save(*args, **kwargs)
+        return self.file_path
 
 
 class FileAd(models.Model):

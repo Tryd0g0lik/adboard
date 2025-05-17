@@ -42,14 +42,10 @@ class FileImageViewSet(viewsets.ModelViewSet):
         log.info("REQUEST DATA: %s", request.data)
         try:
             request.data["size"] = request.data["file_path"].size
-            request.data["pk"] = 0
             serializer = self.get_serializer(data=request.data)
             if serializer.is_valid():
                 log.info("SERIALIZER DATA VALID: %s", serializer.validated_data)
-                serializer.validated_data["pk"] = 0
-                serializer.pk = 0
                 serializer.save()
-                # self.perform_create(serializer)
                 log.info("SERIALIZER DATA SAVED")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
@@ -57,7 +53,6 @@ class FileImageViewSet(viewsets.ModelViewSet):
                 return Response(
                     {"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
                 )
-            # super().create(request, *args, **kwargs)
 
         except Exception as ex:
             log.error("NEW IMAGE_FILE SERVER ERROR: %s", ex)
