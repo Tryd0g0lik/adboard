@@ -43,14 +43,42 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
         # new_image_file = request.data.get("file_path")
         if len(request.data["file_path"]) > 0:
             log.info("SERIALIZER IMAGE %s", request.data["file_path"])
-            serializer_image = ImageStorageSerializer(data=request.data)
+            request.data["size"] = request.data["file_path"].size
+            image_data = {
+                "file_path": request.data["file_path"],
+                "size": request.data["file_path"].size,
+                "user": request.user.id,
+                # Предполагается аутентифицированный пользователь
+            }
+            serializer_image = ImageStorageSerializer(data=image_data)
             if serializer_image.is_valid():
-                """SAVE IMAGE FILE"""
-                log.info("SERIALIZER IMAGE VALID: %s", serializer_image.data)
-                new_image_file = ImageStorage(serializer_image.data)
-                log.info("SERIALIZER IMAGE SAVE")
-                new_image_file.save()
-                request.data.pop("file_path")
+                try:
+                    log.info(
+                        "SERIALIZER FILE VALID: %s", serializer_image.validated_data
+                    )
+                    """SAVE IMAGE FILE"""
+                    # log.info("SERIALIZER IMAGE VALID: %s", serializer_image.data)
+                    # '''GET COSTOM ID FOR NEW IMAGE FILE AND SAVED'''
+                    # new_index = (
+                    #     0
+                    #     if ImageStorage.objects.all().count() == 0
+                    #     else ImageStorage.objects.all().last() + 1
+                    # )
+                    # new_image_file = ImageStorage()
+                    # ''''NEW INDEX SAViING'''
+                    # # for k in serializer_image.validated_data:
+                    # new_image_file.size = serializer_image.validated_data["size"]
+                    # new_image_file.file_path = serializer_image.validated_data["file_path"]
+                    #
+                    # # serializer_image.validated_data = new_index
+                    # '''SAVING FILE'''
+                    # new_image_file.id = 0
+                    # new_image_file.save()
+                    serializer_image.__setattr__("pk", 0)
+                    serializer_image.save()
+                    log.info("SERIALIZER IMAGE SAVE")
+                except Exception as ex:
+                    log.error("SERIALIZER IMAGE ERROR: %s", ex)
             else:
                 """INVALID IMAGE FILE - NOT SAVE"""
                 log.error("SERIALIZER IMAGE ERROR: %s", serializer_image.errors)

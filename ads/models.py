@@ -2,6 +2,8 @@
 ads/models.py
 """
 
+import uuid
+
 from django.core.validators import (
     MaxLengthValidator,
     MinLengthValidator,
@@ -272,7 +274,7 @@ class ImageStorage(models.Model):
         null=True,
         blank=True,
     )
-    original_name = models.CharField(_("File name"), max_length=100)
+    # original_name = models.CharField(_("File name"), max_length=100)
     size = models.PositiveIntegerField(
         _("File weight"),
     )
@@ -281,7 +283,7 @@ class ImageStorage(models.Model):
         editable=False,
         auto_now_add=True,
     )
-    file_path = models.ImageField(
+    file_path = models.FileField(
         upload_to="media/uploads/",
         verbose_name=_("Image"),
         help_text=_(
