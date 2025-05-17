@@ -268,6 +268,10 @@ class ImageStorage(models.Model):
     File upload path model
     """
 
+    id = models.IntegerField(
+        primary_key=True,
+        verbose_name=_("ID"),
+    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

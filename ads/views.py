@@ -36,10 +36,34 @@ class FileImageViewSet(viewsets.ModelViewSet):
     queryset = ImageStorage.objects.all()
     serializer_class = ImageStorageSerializer
 
-    # def create(self, request, *args, **kwargs):
-    #     """SAVE IMAGE FILE"""
-    #     log.info("START CREATE IMAGE")
-    #     log.error("REQUEST DATA: %s", request.data)
+    def create(self, request, *args, **kwargs):
+        """SAVE IMAGE FILE"""
+        log.info("START CREATE IMAGE")
+        log.info("REQUEST DATA: %s", request.data)
+        try:
+            request.data["size"] = request.data["file_path"].size
+            request.data["pk"] = 0
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                log.info("SERIALIZER DATA VALID: %s", serializer.validated_data)
+                serializer.validated_data["pk"] = 0
+                serializer.pk = 0
+                serializer.save()
+                # self.perform_create(serializer)
+                log.info("SERIALIZER DATA SAVED")
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                log.error("NEW IMAGE_FILE NOT VALID: %s", serializer.errors)
+                return Response(
+                    {"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+                )
+            # super().create(request, *args, **kwargs)
+
+        except Exception as ex:
+            log.error("NEW IMAGE_FILE SERVER ERROR: %s", ex)
+            return JsonResponse(
+                {"detail": ex}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class AsyncCreateAdView(viewsets.ModelViewSet):
@@ -49,53 +73,6 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         log.info("START CREATE of VIEWS.py")
         log.error("REQUEST DATA: %s", request.data)
-
-        # new_image_file = request.data.get("file_path")
-        # if len(request.data["file_path"]) > 0:
-        #     log.info("SERIALIZER IMAGE %s", request.data["file_path"])
-        #     request.data["size"] = request.data["file_path"].size
-        #     image_data = {
-        #         "file_path": request.data["file_path"],
-        #         "size": request.data["file_path"].size,
-        #         "user": request.user.id,
-        #         # Предполагается аутентифицированный пользователь
-        #     }
-        #     serializer_image = ImageStorageSerializer(data=image_data)
-        #     if serializer_image.is_valid():
-        #         try:
-        #             log.info(
-        #                 "SERIALIZER FILE VALID: %s", serializer_image.validated_data
-        #             )
-        #             """SAVE IMAGE FILE"""
-        # log.info("SERIALIZER IMAGE VALID: %s", serializer_image.data)
-        # '''GET COSTOM ID FOR NEW IMAGE FILE AND SAVED'''
-        # new_index = (
-        #     0
-        #     if ImageStorage.objects.all().count() == 0
-        #     else ImageStorage.objects.all().last() + 1
-        # )
-        # new_image_file = ImageStorage()
-        # ''''NEW INDEX SAViING'''
-        # # for k in serializer_image.validated_data:
-        # new_image_file = ImageStorage(serializer_image)
-        # new_image_file.size = serializer_image.validated_data["size"]
-        # new_image_file.file_path = serializer_image.validated_data["file_path"]
-        # new_image_file.pk = 0
-        # new_image_file.save()
-        # # serializer_image.validated_data = new_index
-        # '''SAVING FILE'''
-        # new_image_file.id = 0
-        # new_image_file.save()
-        #         serializer_image.validated_data.__setattr__("pk", 0)
-        #         serializer_image.save()
-        #         log.info("SERIALIZER IMAGE SAVE")
-        #     except Exception as ex:
-        #         log.error("SERIALIZER IMAGE ERROR: %s", ex)
-        # else:
-        #     """INVALID IMAGE FILE - NOT SAVE"""
-        #     log.error("SERIALIZER IMAGE ERROR: %s", serializer_image.errors)
-        #     request.data.pop("file_path")
-        #     pass
 
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
