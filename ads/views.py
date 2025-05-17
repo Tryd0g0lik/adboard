@@ -19,7 +19,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 
-from ads.forms.ad_creat import adCreatForm
+from ads.forms.ad_creat import adCreatForm, FileImageForm
 
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
@@ -32,6 +32,16 @@ log.info("START")
 # Create your views here.
 
 
+class FileImageViewSet(viewsets.ModelViewSet):
+    queryset = ImageStorage.objects.all()
+    serializer_class = ImageStorageSerializer
+
+    # def create(self, request, *args, **kwargs):
+    #     """SAVE IMAGE FILE"""
+    #     log.info("START CREATE IMAGE")
+    #     log.error("REQUEST DATA: %s", request.data)
+
+
 class AsyncCreateAdView(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
@@ -41,49 +51,51 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
         log.error("REQUEST DATA: %s", request.data)
 
         # new_image_file = request.data.get("file_path")
-        if len(request.data["file_path"]) > 0:
-            log.info("SERIALIZER IMAGE %s", request.data["file_path"])
-            request.data["size"] = request.data["file_path"].size
-            image_data = {
-                "file_path": request.data["file_path"],
-                "size": request.data["file_path"].size,
-                "user": request.user.id,
-                # Предполагается аутентифицированный пользователь
-            }
-            serializer_image = ImageStorageSerializer(data=image_data)
-            if serializer_image.is_valid():
-                try:
-                    log.info(
-                        "SERIALIZER FILE VALID: %s", serializer_image.validated_data
-                    )
-                    """SAVE IMAGE FILE"""
-                    # log.info("SERIALIZER IMAGE VALID: %s", serializer_image.data)
-                    # '''GET COSTOM ID FOR NEW IMAGE FILE AND SAVED'''
-                    # new_index = (
-                    #     0
-                    #     if ImageStorage.objects.all().count() == 0
-                    #     else ImageStorage.objects.all().last() + 1
-                    # )
-                    # new_image_file = ImageStorage()
-                    # ''''NEW INDEX SAViING'''
-                    # # for k in serializer_image.validated_data:
-                    # new_image_file.size = serializer_image.validated_data["size"]
-                    # new_image_file.file_path = serializer_image.validated_data["file_path"]
-                    #
-                    # # serializer_image.validated_data = new_index
-                    # '''SAVING FILE'''
-                    # new_image_file.id = 0
-                    # new_image_file.save()
-                    serializer_image.__setattr__("pk", 0)
-                    serializer_image.save()
-                    log.info("SERIALIZER IMAGE SAVE")
-                except Exception as ex:
-                    log.error("SERIALIZER IMAGE ERROR: %s", ex)
-            else:
-                """INVALID IMAGE FILE - NOT SAVE"""
-                log.error("SERIALIZER IMAGE ERROR: %s", serializer_image.errors)
-                request.data.pop("file_path")
-                pass
+        # if len(request.data["file_path"]) > 0:
+        #     log.info("SERIALIZER IMAGE %s", request.data["file_path"])
+        #     request.data["size"] = request.data["file_path"].size
+        #     image_data = {
+        #         "file_path": request.data["file_path"],
+        #         "size": request.data["file_path"].size,
+        #         "user": request.user.id,
+        #         # Предполагается аутентифицированный пользователь
+        #     }
+        #     serializer_image = ImageStorageSerializer(data=image_data)
+        #     if serializer_image.is_valid():
+        #         try:
+        #             log.info(
+        #                 "SERIALIZER FILE VALID: %s", serializer_image.validated_data
+        #             )
+        #             """SAVE IMAGE FILE"""
+        # log.info("SERIALIZER IMAGE VALID: %s", serializer_image.data)
+        # '''GET COSTOM ID FOR NEW IMAGE FILE AND SAVED'''
+        # new_index = (
+        #     0
+        #     if ImageStorage.objects.all().count() == 0
+        #     else ImageStorage.objects.all().last() + 1
+        # )
+        # new_image_file = ImageStorage()
+        # ''''NEW INDEX SAViING'''
+        # # for k in serializer_image.validated_data:
+        # new_image_file = ImageStorage(serializer_image)
+        # new_image_file.size = serializer_image.validated_data["size"]
+        # new_image_file.file_path = serializer_image.validated_data["file_path"]
+        # new_image_file.pk = 0
+        # new_image_file.save()
+        # # serializer_image.validated_data = new_index
+        # '''SAVING FILE'''
+        # new_image_file.id = 0
+        # new_image_file.save()
+        #         serializer_image.validated_data.__setattr__("pk", 0)
+        #         serializer_image.save()
+        #         log.info("SERIALIZER IMAGE SAVE")
+        #     except Exception as ex:
+        #         log.error("SERIALIZER IMAGE ERROR: %s", ex)
+        # else:
+        #     """INVALID IMAGE FILE - NOT SAVE"""
+        #     log.error("SERIALIZER IMAGE ERROR: %s", serializer_image.errors)
+        #     request.data.pop("file_path")
+        #     pass
 
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
@@ -113,6 +125,7 @@ def main_page(request):
 
     # Forms
     form = adCreatForm()
+    file_image = FileImageForm()
     # if request.method == 'POST':
     #     form_data = adCreatForm(request.POST)
     #     pass
@@ -121,5 +134,9 @@ def main_page(request):
     return render(
         request,
         template_name="index.html",
-        context={"form": form, "css_file": css_file, "js_files": files},
+        context={
+            "form": {"form_ad": form, "file_image": file_image},
+            "css_file": css_file,
+            "js_files": files,
+        },
     )

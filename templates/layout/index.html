@@ -76,9 +76,10 @@
 </header>
 <section class="form">
   <div class="mb-3">
+    <div class="row"><<h3>Объявление</h3></div>
   <form class="ads-form row g-3 needs-validation" >
     {% csrf_token %}
-    {% for field in form %}
+    {% for field in form.form_ad %}
      <div  class="mb-3">
 
        {% if field.help_text %}
@@ -88,6 +89,21 @@
 
      </div>
     {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  </div>
+  <div class="mb-3">
+    <div class="row"><h3>Изображение</h3></div>
+  <form class="ads-form row g-3 needs-validation" >
+    {% csrf_token %}
+
+     <div  class="mb-3">
+
+
+       {{form.file_image.file_path}}
+
+     </div>
+
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   </div>

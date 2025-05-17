@@ -41,18 +41,7 @@ class adCreatForm(forms.ModelForm):
             }
         ),
     )
-    file_path = forms.CharField(
-        required=False,
-        widget=forms.ClearableFileInput(
-            attrs={"class": "form-control", "id": "validationServer02"}
-        ),
-        help_text="Формат: 'jpg', 'jpeg', 'png'",
-        validators=[
-            validators.FileExtensionValidator(
-                allowed_extensions=["jpg", "jpeg", "png"]
-            ),
-        ],
-    )
+
     description = forms.CharField(
         max_length=1000,
         widget=forms.Textarea(
@@ -95,3 +84,22 @@ class="form-text">{help_text}</div>'
     def clean_image_field(self):
         # images = self.files
         pass
+
+
+class FileImageForm(forms.ModelForm):
+    class Meta:
+        model = FileAd
+        fields = "__all__"
+
+    file_path = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(
+            attrs={"class": "form-control", "id": "validationServer02"}
+        ),
+        help_text="Формат: 'jpg', 'jpeg', 'png'",
+        validators=[
+            validators.FileExtensionValidator(
+                allowed_extensions=["jpg", "jpeg", "png"]
+            ),
+        ],
+    )
