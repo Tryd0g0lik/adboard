@@ -5,7 +5,7 @@ ads/views.py
 import json
 import os
 import logging
-
+from django.core.exceptions import ValidationError
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
 
@@ -42,7 +42,7 @@ async def async_serializer_validate(serializer):
     is_valid = await sync_to_async(serializer.is_valid)()
     if not is_valid:
         log.error("SERIALIZER ERROR: %s", serializer.errors)
-        return serializer.ValidationError(serializer.errors)
+        raise serializer.ValidationError(serializer.errors)
     log.info("SERIALIZER DATA VALID: %s", serializer.validated_data)
     data = await sync_to_async(lambda: serializer.validated_data)()
     return data
@@ -73,7 +73,9 @@ class FileImageViewSet(viewsets.ModelViewSet):
         try:
             await sync_to_async(self.perform_create)(serializer)
             log.info("SERIALIZER DATA SAVED: %s", serializer.data)
-            return Response(json.dumps(serializer.data), status=status.HTTP_201_CREATED)
+            return Response(
+                data=json.dumps(serializer.data), status=status.HTTP_201_CREATED
+            )
         except Exception as ex:
             log.error("NEW IMAGE_FILE SERVER ERROR: %s", ex)
             return JsonResponse(
@@ -92,18 +94,20 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
         log.info("REQUEST DATA: %s", request.data)
         serializer = self.get_serializer(data=request.data)
         try:
-            validated_data = await async_serializer_validate(serializer)
-            log.info("AD IS VALIDATED DATA: %s", validated_data)
+            await async_serializer_validate(serializer)
+            log.info("AD IS VALIDATED DATA:")
         except Exception as er:
             log.error("AD SERIALIZER DATA ERROR: %s", er)
             return Response(
-                {"detail": er.args},
+                json.dumps({"detail": er.args}),
                 status=status.HTTP_400_BAD_REQUEST,
             )
         try:
             await sync_to_async(self.perform_create)(serializer)
-            log.info("SERIALIZER DATA SAVED: %s", serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            log.info("SERIALIZER DATA SAVED")
+            return Response(
+                data=json.dumps(serializer.data), status=status.HTTP_201_CREATED
+            )
         except Exception as e:
             log.exception("ERROR => %s", e)
             return Response(
