@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -162,7 +163,8 @@ CORS_ALLOWED_ORIGINS = [
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#csrf-integration
 # https://docs.djangoproject.com/en/5.2/ref/settings/#std-setting-CSRF_TRUSTED_ORIGINS
 CSRF_TRUSTED_ORIGINS = [
-    "http://83.166.245.197"
+    "http://83.166.245.197",
+    "http://127.0.0.1:8080"
 ]
 # разрешить cookie в HTTP запросах
 CORS_ALLOW_CREDENTIALS = True

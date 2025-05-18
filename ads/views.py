@@ -67,7 +67,9 @@ class FileImageViewSet(viewsets.ModelViewSet):
 
         except Exception as er:
             log.error("IMAGE SERIALIZER DATA IS NOT VALID: %s", er)
-            return Response({"detail": er}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                json.dumps({"detail": er.args}), status=status.HTTP_401_UNAUTHORIZED
+            )
         try:
             await sync_to_async(self.perform_create)(serializer)
             log.info("SERIALIZER DATA SAVED: %s", serializer.data)
@@ -75,7 +77,7 @@ class FileImageViewSet(viewsets.ModelViewSet):
         except Exception as ex:
             log.error("NEW IMAGE_FILE SERVER ERROR: %s", ex)
             return JsonResponse(
-                {"detail": ex}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                {"detail": ex.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 
@@ -95,13 +97,13 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
         except Exception as er:
             log.error("AD SERIALIZER DATA ERROR: %s", er)
             return Response(
-                {"detail": "AD SERIALIZER DATA ERROR", "errors": er},
+                {"detail": er.args},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         try:
             await sync_to_async(self.perform_create)(serializer)
             log.info("SERIALIZER DATA SAVED: %s", serializer.data)
-            return Response(json.dumps(serializer.data), status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             log.exception("ERROR => %s", e)
             return Response(

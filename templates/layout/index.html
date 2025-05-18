@@ -19,7 +19,8 @@
   {% bootstrap_css %}
   <link rel="stylesheet" type="text/css" href="{% static css_file %}">
   {% bootstrap_javascript jquery='full' %}
-  <!--  { % render_bundle 'index' 'js' %}-->
+
+<!--  { % render_bundle 'index' 'js' %}-->
   {% for file in js_files %}
     <script src="{% static 'scripts/' %}{{file}}"></script>
   {% endfor %}
