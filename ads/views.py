@@ -2,6 +2,7 @@
 ads/views.py
 """
 
+import json
 import os
 import logging
 
@@ -14,7 +15,9 @@ from logs import configure_logging
 from project.settings import BASE_DIR
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework import views, generics, viewsets, decorators
+
+# from rest_framework import views, generics, viewsets, decorators
+from adrf import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -29,31 +32,46 @@ from ads.models import Ad, ImageStorage
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
 log.info("START")
+
+
 # Create your views here.
+async def async_serializer_validate(serializer):
+    """
+    Async validation of serializer.
+    """
+    is_valid = await sync_to_async(serializer.is_valid)()
+    if not is_valid:
+        log.error("SERIALIZER ERROR: %s", serializer.errors)
+        return serializer.ValidationError(serializer.errors)
+    log.info("SERIALIZER DATA VALID: %s", serializer.validated_data)
+    data = await sync_to_async(lambda: serializer.validated_data)()
+    return data
 
 
 class FileImageViewSet(viewsets.ModelViewSet):
+    """IMAGE STORAGE"""
+
     queryset = ImageStorage.objects.all()
     serializer_class = ImageStorageSerializer
 
-    def create(self, request, *args, **kwargs):
+    async def create(self, request, *args, **kwargs):
         """SAVE IMAGE FILE"""
         log.info("START CREATE IMAGE")
         log.info("REQUEST DATA: %s", request.data)
+        request.data["size"] = request.data["file_path"].size
+        serializer = self.get_serializer(data=request.data)
         try:
-            request.data["size"] = request.data["file_path"].size
-            serializer = self.get_serializer(data=request.data)
-            if serializer.is_valid():
-                log.info("SERIALIZER DATA VALID: %s", serializer.validated_data)
-                serializer.save()
-                log.info("SERIALIZER DATA SAVED")
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                log.error("NEW IMAGE_FILE NOT VALID: %s", serializer.errors)
-                return Response(
-                    {"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
-                )
+            """VALIDATE DATA"""
+            validated_data = await async_serializer_validate(serializer)
+            log.info("IMAGE SERIALIZER DATA IS VALID: %s", validated_data)
 
+        except Exception as er:
+            log.error("IMAGE SERIALIZER DATA IS NOT VALID: %s", er)
+            return Response({"detail": er}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            await sync_to_async(self.perform_create)(serializer)
+            log.info("SERIALIZER DATA SAVED: %s", serializer.data)
+            return Response(json.dumps(serializer.data), status=status.HTTP_201_CREATED)
         except Exception as ex:
             log.error("NEW IMAGE_FILE SERVER ERROR: %s", ex)
             return JsonResponse(
@@ -62,25 +80,28 @@ class FileImageViewSet(viewsets.ModelViewSet):
 
 
 class AsyncCreateAdView(viewsets.ModelViewSet):
+    """ASYNC CREATE AD"""
+
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
-    def create(self, request, *args, **kwargs):
+    async def create(self, request, *args, **kwargs):
         log.info("START CREATE of VIEWS.py")
-        log.error("REQUEST DATA: %s", request.data)
-
+        log.info("REQUEST DATA: %s", request.data)
         serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            log.error("SERIALIZER ERROR: %s", serializer.errors)
+        try:
+            validated_data = await async_serializer_validate(serializer)
+            log.info("AD IS VALIDATED DATA: %s", validated_data)
+        except Exception as er:
+            log.error("AD SERIALIZER DATA ERROR: %s", er)
             return Response(
-                {"detail": "Invalid data", "errors": serializer.errors},
+                {"detail": "AD SERIALIZER DATA ERROR", "errors": er},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
         try:
-            self.perform_create(serializer)
-            log.info("Ad created successfully: %s", serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            await sync_to_async(self.perform_create)(serializer)
+            log.info("SERIALIZER DATA SAVED: %s", serializer.data)
+            return Response(json.dumps(serializer.data), status=status.HTTP_201_CREATED)
         except Exception as e:
             log.exception("ERROR => %s", e)
             return Response(
@@ -98,11 +119,6 @@ def main_page(request):
     # Forms
     form = adCreatForm()
     file_image = FileImageForm()
-    # if request.method == 'POST':
-    #     form_data = adCreatForm(request.POST)
-    #     pass
-    #     if not form_data.is_valid():
-    #        pass
     return render(
         request,
         template_name="index.html",
