@@ -89,6 +89,9 @@ class FileImageViewSet(viewsets.ModelViewSet):
                 {"detail": ex.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    async def list(self, request, *args, **kwargs):
+        pass
+
 
 class AsyncCreateAdView(viewsets.ModelViewSet):
     """ASYNC CREATE AD"""
@@ -106,6 +109,18 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
         data = await sync_to_async(super().list)(request, *args, **kwargs)
         data.data = json.dumps({"data": data.data})
         return data
+
+    async def retrieve(self, request, *args, **kwargs):
+        """
+        :param request:
+        :param pk:
+        :return: json string this is `{'data': {}}`
+        """
+        data = await sync_to_async(super().retrieve)(request, int(kwargs["pk"]))
+        # data = super().retrieve(request, int(kwargs['pk']))
+        return Response(
+            json.dumps({"data": [dict(data.data)]}), status=status.HTTP_200_OK
+        )
 
     async def create(self, request, *args, **kwargs):
         """
