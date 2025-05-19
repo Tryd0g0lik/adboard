@@ -291,7 +291,6 @@ div.hidden {
   vertical-align: top;
 }
 .ad-view div.ad-view-context {
-  height: clamp(100px, 47vh, 500px);
   overflow: hidden;
   width: clamp(height, 280px, 660px);
   text-align: left;
@@ -299,6 +298,7 @@ div.hidden {
 
 /* ---- PAGE OF ONE AD ----*/
 #ad-page-container .ad-view-content {
+  height: clamp(100px, 47vh, 500px);
   flex-wrap: wrap;
 }
 #ad-page-container .ad-view-title {
