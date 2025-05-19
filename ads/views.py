@@ -55,6 +55,12 @@ class FileImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageStorageSerializer
 
     async def create(self, request, *args, **kwargs):
+        """
+        :param request:
+        :param args:
+        :param kwargs:
+        :return: json string this is `{'data': {}}`
+        """
         """SAVE IMAGE FILE"""
         log.info("START CREATE IMAGE")
         log.info("REQUEST DATA: %s", request.data)
@@ -90,7 +96,24 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
+    async def list(self, request, *args, **kwargs):
+        """
+        :param request:
+        :param args:
+        :param kwargs:
+        :return: json string this is `{'data': [{}, {}, ...]}`
+        """
+        data = await sync_to_async(super().list)(request, *args, **kwargs)
+        data.data = json.dumps({"data": data.data})
+        return data
+
     async def create(self, request, *args, **kwargs):
+        """
+        :param request:
+        :param args:
+        :param kwargs:
+        :return: json string this is `{'data': {}}`
+        """
         log.info("START CREATE of VIEWS.py")
         log.info("REQUEST DATA: %s", request.data)
         serializer = self.get_serializer(data=request.data)
