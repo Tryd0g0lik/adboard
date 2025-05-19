@@ -176,15 +176,15 @@ def main_page(request):
     )
 
 
-def ad_page(request, pk):
+def ad_page(request, *args, **kwargs):
     pass
     if request.method == "GET":
         # log.info("GET 'pk' FROM REQUEST PATH: %s", index);
-        db_data = Ad.objects.filter(pk=int(pk))
-        data = '{"data":[}'
-        if len(db_data) > 0:
-            serializer = AdSerializer(db_data[0])
-            data = json.dumps({"data": [dict(serializer.data)]})
+        # db_data = Ad.objects.filter(pk=int(pk))
+        # data = '{"data":[}'
+        # if len(db_data) > 0:
+        #     serializer = AdSerializer(db_data[0])
+        #     data = json.dumps({"data": [dict(serializer.data)]})
 
         # log.info("GET 'index' FROM REQUEST PATH: %s", index);
         # response = Ad.objects.filter(pk=index)
@@ -196,6 +196,9 @@ def ad_page(request, pk):
         return render(
             request,
             template_name="ad/index.html",
-            context={"css_file": css_file, "js_files": files, "data": data},
+            context={
+                "css_file": css_file,
+                "js_files": files,
+            },
         )
     # Forms

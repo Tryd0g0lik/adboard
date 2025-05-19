@@ -180,6 +180,19 @@ body {
 a:hover {
   text-decoration: none;
 }
+
+.px-4 {
+  padding-right: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+
+.flex-grow-0 {
+  flex-grow: 0 !important;
+}
+
+.border-top {
+  border-top: 1px solid #dee2e6 !important;
+}
 /*!**************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/style.scss ***!
   \**************************************************************************************************************************************************************************************/
@@ -272,6 +285,23 @@ div.hidden {
   max-height: 28px;
   line-height: 1;
   vertical-align: top;
+}
+.ad-view div.ad-view-context {
+  height: clamp(100px, 47vh, 500px);
+  overflow: hidden;
+}
+
+/* ---- PAGE OF ONE AD ----*/
+#ad-page-container .ad-view-content {
+  flex-wrap: wrap;
+}
+#ad-page-container .ad-view-title {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+#ad-page-container h2 {
+  font-size: clamp(18px, 2rem, 2.5rem);
 }
 
 :root,
