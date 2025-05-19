@@ -74,7 +74,8 @@ class FileImageViewSet(viewsets.ModelViewSet):
             await sync_to_async(self.perform_create)(serializer)
             log.info("SERIALIZER DATA SAVED: %s", serializer.data)
             return Response(
-                data=json.dumps(serializer.data), status=status.HTTP_201_CREATED
+                data=json.dumps({"data": serializer.data}),
+                status=status.HTTP_201_CREATED,
             )
         except Exception as ex:
             log.error("NEW IMAGE_FILE SERVER ERROR: %s", ex)
@@ -106,7 +107,8 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
             await sync_to_async(self.perform_create)(serializer)
             log.info("SERIALIZER DATA SAVED")
             return Response(
-                data=json.dumps(serializer.data), status=status.HTTP_201_CREATED
+                data=json.dumps({"data": serializer.data}),
+                status=status.HTTP_201_CREATED,
             )
         except Exception as e:
             log.exception("ERROR => %s", e)
