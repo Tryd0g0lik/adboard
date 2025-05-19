@@ -292,13 +292,15 @@ div.hidden {
 }
 .ad-view div.ad-view-context {
   overflow: hidden;
-  width: clamp(height, 280px, 660px);
+  width: 280px;
   text-align: left;
 }
 
 /* ---- PAGE OF ONE AD ----*/
-#ad-page-container .ad-view-content {
+#ad-page-container {
   height: clamp(100px, 47vh, 500px);
+}
+#ad-page-container .ad-view-context {
   flex-wrap: wrap;
 }
 #ad-page-container .ad-view-title {
