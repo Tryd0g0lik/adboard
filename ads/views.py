@@ -159,3 +159,28 @@ def main_page(request):
             "js_files": files,
         },
     )
+
+
+def ad_page(request, pk):
+    pass
+    if request.method == "GET":
+        # log.info("GET 'pk' FROM REQUEST PATH: %s", index);
+        db_data = Ad.objects.filter(pk=int(pk))
+        data = '{"data":[}'
+        if len(db_data) > 0:
+            serializer = AdSerializer(db_data[0])
+            data = json.dumps({"data": [dict(serializer.data)]})
+
+        # log.info("GET 'index' FROM REQUEST PATH: %s", index);
+        # response = Ad.objects.filter(pk=index)
+        # return JsonResponse({"data": response})
+        # theme = request.GET.get("theme", "dark")
+        files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+        css_file = "styles/index.css"
+        # data_str = json.dumps({"data": response})
+        return render(
+            request,
+            template_name="ad/index.html",
+            context={"css_file": css_file, "js_files": files, "data": data},
+        )
+    # Forms

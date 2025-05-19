@@ -18,10 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from ads.urls import urlpatterns as ads_urls
-from ads.views import main_page
+from ads.views import main_page, ad_page
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(ads_urls), name="ads"),
+    path("ad/<str:pk>/", ad_page, name="ad_page"),
     path("", main_page, name="main"),
 ]

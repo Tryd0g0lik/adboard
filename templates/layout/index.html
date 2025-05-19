@@ -77,58 +77,65 @@
 
 </header>
 <section class="comments" id="comments">
+  {% block comments %}
     <div class="comments-list"></div>
+  {% endblock comments %}
   </section>
 <section class="form">
-  <div class="mb-3">
-    <div class="row"><<h3>Объявление</h3></div>
-  <form class="ads-form row g-3 needs-validation" >
-    {% csrf_token %}
-    {% for field in form.form_ad %}
-     <div  class="mb-3">
+  {% block forms_ads %}
+    <div class="mb-3">
+      <div class="row"><<h3>Объявление</h3></div>
+    <form class="ads-form row g-3 needs-validation" >
+      {% csrf_token %}
+      {% for field in form.form_ad %}
+       <div  class="mb-3">
 
-       {% if field.help_text %}
-          {{ filed.help_text|safe }}
-       {% endif %}
-       {{field}}
+         {% if field.help_text %}
+            {{ filed.help_text|safe }}
+         {% endif %}
+         {{field}}
 
-     </div>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  </div>
-  <div class="mb-3">
-    <div class="row "><h3>Изображение</h3></div>
-  <form class="ads-form ads-form__full-image-file row g-3 needs-validation" >
-    {% csrf_token %}
+       </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+    <div class="mb-3">
+      <div class="row "><h3>Изображение</h3></div>
+    <form class="ads-form ads-form__full-image-file row g-3 needs-validation" >
+      {% csrf_token %}
 
-     <div  class="mb-3">
+       <div  class="mb-3">
 
 
-       {{form.file_image.file_path}}
+         {{form.file_image.file_path}}
 
-     </div>
+       </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  </div>
-  <div class="pagination">
-    <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
-    <nav aria-label="Пример навигации по страницам">
-    <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
-    </ul>
-  </nav>
-  </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+    <div class="pagination">
+      <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
+      <nav aria-label="Пример навигации по страницам">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
+      </ul>
+    </nav>
+    </div>
+  {% endblock forms_ads %}
 </section>
 <section class="ads-collections" id="ads-collections">
       <div class="ads-collections-list">
+        {% block ads_collections %}
         <ul class="ads-views"></ul>
+        {% endblock ads_collections %}
       </div>
     </section>
+
 </body>
 </html>
