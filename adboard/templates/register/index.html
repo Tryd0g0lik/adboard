@@ -1,0 +1,31 @@
+{% extends "layout/index.html" %}
+  {% block forms_ads %}  {% endblock forms_ads %}
+ {% block ads_collections %}{% endblock ads_collections %}
+{% block main %}
+    {% if field|length > 2 %}
+      <section id="form-register">
+    {% else %}
+      <section id="form-login">
+    {% endif %}
+    <div class="mb-3">
+
+      <div class="title"><h3>{{title}}</h3></div>
+      <form class="ads-form row g-3 needs-validation" >
+        {% csrf_token %}
+        {% for field in form.form_user %}
+          <div  class="mb-3">
+              <label  class="form-label">
+                <div>{{field.label}}</div>
+
+              {{ field }}
+              </label>
+           </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Sending</button>
+      </form>
+      </div>
+  </section>
+
+
+{% endblock main %}

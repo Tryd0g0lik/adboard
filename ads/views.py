@@ -68,9 +68,7 @@ class FileImageViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         try:
             """VALIDATE DATA"""
-            validated_data = await async_serializer_validate(serializer)
-            log.info("IMAGE SERIALIZER DATA IS VALID: %s", validated_data)
-
+            await async_serializer_validate(serializer)
         except Exception as er:
             log.error("IMAGE SERIALIZER DATA IS NOT VALID: %s", er)
             return Response(

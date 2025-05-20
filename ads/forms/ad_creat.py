@@ -78,12 +78,8 @@ class adCreatForm(forms.ModelForm):
                 field,
                 "help_text",
             )
-            field.help_text = f'<div id=emailHelp"\
+            field.help_text = f'<div \
 class="form-text">{help_text}</div>'
-
-    def clean_image_field(self):
-        # images = self.files
-        pass
 
 
 class FileImageForm(forms.ModelForm):

@@ -34,48 +34,36 @@
 </head>
 
 <body class="container" id="root">
+{% block header %}
 <header>
   <div class="navbar bg-base-100 shadow-sm">
-
     <nav class="navbar-nav navbar-toggler navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Навбар</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Главная</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Ссылка</a>
-        </li>
-        <!-- li class="nav-item dropdown">
-        https://bootstrap-4.ru/docs/5.3/components/navbar/
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Выпадающий список
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Действие</a></li>
-            <li><a class="dropdown-item" href="#">Другое действие</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Что-то еще здесь</a></li>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Навбар</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/login">Login</a>
+            </li>
           </ul>
-        </li -->
-
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-        <button class="btn btn-outline-success" type="submit">Поиск</button>
-      </form>
-    </div>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
+            <button class="btn btn-outline-success" type="submit">Поиск</button>
+          </form>
+        </div>
+      </div>
+    </nav>
   </div>
-</nav>
-    </div>
-
-
 </header>
+{% endblock header %}
+{% block main %}{% endblock main %}
 <section class="comments" id="comments">
   {% block comments %}
     <div class="comments-list"></div>
@@ -84,7 +72,7 @@
 <section class="form">
   {% block forms_ads %}
     <div class="mb-3">
-      <div class="row"><<h3>Объявление</h3></div>
+      <div class="row"><h3>Объявление</h3></div>
     <form class="ads-form row g-3 needs-validation" >
       {% csrf_token %}
       {% for field in form.form_ad %}

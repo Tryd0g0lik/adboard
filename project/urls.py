@@ -19,10 +19,13 @@ from django.contrib import admin
 from django.urls import path, include
 from ads.urls import urlpatterns as ads_urls
 from ads.views import main_page, ad_page
+from adboard.urls import router, urlpatterns as user_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(ads_urls), name="ads"),
-    path("ad/<str:pk>/", ad_page, name="ad_page"),
+    path("ad/<str:pk>/", ad_page, name="ad_api"),
+    path("users/", include(user_urls), name="users"),
+    path("api/v2/", include(router.urls), name="users_api"),
     path("", main_page, name="main"),
 ]
