@@ -89,9 +89,6 @@ class FileImageViewSet(viewsets.ModelViewSet):
                 {"detail": ex.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    async def list(self, request, *args, **kwargs):
-        pass
-
 
 class AsyncCreateAdView(viewsets.ModelViewSet):
     """ASYNC CREATE AD"""
