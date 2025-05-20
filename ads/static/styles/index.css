@@ -261,11 +261,17 @@ div.hidden {
   width: 280px;
 }
 
-.ads-form {
+.ads-form,
+#form-register,
+#form-register label,
+#form-login,
+#form-login label {
   display: block;
 }
 
-.form .ads-form {
+.form .ads-form,
+#form-register,
+#form-login {
   width: 250px;
 }
 

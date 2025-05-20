@@ -1,11 +1,14 @@
 import json
 import os
 from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from rest_framework.decorators import action
+
 from adboard.forms.registr import UserRegister
+
 from adboard.forms.login import UserLogin
+from adboard.hasher import PassworHasher
 from adboard.serializers.register import UserSerializer
-from project.settings import BASE_DIR
+from project.settings import BASE_DIR, SECRET_KEY
 import logging
 from rest_framework import serializers, viewsets, status
 from rest_framework.response import Response
@@ -14,6 +17,23 @@ from logs import configure_logging
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
+
+# class AlgorritmPBKDF2PasswordHasher(PBKDF2PasswordHasher):
+#     """
+#     A subclass of PBKDF2PasswordHasher that uses 100 times more iterations.
+#     <algorithm>$<iterations>$<salt>$<hash>
+#     https://docs.djangoproject.com/en/5.2/topics/auth/passwords/
+#     """
+#     def __init__(self):
+#         self.iterations = PBKDF2PasswordHasher.iterations * 100
+#     # algorithm = f"pbkdf2_sha256$100${}${SECRET_KEY}"
+#
+#     def encode_md5_hash(self, md5_hash, salt, iterations=None):
+#         return super().encode(md5_hash, salt, iterations)
+#
+#     def encode(self, password, salt, iterations=None):
+#         _, _, md5_hash = MD5PasswordHasher().encode(password, salt).split("$", 2)
+#         return self.encode_md5_hash(md5_hash, salt, iterations)
 
 
 def serializer_validate(serializer):
@@ -32,17 +52,17 @@ class UserViewSet(viewsets.ViewSet):
         log.info("REQUEST CREATE START: %s, %s", __name__, self.__class__.__name__)
         log.info("REQUEST METHOD: %s, DATA: %s", (request.method, request.data))
         if (request.method).lower() == "post":
+            """HASHING PASSWORD"""
+            old_password = request.data.get("password")
+            hash = PassworHasher()
+            salt = SECRET_KEY.replace("$", "/")
+            hash_password = hash.hasher(old_password, salt[:50])
+            """SERIALIZER DATA"""
             serializer = UserSerializer(data=request.data)
             try:
                 """VALIDATE DATA"""
                 serializer_validate(serializer)
-
-                # user = User(
-                #     username=request.data['username'],
-                #     email=request.data['email']
-                # )
-                # user.set_password(request.data['password'])
-                # user.save()
+                serializer.validated_data["password"] = hash_password
             except Exception as ex:
                 log.error("SERIALIZER DATA ERROR: %s", ex.args)
                 return Response(
@@ -63,12 +83,38 @@ class UserViewSet(viewsets.ViewSet):
                 )
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
+    def retrieve(self, request, pk=None):
+        pass
 
-# Create your views here.
-# class RegistrationView():
+    @action(methods=["POST"], detail=False)
+    def login_user(self, request):
+        """HASHING PASSWORD"""
+        password = request.data.get("password")
+        login = request.data.get("username")
+        hash = PassworHasher()
+        salt = SECRET_KEY.replace("$", "/")
+        hash_password = hash.hasher(password, salt[:50])
+        try:
+            """CHECK EXISTS OF USER"""
+            answer = User.objects.filter(username=login, password=hash_password)
+            if len(list(answer)) == 0:
+                log.error("USER NOT FOUNDED")
+                Response(
+                    json.dumps({"data": "User not founded"}),
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+            """LOGIN USER"""
+            log.error("USER FOUND")
+            return Response(json.dumps({"data": "User Ok"}), status=status.HTTP_200_OK)
+        except Exception as ex:
+            log.error("USER ERROR: %s", ex.args)
+            return Response(
+                json.dumps({"detail": ex.args}),
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
-def registration_view(request):
+def user_view(request):
     # form_reg =UserRegister()
     form = UserLogin()
     # form = AuthenticationForm()
