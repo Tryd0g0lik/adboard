@@ -138,6 +138,12 @@ your ad choose  'Опубликовано'. This means what your ad wil be publi
         db_table = "ads"
         verbose_name = _("Ad")
         verbose_name_plural = _("Ads")
+        permissions = [
+            ("author_can_publish", _("Can publish")),
+            ("author_can_edit", _("Can edit")),
+            ("author_can_delete", _("Can delete")),
+            ("author_can_view", _("Can view")),
+        ]
 
     def delete(self, using=None, keep_parents=False):
         with transaction.atomic():
@@ -185,6 +191,12 @@ class ExchangeProposal(models.Model):
         db_table = "exchange_proposals"
         verbose_name = _("Exchange Proposal")
         verbose_name_plural = _("Exchange Proposals")
+        permissions = [
+            ("author_can_publish", _("Can publish")),
+            ("author_can_edit", _("Can edit")),
+            ("author_can_delete", _("Can delete")),
+            ("author_can_view", _("Can view")),
+        ]
 
 
 class Exchange(models.Model):
@@ -309,6 +321,11 @@ class ImageStorage(models.Model):
         db_table = "image_storage"
         verbose_name = _("Path to image")
         verbose_name_plural = _("Paths to images")
+        permissions = [
+            ("author_can_publish", _("Can publish")),
+            ("author_can_delete", _("Can delete")),
+            ("author_can_view", _("Can view")),
+        ]
 
     def __str__(self):
         return self.file_path

@@ -1,25 +1,21 @@
 """
-adboard/forms/registr.py
+adboard/forms/register.py
 """
+
 from django import forms
 from django.core import validators as valid
 
 from django.utils.translation import gettext_lazy as _
 
 
-class UserRegister(forms.Form):
-    """
-    Name and last-name should be at least 3 and less than 30 characters.
-    Password should be at least 3 and less than 30 characters.
-    Password and repeat password should be the same.
-    Email should be valid.
-    """
+class UserRegisterForm(forms.Form):
 
     username = forms.CharField(
         label=_("Your login*"),
         help_text=_("Enter your login"),
         min_length=3,
         max_length=30,
+        required=True,
         validators=[
             valid.MinLengthValidator(
                 3, message=_("Name should be at least 3 characters")
@@ -28,7 +24,7 @@ class UserRegister(forms.Form):
                 30, _("Name should be less than 30  or 30 characters")
             ),
             valid.RegexValidator(
-                regex="(^[a-zA-Z][\wa-zA_Z]+)",
+                regex=r"(^[a-zA-Z][a-zA-Z_]{2,30}$|^$)",
                 message=_(
                     "Name should contain only characters\
 from a-z and A-Z and digits"
@@ -51,6 +47,7 @@ from a-z and A-Z and digits"
         widget=forms.PasswordInput(attrs={"class": "password"}),
         min_length=3,
         max_length=30,
+        required=True,
         validators=[
             valid.MinLengthValidator(3, _("Password should be at least 3 characters")),
             valid.MaxLengthValidator(
@@ -58,8 +55,8 @@ from a-z and A-Z and digits"
                 _("Password should be less than 30 characters"),
             ),
             valid.RegexValidator(
-
-                regex="([%\w)(}{]+$)",
+                regex=r"(^[a-zA-Z%0-9}{_%]{2,30}$|^$)",
+                message=_("The password's characters is valid"),
             ),
         ],
     )
@@ -68,6 +65,7 @@ from a-z and A-Z and digits"
         widget=forms.PasswordInput(attrs={"class": "password confirm_password"}),
         min_length=3,
         max_length=30,
+        required=True,
         validators=[
             valid.MinLengthValidator(3, _("Password should be at least 3 characters")),
             valid.MaxLengthValidator(
@@ -75,8 +73,19 @@ from a-z and A-Z and digits"
                 _("Password should be less than 30 characters"),
             ),
             valid.RegexValidator(
-                regex="([%\w)(}{]+$)",
+                regex=r"(^[a-zA-Z%0-9}{_%]{2,30}$|^$)",
             ),
         ],
     )
-    
+
+    # def __str__(self):
+    #     return self.clean_password()
+    # def clean_password(self):
+    #     password = self.cleaned_data.get("password")
+    #     for validator in self.fields["password"].validators:
+    #         try:
+    #             validator(password)
+    #         except Exception as ex:
+    #             self.add_error("password", str(ex))
+    #     return password
+    #

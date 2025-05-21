@@ -9,6 +9,9 @@ package-mode = false
 python = "^3.10"
 python-dotenv = "^1.0.1"
 scrypt = "^0.8.27"
+pytest = "^8.3.5"
+pytest-django = "^4.11.1"
+pytest-cov = "^6.1.1"
 
 [tool.poetry.group.dev.dependencies]
 psycopg2-binary = "^2.9.10"

@@ -100,6 +100,14 @@ DATABASES = {
         'PASSWORD': POSTGRES_PASSWORD,
         'HOST': f'{POSTGRES_HOST}',
         'PORT': f'{POSTGRES_PORT}',
+    },
+    "test": {
+        'ENGINE': f'{DB_ENGINE}',
+        'NAME': 'adboard_test',
+        'USER': f'{POSTGRES_USER}',
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': f'{POSTGRES_HOST}',
+        'PORT': f'{POSTGRES_PORT}',
     }
 }
 
@@ -247,6 +255,7 @@ LOGGING = {
         },
     },
 }
+
 if DEBUG:  # Только в режиме разработки
     SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
@@ -255,3 +264,15 @@ if DEBUG:  # Только в режиме разработки
 #         'BUNDLE_DIR_NAME': 'bundles\\',
 #         'STATS_FILE': os.path.join(BASE_DIR, 'bundles\\webpack-stats.json')
 #     })
+''''Loging Authentication'''
+
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+# PASSWORD_RESET_TIMEOUT_DAYS = 1
+#https://docs.djangoproject.com/en/4.2/topics/auth/customizing/
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend"
+]
+
+"""TESTING"""

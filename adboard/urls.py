@@ -6,10 +6,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from adboard.views import UserViewSet, user_view
+from adboard.views import LogingViewSet, user_view
 
 router = DefaultRouter()
-router.register("users", UserViewSet, basename="users")
+router.register("users", LogingViewSet, basename="users")
 
 urlpatterns = [
     path("", user_view, name="register_page"),

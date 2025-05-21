@@ -1,0 +1,60 @@
+2025-05-21 16:07:30 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] form_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds_2Rssa8%sa', 'confirm_password': 'ds_2Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] form_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2%Rssa8%sa', 'confirm_password': 'ds2%Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-21 16:07:30 [    INFO] USERNAME: te d
+2025-05-21 16:07:30 [    INFO] form_invalid_data: {'username': 'te d', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}, Expect: False
+2025-05-21 16:07:30 [    INFO] USERNAME: test user
+2025-05-21 16:07:30 [    INFO] form_invalid_data: {'username': 'test user', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}, Expect: False
+2025-05-21 16:07:30 [    INFO] USERNAME: 
+2025-05-21 16:07:30 [    INFO] form_invalid_data: {'username': '', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}, Expect: False
+2025-05-21 16:07:30 [    INFO] USERNAME: %-_
+2025-05-21 16:07:30 [    INFO] form_invalid_data: {'username': '%-_', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}, Expect: False
+2025-05-21 16:07:30 [    INFO] form_invalid_data: <tr>
+    <th><label for="id_username">Your login*:</label></th>
+    <td>
+      
+      <input type="text" name="username" value="Victorovich" maxlength="30" minlength="3" required id="id_username">
+      
+        <br>
+        <span class="helptext">Enter your login</span>
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_email">Адрес электронной почты:</label></th>
+    <td>
+      
+      <input type="email" name="email" value="est@test.ru" maxlength="50" id="id_email">
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_password">Password*:</label></th>
+    <td>
+      
+      <input type="password" name="password" class="password" maxlength="30" minlength="3" required id="id_password">
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_confirm_password">Confirm Password*:</label></th>
+    <td>
+      
+      <input type="password" name="confirm_password" class="password confirm_password" maxlength="30" minlength="3" required id="id_confirm_password">
+      
+      
+        
+      
+    </td>
+  </tr>, Expect: True

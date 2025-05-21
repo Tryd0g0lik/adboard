@@ -3,7 +3,7 @@ import os
 from django.shortcuts import render
 from rest_framework.decorators import action
 
-from adboard.forms.registr import UserRegister
+from adboard.forms.register import UserRegisterForm
 
 from adboard.forms.login import UserLogin
 from adboard.hasher import PassworHasher
@@ -44,14 +44,21 @@ def serializer_validate(serializer):
     log.info("SERIALIZER DATA VALID", serializer.validated_data)
 
 
-class UserViewSet(viewsets.ViewSet):
+class LogingViewSet(viewsets.ViewSet):
     def create(self, request):
         """
         Register a new user.
         """
+        user = request.user
         log.info("REQUEST CREATE START: %s, %s", __name__, self.__class__.__name__)
         log.info("REQUEST METHOD: %s, DATA: %s", (request.method, request.data))
-        if (request.method).lower() == "post":
+        user_exists = User.objects.filter(username=dict(request.data)["username"][0])
+
+        if (
+            not user.is_authenticated
+            and not user_exists
+            and (request.method).lower() == "post"
+        ):
             """HASHING PASSWORD"""
             old_password = request.data.get("password")
             hash = PassworHasher()
@@ -96,8 +103,10 @@ class UserViewSet(viewsets.ViewSet):
         hash_password = hash.hasher(password, salt[:50])
         try:
             """CHECK EXISTS OF USER"""
-            answer = User.objects.filter(username=login, password=hash_password)
-            if len(list(answer)) == 0:
+            answer_bool = User.objects.filter(
+                username=login, password=hash_password
+            ).exists()
+            if answer_bool:
                 log.error("USER NOT FOUNDED")
                 Response(
                     json.dumps({"data": "User not founded"}),
@@ -121,7 +130,7 @@ def user_view(request):
     title = "Вход в аккаунт"
     if "register" in request.path.lower():
         # form = UserCreationForm()
-        form = UserRegister()
+        form = UserRegisterForm()
         title = "Регистрация"
 
     files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
