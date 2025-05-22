@@ -22,10 +22,10 @@ from ads.views import main_page, ad_page
 from adboard.urls import router, urlpatterns as user_urls
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/v1/", include(ads_urls), name="ads"),
+    path("admin/", admin.site.urls, name="admin"),
+    path("api/v1/", include((ads_urls, "ads_api"), namespace="ads_api")),
     path("ad/<str:pk>/", ad_page, name="ad_api"),
-    path("users/", include(user_urls), name="users"),
-    path("api/v2/", include(router.urls), name="users_api"),
+    path("users/", include((user_urls, "app_users"), "users")),
+    path("api/v2/", include((router.urls, "app_users"), "users_api")),
     path("", main_page, name="main"),
 ]

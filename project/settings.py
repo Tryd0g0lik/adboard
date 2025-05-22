@@ -100,15 +100,16 @@ DATABASES = {
         'PASSWORD': POSTGRES_PASSWORD,
         'HOST': f'{POSTGRES_HOST}',
         'PORT': f'{POSTGRES_PORT}',
+        'TEST': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'CONN_MAX_AGE': 1,
+            'OPTIONS': {
+
+            }
+        }
     },
-    "test": {
-        'ENGINE': f'{DB_ENGINE}',
-        'NAME': 'adboard_test',
-        'USER': f'{POSTGRES_USER}',
-        'PASSWORD': POSTGRES_PASSWORD,
-        'HOST': f'{POSTGRES_HOST}',
-        'PORT': f'{POSTGRES_PORT}',
-    }
+
 }
 
 

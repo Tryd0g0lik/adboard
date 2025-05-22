@@ -270,7 +270,7 @@ pyrightconfig.json
 pic/*
 **/pic/*
 archive
-
+=
 frontend
 **/bundles
 !.browserslistrc

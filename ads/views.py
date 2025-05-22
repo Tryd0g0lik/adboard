@@ -87,7 +87,7 @@ class FileImageViewSet(viewsets.ModelViewSet):
             )
 
 
-class AsyncCreateAdView(viewsets.ModelViewSet):
+class AsyncAdsView(viewsets.ModelViewSet):
     """ASYNC CREATE AD"""
 
     queryset = Ad.objects.all()
@@ -110,11 +110,13 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
         :param pk:
         :return: json string this is `{'data': {}}`
         """
-        data = await sync_to_async(super().retrieve)(request, int(kwargs["pk"]))
+        if not kwargs["pk"] == "undefined":
+            data = await sync_to_async(super().retrieve)(request, int(kwargs["pk"]))
+            return Response(
+                json.dumps({"data": [dict(data.data)]}), status=status.HTTP_200_OK
+            )
         # data = super().retrieve(request, int(kwargs['pk']))
-        return Response(
-            json.dumps({"data": [dict(data.data)]}), status=status.HTTP_200_OK
-        )
+        super().retrieve(request, *args, **kwargs)
 
     async def create(self, request, *args, **kwargs):
         """
@@ -133,7 +135,7 @@ class AsyncCreateAdView(viewsets.ModelViewSet):
             log.error("AD SERIALIZER DATA ERROR: %s", er)
             return Response(
                 json.dumps({"detail": er.args}),
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
         try:
             await sync_to_async(self.perform_create)(serializer)
