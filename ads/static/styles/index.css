@@ -246,6 +246,10 @@ input[type=file] {
   background-color: var(--bs-light-bg-subtle);
 }
 
+.invalid {
+  color: var(--bs-danger-text-emphasis);
+}
+
 div.hidden {
   display: block;
 }
