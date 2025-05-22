@@ -33,7 +33,6 @@ class Ad(models.Model):
     )
     title = models.CharField(
         max_length=100,
-        min_length=3,
         unique=True,
         help_text=_(
             "The title is unique and must have a length \
