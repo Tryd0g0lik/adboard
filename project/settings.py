@@ -189,7 +189,7 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://83.166.245.197",
     "http://127.0.0.1:8080",
-    "http://127.0.0.1:8000/"
+    "http://83.166.245.197/"
 ]
 # разрешить cookie в HTTP запросах
 CORS_ALLOW_CREDENTIALS = True
