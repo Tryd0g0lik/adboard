@@ -40,9 +40,7 @@ def data_random():
 
 
 @pytest.fixture(autouse=True, scope="function")
-def test_Ad_valid(data_random):
-    data_ads = data_random(_quantity=10)
-    logging.info("DATA RANDOM: %s", data_ads)
+def test_Ad_valid():
     return {
         "title": ["Объявление"],
         "description": ["ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление"],
@@ -52,9 +50,9 @@ def test_Ad_valid(data_random):
     }
 
 
-@pytest.fixture
-def create_ad():
-    def _create_ad(**kwargs):
-        return Ad.objects.create(**kwargs)
-
-    return _create_ad
+# @pytest.fixture
+# def create_ad():
+#     def _create_ad(**kwargs):
+#         return Ad.objects.create(**kwargs)
+#
+#     return _create_ad

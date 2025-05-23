@@ -1,80 +1,95 @@
 # logs.py
 """
-This page is include the module for logging.
-Data result from logging we can see in console and in 'log_putout.log' file.
-The 'log_file'  parameter for setting the file's  name '*.log'.
-Default the name is 'log_putout.log
+This module provides logging configuration.
+Logs are output to both console and a log file (default: 'log_putout.log').
 """
 
 import logging
 import threading
 import time
+from typing import Optional
 
 
-def configure_logging(level: int = logging.INFO, log_file="log_putout.log") -> None:
+def configure_logging(
+    level: int = logging.INFO, log_file: str = "log_putout.log"
+) -> None:
     """
-    For a beginning work
-    :param level:
-    :param log_file:
-    :return:
-    ```py
-        import logging
+    Initialize logging configuration.
 
-        from rabbit.logs import configure_logging \n
-        log = logging.getLogger(__name__) \n
-        configure_logging(logging.INFO) \n
-        log.info("run_consumer start ")
+    Args:
+        level: Logging level (default: logging.INFO)
+        log_file: Name of the log file (default: 'log_putout.log')
 
-        // [2024-12-12 16:23:56,991: INFO/MainProcess] run_consumer start '
-    ````
+    Example:
+        >>> import logging
+        >>> from rabbit.logs import configure_logging
+        >>> log = logging.getLogger(__name__)
+        >>> configure_logging(logging.INFO)
+        >>> log.info("Application started")
     """
+    # Clear any existing handlers
+    logging.getLogger().handlers.clear()
+
+    # Create formatter
+    formatter = logging.Formatter(
+        "[%(asctime)s.%(msecs)03d] %(levelname)s - %(name)s:%(lineno)d - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+    # File handler
     file_handler = logging.FileHandler(log_file, encoding="utf-8")
     file_handler.setLevel(level)
+    file_handler.setFormatter(formatter)
 
-    # Создание обработчика для вывода логов в консоль
+    # Console handler
     console_handler = logging.StreamHandler()
     console_handler.setLevel(level)
-    # Форматирование логов
-    formatter = logging.Formatter(
-        "[%(asctime)s %(msecs)d] %(funcName)s %(module)s : \
-%(lineno)d %(levelname)s - %(message)s"
-    )
-    file_handler.setFormatter(formatter)
     console_handler.setFormatter(formatter)
-    # Настройка корневого логгера
-    logging.basicConfig(level=level, handlers=[file_handler, console_handler])
-    # Запуск проверки файла логов в отдельном потоке
-    threading.Thread(target=check_log_file, args=(log_file,), daemon=True).start()
+
+    # Configure root logger
+    logging.basicConfig(
+        level=level, handlers=[file_handler, console_handler], force=True
+    )
+
+    # Start log file maintenance thread
+    threading.Thread(
+        target=check_log_file, args=(log_file,), daemon=True, name="LogFileMaintenance"
+    ).start()
 
 
-def check_log_file(log_file: str) -> None:
+def check_log_file(
+    log_file: str, max_lines: int = 3000, check_interval: int = 1800
+) -> None:
     """
-    Проверяет количество строк в файле логов каждые 30 минут.
-    Если количество строк превышает 3000, файл обнуляется.
-    :param log_file: Имя файла логов
+    Check log file size and rotate if needed.
+
+    Args:
+        log_file: Path to log file
+        max_lines: Maximum lines before rotation (default: 3000)
+        check_interval: Check interval in seconds (default: 1800 = 30 min)
     """
     while True:
-        time.sleep(1800)  # Ожидание 30 минут
+        time.sleep(check_interval)
         try:
-            with open(log_file, "r", encoding="utf-8") as file:
-                lines = file.readlines()
-                if len(lines) >= 3000:
-                    # Обнуление файла
-                    with open(log_file, "w", encoding="utf-8") as f:
-                        f.truncate()
-                    logging.info(
-                        "Лог-файл был обнулен, так как количество строк \
-превысило 3000."
+            with open(log_file, "r+", encoding="utf-8") as f:
+                lines = f.readlines()
+                if len(lines) >= max_lines:
+                    f.seek(0)
+                    f.truncate()
+                    logging.warning(
+                        "Log file %s was cleared (%d lines exceeded limit of %d)",
+                        log_file,
+                        len(lines),
+                        max_lines,
                     )
         except Exception as e:
-            logging.error(f"Ошибка при проверке лог-файла: %s", str(e))
+            logging.error("Error checking log file: %s", str(e), exc_info=True)
 
 
 class Logger:
-    """
-    Logging class for logging
-    """
+    """Utility class for logging operations."""
 
-    def print_class_name(self):
-        """Return class-name"""
-        return self.__class__.__name__
+    @staticmethod
+    def get_class_name(obj: object) -> str:
+        """Get class name of an object."""
+        return obj.__class__.__name__

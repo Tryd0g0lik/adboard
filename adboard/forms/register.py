@@ -39,7 +39,6 @@ from a-z and A-Z and digits"
         required=False,
         validators=[
             valid.MaxLengthValidator(50, _("Name should be less than 30 characters")),
-            valid.EMPTY_VALUES,
             valid.EmailValidator(message=_("Enter valid email")),
         ],
     )
@@ -56,7 +55,7 @@ from a-z and A-Z and digits"
                 _("Password should be less than 30 characters"),
             ),
             valid.RegexValidator(
-                    regex=r"(^[a-zA-Z%0-9}{_%]{2,30}$|^$)",
+                regex=r"(^[a-zA-Z%0-9}{_%]{2,30}$|^$)",
                 message=_("The password's characters is valid"),
             ),
         ],

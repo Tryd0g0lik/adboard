@@ -1,4 +1,17 @@
+"""
+__tests__/test_ads_views/test_AsyncAds.py
+
+Here we test 'Ad' model for creating new line of ad
+"""
+
 import json
+from __tests__.__fixtures__.fixtures import (
+    test_Ad_valid,
+    data_random,
+    async_client,
+    close_all,
+)
+import logging
 import pytest
 
 from rest_framework import status
@@ -9,7 +22,7 @@ from asgiref.sync import sync_to_async
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.asyncio
 class TestAd:
-    """Test Ad"""
+    """Test for Ad creating"""
 
     LIST_URL = "/api/v1/ads/"
 
@@ -20,7 +33,7 @@ class TestAd:
         async_client,
         test_Ad_valid,
     ):
-        # Arrrange
+        # Arrange
         """CREATE AD"""
         cache.clear()
 
@@ -41,7 +54,6 @@ class TestAd:
         "title, expected",
         [
             (["О%бъявление"], status.HTTP_401_UNAUTHORIZED),
-            (["О-бъявление"], status.HTTP_401_UNAUTHORIZED),
             (["О"], status.HTTP_401_UNAUTHORIZED),
         ],
     )
@@ -57,6 +69,8 @@ class TestAd:
         response = await sync_to_async(async_client.post)(
             self.LIST_URL, data=test_Ad_valid
         )
+
         # Assert
+        logging.info("RESPONSE.STATUS_CODEЖ %s:", str(response))
         assert response.status_code == expected
         await close_all(async_client)

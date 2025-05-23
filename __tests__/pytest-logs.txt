@@ -1,62 +1,61 @@
-2025-05-22 13:03:55 [    INFO] ASYNC CLIENT CREATED
-2025-05-22 13:03:58 [    INFO] DATA RANDOM: [<Ad: tnrWnudbIstIWyLrCaziGHEKEAFInkcldSkNjcRfHAgrJjdNnLzSaHWEVcdzFdKRCZpjNvMsEanyLqdwqfvqOrHbJmMPMhwClDxD, UNKNOWN>, <Ad: FMCSlnnoPYfHsRsVhnZjJxfYmTTXWpXwxETAhGBttqWcPiDiaYgEvRZUTblRAqfFOkswPsFxTiMsvVOAeaIxRnOxRHjhJnTKdLiE, UNKNOWN>, <Ad: gdWgByqKKsixeNbgkOnfEigACxRmuONciBgXGVVwGSHIoCaMvnjmFxNUGRyLtqoEIQyBqgBMWzzmOucjHuIozoOmuIWQrydoFhog, UNKNOWN>, <Ad: sklMxBvOxEXDVGlEjewSEiJguyGHNzmCuGsYMgtnHGsJmfFWUAVHkEldCnlhzDhSReMbjRWFrxnCsHqHcrcyzfFantVQuBufPMoA, UNKNOWN>, <Ad: dhGbqdRpGyOXztZPxdCUWXAGYAcPrBwScDfchbrifTAEuoNPZaPDznAeGGKIoYRGkHVzzxTFxxivToHGCocZOLsdEKgUiVleyYrs, UNKNOWN>, <Ad: klDVmmnGchgielpfJvuwZXCuatxkpDUhEEcTDxMDmsqMNCWnsRNKnrmilxqeLvJIJIAnNoVGXUKOLkHmKyLrmFJFiTOcpBdnjnuF, UNKNOWN>, <Ad: bbSLTRoyVeJWtJDSNueucDvapHbZLjDKxYzPwUtPrYPqFzoKZljSyQVSgABqznrBJoQVDKDAofYldonKTILNqbdURpbglrbkCAfX, UNKNOWN>, <Ad: rCoNILsIzbKgKzbfuJyHhOTCycNlKkadyHSLykeTrqjIaXtmvBzArBhTDLnDXMjQvlCRcVMvCQlGndHuIyhbAIrvKboAHmwkXFmH, UNKNOWN>, <Ad: hIkpLTaEEtggKnQTOCQZWcLidxUnhJXoclkyAcZYdiSvwBEbzunBWCPYaVdrmdiDlngIvdaxroygFLMCtAXNtVzwNOrALhvmvmNT, UNKNOWN>, <Ad: aXGmGSMPSOLwBIdGsUMAKzYmnOqcjBUWmdtCmLIyLQtyDnXuZJugPUBeUsBGTMmBYKiHtevGkfCCcgFFEuJdKvRfYYStnvqCBaSa, UNKNOWN>]
-2025-05-22 13:03:58 [    INFO] DATA URL: /api/v1/ads/
-2025-05-22 13:03:58 [    INFO] DATA: {'title': ['Объявление'], 'description': ['ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление'], 'category': ['UNKNOWN'], 'condition': ['DEACTIVATED'], 'path': ['categories/sport/index.html']}
-2025-05-22 13:03:58 [    INFO] CACHE CLEAR
-2025-05-22 13:03:58 [    INFO] START
-2025-05-22 13:03:58 [    INFO] START CREATE of VIEWS.py
-2025-05-22 13:03:58 [    INFO] REQUEST DATA: <QueryDict: {'title': ['Объявление'], 'description': ['ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление'], 'category': ['UNKNOWN'], 'condition': ['DEACTIVATED'], 'path': ['categories/sport/index.html']}>
-2025-05-22 13:03:58 [    INFO] SERIALIZER DATA VALID: {'title': 'Объявление', 'description': 'ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление', 'condition': 'DEACTIVATED', 'path': 'categories/sport/index.html', 'category': 'UNKNOWN'}
-2025-05-22 13:03:58 [    INFO] AD IS VALIDATED DATA:
-2025-05-22 13:03:58 [    INFO] SERIALIZER DATA SAVED
-2025-05-22 13:03:58 [    INFO] RESPONSE: <Response status_code=201, "application/json">
-2025-05-22 13:03:58 [    INFO] RESPONSE STATUS CODE: 201
-2025-05-22 13:03:58 [    INFO] RESPONSE_DATA TYPE: <class 'dict'>
-2025-05-22 13:03:58 [    INFO] RESPONSE_DATA ALL: {'data': {'id': 11, 'title': 'Объявление', 'description': 'ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление', 'image_url': None, 'created_at': '2025-05-22', 'condition': 'DEACTIVATED', 'path': 'categories/sport/index.html', 'category': 'UNKNOWN', 'user': None}}
-2025-05-22 13:03:58 [    INFO] RESPONSE_DATA ['DATA']: {'id': 11, 'title': 'Объявление', 'description': 'ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление', 'image_url': None, 'created_at': '2025-05-22', 'condition': 'DEACTIVATED', 'path': 'categories/sport/index.html', 'category': 'UNKNOWN', 'user': None}
-2025-05-22 13:03:58 [    INFO] RESPONSE DATA_JSON: {'data': {'id': 11, 'title': 'Объявление', 'description': 'ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление', 'image_url': None, 'created_at': '2025-05-22', 'condition': 'DEACTIVATED', 'path': 'categories/sport/index.html', 'category': 'UNKNOWN', 'user': None}}
-2025-05-22 13:03:58 [    INFO] ASYNC CLIENT WAS LOGOUT
-2025-05-22 13:03:58 [    INFO] CONNECTION WAS ALL CLOSED
-2025-05-22 13:03:58 [    INFO] ASYNC CLIENT WAS CLOSED
-2025-05-22 13:04:00 [    INFO] DATA RANDOM: [<Ad: iEQmHgRzbRRTcqcmidkDuReZLGOfKDfoawDBKQklsTwHLpTJwbtEbKOKjmjdlWmdqBavWCnuZyvjzhRaOBmAOtcruSksflzlathE, UNKNOWN>, <Ad: FIFnIhuJNyFvrYiPsYixumbbYsglXkvnMRmLjVuaPqoUweLgdAYLitIotsvWJJRUlComGgUaYzKxkFwxdJxxbOUVOhsCosaYIAZf, UNKNOWN>, <Ad: pIilMIZSIGbpfhISPsZMgMDnZFbmCnsjlfitqvrPDZbPddTPJDQKoBoDfValdBUgtBTDqYirRRIvPppzMrYuQtBXuwVNDrQTudlX, UNKNOWN>, <Ad: pDICMSXCXPulgfWkrQCgUdKuSjaaLuGwpNxtGUWIiWzIvOwmfgZToNgFdDdkUVraoapuuGgjTCbINfrOijktYTDXAnAqnpBgWgdC, UNKNOWN>, <Ad: NkbgTfOxaFtrpscdqCMzFbDxhIwivrHZbEHTIzumvNLVcJdhKzyuLyFuXHJeWcudWbHlRYEoBYINBpJfaisYocNmUQywOyUlgiyQ, UNKNOWN>, <Ad: qIppvHwcGYAENmlhqWMSSgZnodcCquQVzZMXEBzSouiKPDLMpiAwUKmtpjKYxDYNVoabvLqFAQTVVdFfzTMPdYckQInEiJdOtToX, UNKNOWN>, <Ad: CzjyvywidSFFYUBdxMpByYIpEXegzOvSVdcbIywSdRIBLxkoxJuwzQmhLQHtdNLBxVHnviVuGVjsElcguetJUgOHSCwzdJfodGkA, UNKNOWN>, <Ad: MONVQcKKDjTJpSLFVQCozYCKhUsmsiAjJgjyPTZwxJXhrlukFUJeWiKISQffquUPpPsbccWdJqZNYSdlIZNxAYGuzuBEBcMgPYHG, UNKNOWN>, <Ad: OiYcZcUiJFxPQyiKtThSqakRKIqGnmWpWQQDPJRzFqxYyIaEbpjSnQYdzyqoPnyMUmElwzwMxXFWNMgaVfBcHqzpBYpVLaHbGcsu, UNKNOWN>, <Ad: nYYYJnBmWelIHesqyngSUGqocOLULBYuAvHmCKENNvUTmjoEWdvGphcTLthXlbmuaWdKkdBfqgEooOKKWzErMdsHVshebclFeeQd, UNKNOWN>]
-2025-05-22 13:04:00 [    INFO] DATA URL: /api/v1/ads/
-2025-05-22 13:04:00 [    INFO] TITLE DATA: ['Объявление']
-2025-05-22 13:04:00 [    INFO] TITLE INVALID DATA: ['О%бъявление']
-2025-05-22 13:04:00 [    INFO] CACHE CLEAR
-2025-05-22 13:04:00 [    INFO] START CREATE of VIEWS.py
-2025-05-22 13:04:00 [    INFO] REQUEST DATA: <QueryDict: {'title': ['О%бъявление'], 'description': ['ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление'], 'category': ['UNKNOWN'], 'condition': ['DEACTIVATED'], 'path': ['categories/sport/index.html']}>
-2025-05-22 13:04:00 [   ERROR] SERIALIZER ERROR: {'title': [ErrorDetail(string='The title not have correct format.', code='invalid')]}
-2025-05-22 13:04:00 [   ERROR] AD SERIALIZER DATA ERROR: 'AdSerializer' object has no attribute 'ValidationError'
-2025-05-22 13:04:00 [ WARNING] Unauthorized: /api/v1/ads/
-2025-05-22 13:04:00 [    INFO] RESPONSE: <Response status_code=401, "application/json">
-2025-05-22 13:04:00 [    INFO] RESPONSE STATUS CODE: 401, EXPECTED: 401
-2025-05-22 13:04:00 [    INFO] ASYNC CLIENT WAS LOGOUT
-2025-05-22 13:04:00 [    INFO] CONNECTION WAS ALL CLOSED
-2025-05-22 13:04:00 [    INFO] ASYNC CLIENT WAS CLOSED
-2025-05-22 13:04:01 [    INFO] DATA RANDOM: [<Ad: BkrCjjuBilsSnWUAlojryGSDnKXQpwChtupEUiLsPqGXfAqHRYVSdyewBYxlNSvooDwxzxLqbJdloAKZacOYSuxGNcjowJCbmFBk, UNKNOWN>, <Ad: pdPMbcyQUBOSVhngfADVkwlQSUmjznlVJVjniAMaFDSsNkhSxYdWWjRXPimgrIyhpVmsOUkaqpgkJvWDuLtrEOLzrtsidzlZEShm, UNKNOWN>, <Ad: DjZlclJiupOCMMxWfzXLJyUeVOtZYPUkTwAfvnZVLuhlPTrSpbkXkWQwBbhmhbxWxyaLhWJrmAKZIGRgvFUjnqHOhRGgJiuuvCzR, UNKNOWN>, <Ad: WwmNheGwZKWAfjNdhHNaHsayfauTOfAANveICcDIclARcWafkxRSMEjpJCGxlwRKCnnVFpYvchziZYpWVkBGpqcuQssyVLgfRfMr, UNKNOWN>, <Ad: HPPWgESfqRyQawCocnDEvqkZYDXsgrFKvVaPnjjCiJUrDcecgLsZxPSZhfyvQEObtsLHFzAqXUldtDjYQeNzukqrFtqmTnwhBBRE, UNKNOWN>, <Ad: BKdkFcYFVMftNmTYEbpMGTWxzyGCLVVHpxPzaPdYjwmVUhyYyiOJzAELKqPGXVXgqFGCDPCOhACVFnXGnuwklCsEAeJaElPxbrIZ, UNKNOWN>, <Ad: MCCrFboQzQtZeGvJcWrhpWKPqnFluFkgOLqYVKrjjMqvXCQOcAhSvVxytYZTPJpWhmCrDaoIShzbBaQftEwOzYqjjqioLmdmQTFD, UNKNOWN>, <Ad: UNBnhRcQVwHUGzkguBibDQXZSDBKvgfjVcmFLlNitVYCOkiAngLsufyisSOCcZonmuzotpNxeCJSjgBOoiVEnoBohaXPpIXqAnvp, UNKNOWN>, <Ad: WSqWPfXWOjipliLyTaIVhuwVxFKbUQgSYvmZONkOEpldGQxmzlbxYGnNZAwtsCfffgfkCkhvlVUweYorMjzNnLDwuNBWbfjNlHIj, UNKNOWN>, <Ad: DzfzpaJpwMDIsNfIfHbqdSRZNDDEmymiplfKrjGJtoFnfVBdHcVBvZarTBKVfKtGSmraXkYkiDGbAQcyTAzZFznAWaUNXVWPVWvX, UNKNOWN>]
-2025-05-22 13:04:01 [    INFO] DATA URL: /api/v1/ads/
-2025-05-22 13:04:01 [    INFO] TITLE DATA: ['Объявление']
-2025-05-22 13:04:01 [    INFO] TITLE INVALID DATA: ['О-бъявление']
-2025-05-22 13:04:01 [    INFO] CACHE CLEAR
-2025-05-22 13:04:01 [    INFO] START CREATE of VIEWS.py
-2025-05-22 13:04:01 [    INFO] REQUEST DATA: <QueryDict: {'title': ['О-бъявление'], 'description': ['ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление'], 'category': ['UNKNOWN'], 'condition': ['DEACTIVATED'], 'path': ['categories/sport/index.html']}>
-2025-05-22 13:04:01 [    INFO] SERIALIZER DATA VALID: {'title': 'О-бъявление', 'description': 'ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление', 'condition': 'DEACTIVATED', 'path': 'categories/sport/index.html', 'category': 'UNKNOWN'}
-2025-05-22 13:04:01 [    INFO] AD IS VALIDATED DATA:
-2025-05-22 13:04:01 [    INFO] SERIALIZER DATA SAVED
-2025-05-22 13:04:01 [    INFO] RESPONSE: <Response status_code=201, "application/json">
-2025-05-22 13:04:01 [    INFO] RESPONSE STATUS CODE: 201, EXPECTED: 401
-2025-05-22 13:04:03 [    INFO] DATA RANDOM: [<Ad: hJAbWbKrkINFWZcEmnoBdGYIEvVYqqrCQKIjCvOpQjcDcWYfVLyMRnfjIDPmaHvNkHJfquozRBOGBVIhAwEHQitdVeFjzIWoEwlt, UNKNOWN>, <Ad: sODDLRSivGVIAfzasWpIOYpaynKWKuchiXEmkVsjMtEvjWClsLOmAtoPtrVDlzfngXWdpbciTddbwnkKjCiqSONigThfehvSWMCP, UNKNOWN>, <Ad: xOydpXRULWclvHGFeNbJimulrKXsjaIhrvpeZHfRNzLNkWEysltMLjDuBxRTLDJEMSGfQlkakdrnnUTYdYvtDTbcXgwiOcxMqXae, UNKNOWN>, <Ad: kKYezSYvjtvkkgqTtlDGePvYQImTbwHXzTenAMMByPCqFwXVrStzdgwenAyFAEQhycyHnqBAkWegvWMsJMSMmPaurSKiUFUnreoo, UNKNOWN>, <Ad: QoioWvvKhibawZKXPziGJIAqJloaasBiYmqughsOYZOpWZtqMkWrmiFcCqkHRcCPfUmYyGmoeixXXOJLLPZZBXtRNmskfgZfgkQx, UNKNOWN>, <Ad: SfBEGAWPBUKzPEDqBQnkckqqIWapwuVJgkxXxXcDIpeMOdAEDRIilCINRAsQnftCjfCKhmvcuBCmzCKChGLUMCLrehHiEUyngjUP, UNKNOWN>, <Ad: AdSaYAFdIyBiakdJZFqHvtmIpVgPdGCGlKuwbOouMpcLQfybUAyDelqqbdRfKEESNQOkTUrEpfRDXOWJRYtCtXEYTmpLbcrCUqJh, UNKNOWN>, <Ad: eRJLKsiyttdPxyBzWQOcLqOhXIjpvEOvUPjYMCZzkWwKhKOYxfJXbfwjIfxEckduoCUkpaeQuGkiNwzMCwnvjaktEHOVomOaDviV, UNKNOWN>, <Ad: FrffhuLGTfkUrxZFpyrxCKpzGLmoHnPhHJfKlFZKacLWfIfAmtsRdDKsESEProKCveMtSAbsyyuCREbCReOpOxmXbmCqBuNHaFuw, UNKNOWN>, <Ad: BrVbsJmbLKoVvCwpOzwuMyxHjszeANaIEWnWzugmIbQxYdozJdFtXmbDuPnmShKeztLdOxSMNkVmVDhsOSumQLySpmhgcKZTSztc, UNKNOWN>]
-2025-05-22 13:04:03 [    INFO] DATA URL: /api/v1/ads/
-2025-05-22 13:04:03 [    INFO] TITLE DATA: ['Объявление']
-2025-05-22 13:04:03 [    INFO] TITLE INVALID DATA: ['О']
-2025-05-22 13:04:03 [    INFO] CACHE CLEAR
-2025-05-22 13:04:03 [    INFO] START CREATE of VIEWS.py
-2025-05-22 13:04:03 [    INFO] REQUEST DATA: <QueryDict: {'title': ['О'], 'description': ['ОбъявлениеОбъявлениеОбъявлениеОбъявлениеОбъявление'], 'category': ['UNKNOWN'], 'condition': ['DEACTIVATED'], 'path': ['categories/sport/index.html']}>
-2025-05-22 13:04:03 [   ERROR] SERIALIZER ERROR: {'title': [ErrorDetail(string='The title not have correct format.', code='invalid'), ErrorDetail(string='Убедитесь, что это значение содержит не менее 3 символов.', code='min_length')]}
-2025-05-22 13:04:03 [   ERROR] AD SERIALIZER DATA ERROR: 'AdSerializer' object has no attribute 'ValidationError'
-2025-05-22 13:04:03 [ WARNING] Unauthorized: /api/v1/ads/
-2025-05-22 13:04:03 [    INFO] RESPONSE: <Response status_code=401, "application/json">
-2025-05-22 13:04:03 [    INFO] RESPONSE STATUS CODE: 401, EXPECTED: 401
-2025-05-22 13:04:03 [    INFO] ASYNC CLIENT WAS LOGOUT
-2025-05-22 13:04:03 [    INFO] CONNECTION WAS ALL CLOSED
-2025-05-22 13:04:03 [    INFO] ASYNC CLIENT WAS CLOSED
+2025-05-23 09:16:29 [    INFO] ASYNC CLIENT CREATED
+2025-05-23 09:16:29 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds_2Rssa8%sa', 'confirm_password': 'ds_2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2%Rssa8%sa', 'confirm_password': 'ds2%Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_valid_data: {'username': 'Victorovich', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] USERNAME: te d
+2025-05-23 09:16:29 [    INFO] form_invalid_data: {'username': 'te d', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] USERNAME: test user
+2025-05-23 09:16:29 [    INFO] form_invalid_data: {'username': 'test user', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] USERNAME: 
+2025-05-23 09:16:29 [    INFO] form_invalid_data: {'username': '', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] USERNAME: %-_
+2025-05-23 09:16:29 [    INFO] form_invalid_data: {'username': '%-_', 'email': 'est@test.ru', 'password': 'ds2Rssa8%sa', 'confirm_password': 'ds2Rssa8%sa'}
+2025-05-23 09:16:29 [    INFO] form_invalid_data: <tr>
+    <th><label for="id_username">Your login*:</label></th>
+    <td>
+      
+      <input type="text" name="username" value="Victorovich" maxlength="30" minlength="3" required id="id_username">
+      
+        <br>
+        <span class="helptext">Enter your login</span>
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_email">Адрес электронной почты:</label></th>
+    <td>
+      
+      <input type="email" name="email" value="est@test.ru" maxlength="50" id="id_email">
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_password">Password*:</label></th>
+    <td>
+      
+      <input type="password" name="password" class="password" maxlength="30" minlength="3" required id="id_password">
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_confirm_password">Confirm Password*:</label></th>
+    <td>
+      
+      <input type="password" name="confirm_password" class="password confirm_password" maxlength="30" minlength="3" required id="id_confirm_password">
+      
+      
+        
+      
+    </td>
+  </tr>
