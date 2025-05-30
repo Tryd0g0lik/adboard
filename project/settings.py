@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
 
 from dotenv_ import (DB_ENGINE, POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER,
                      SECRET_KEY_DJ)
@@ -51,7 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ads',
-    'adboard'
+    'adboard',
+    'weather'
 ]
 
 MIDDLEWARE = [
@@ -159,8 +161,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,  "ads/static/"),
+    os.path.join(BASE_DIR,  "weather/static/")
 ]
-STATIC_ROOT = os.path.join(BASE_DIR,  "ads/static/")
+# STATIC_ROOT = os.path.join(BASE_DIR,  "ads/static/")
 STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 
 MEDIA_ROOT = os.path.join(BASE_DIR,  "media/")
@@ -181,7 +185,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:8080",
-
+    "http://0.0.0.0:8080",
 ]
 
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#csrf-integration
@@ -275,3 +279,21 @@ LOGOUT_REDIRECT_URL = '/'
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend"
 ]
+
+"""REST_FRAMEWORK JWT SETTINGS"""
+# https://pypi.org/project/djangorestframework-simplejwt/4.3.0/
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+
+    )
+}
+    # "access_token_lifetime": TIMEDELTA(MILLISECONDS=TIMEDELTA(MINUTES=5).TOTAL_SECONDS()*1000),
+    # "refresh_token_lifetime": TIMEDELTA(DAYS = TIMEDELTA(DAYS=1).TOTAL_SECONDS()*1000),
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes= 5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days = 1),
+    "SIGNING_KEY": SECRET_KEY,
+}

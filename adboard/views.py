@@ -1,8 +1,18 @@
 import json
 import os
+import requests
+from datetime import datetime
+from typing import Dict, Optional, TypeVar
+from django.contrib.auth.models import User
+from asgiref.sync import sync_to_async
 from django.shortcuts import render
 from rest_framework.decorators import action
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.tokens import TokenUser
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from adboard.forms.register import UserRegisterForm
 
 from adboard.forms.login import UserLogin
@@ -10,13 +20,17 @@ from adboard.hasher import PassworHasher
 from adboard.serializers.register import UserSerializer
 from project.settings import BASE_DIR, SECRET_KEY
 import logging
-from rest_framework import serializers, viewsets, status
+from rest_framework import serializers, status  # viewsets,
+from adrf.viewsets import ViewSet
 from rest_framework.response import Response
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractBaseUser
+from django.contrib.auth import authenticate, login
 from logs import configure_logging
+from project.settings import SIMPLE_JWT
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
+
 
 # class AlgorritmPBKDF2PasswordHasher(PBKDF2PasswordHasher):
 #     """
@@ -44,83 +58,227 @@ def serializer_validate(serializer):
     log.info("SERIALIZER DATA VALID", serializer.validated_data)
 
 
-class LogingViewSet(viewsets.ViewSet):
-    def create(self, request):
-        """
-        Register a new user.
-        """
-        user = request.user
-        log.info("REQUEST CREATE START: %s, %s", __name__, self.__class__.__name__)
-        log.info("REQUEST METHOD: %s, DATA: %s", (request.method, request.data))
-        user_exists = User.objects.filter(username=dict(request.data)["username"][0])
+class LogingViewSet(ViewSet):
+    AuthUser = TypeVar("AuthUser", AbstractBaseUser, TokenUser)
 
-        if (
-            not user.is_authenticated
-            and not user_exists
-            and (request.method).lower() == "post"
-        ):
-            """HASHING PASSWORD"""
-            old_password = request.data.get("password")
-            hash = PassworHasher()
-            salt = SECRET_KEY.replace("$", "/")
-            hash_password = hash.hasher(old_password, salt[:50])
-            """SERIALIZER DATA"""
-            serializer = UserSerializer(data=request.data)
+    @staticmethod
+    def _jwt_user_checker(token: Optional[str], user_object: type(User)) -> None:
+        """
+        Checking user is owner of this token or not.
+        If user is not owner of this token then raise error.
+        :param token: jwt access token.
+        :param user_object: user object.
+        :return None
+        """
+        if not token or not user_object:
+            raise ValueError("Check your data")
+        access_tokeen = AccessToken(token)
+        user_id: int = access_tokeen["user_id"]
+        if user_object.get("id") != user_id:
+            raise ValueError("User is not owner of this token.")
+
+    @classmethod
+    async def async_token(cls, user_object: AuthUser):
+        """
+        This is method for getting token for user.
+        :param user_object: This is a user's object for a which will be token generating \
+        :return: this dictionary with 4 values
+        :return: {
+                {"token_access": "< access_token >", "live_time": "< life_time_of_token >"},
+                {"token_refresh": "< refresh_token >", "live_time": "< life_time_of_token >"}
+            }
+        """
+
+        tokens = await cls.__async_generate_jwt_token(user_object)
+        return tokens
+
+    @staticmethod
+    async def __async_generate_jwt_token(user_object: AuthUser) -> {Dict[str, str]}:
+        """
+            Only, after registration user we will be generating token for \
+            user through 'rest_framework_simplejwt.serializers.TokenObtainPairSerializer'
+            This is a generator token of user.\
+            The 'SIMPLE_JWT' is variable from the project's 'settings.py' file.\
+            @SIMPLE_JWT.ACCESS_TOKEN_LIFETIME this is minimum quantity for life of token\
+             It is for the access.\
+            @REFRESH_TOKEN_LIFETIME this is maximum quantity fro life token. \
+            It is for the refresh.
+            'TokenObtainPairSerializer' it has own db/
+            :return:
+        """
+        """TIME TO THE LIVE TOKEN"""
+        # dt = datetime.datetime.now() + datetime.timedelta(days=1)
+        """GET TOKEN"""
+        try:
+            token = TokenObtainPairSerializer.get_token(user_object)
+            token["name"] = (lambda: user_object.username)()
+            return token
+        except Exception as ex:
+            raise ValueError("Value Error: %s" % ex)
+
+    @staticmethod
+    def _jwt_user_refresh(item: AuthUser) -> Dict[str, str]:
+        """
+        Refresh token.
+        :param item: User object or token object.
+        """
+        refresh = RefreshToken.for_user(item)
+        return {
+            "token_access": str(refresh.access_token),
+            "token_refresh": str(refresh),
+        }
+
+    def create(self, request) -> type(Response):
+        """CHECK USER DATA"""
+        user = request.user
+        password_hash = self.hash_password(request.data.get("password"))
+        log.info("PASSWORD HASH: %s", password_hash)
+        """CHECK USER EXISTS"""
+        user_list = User.objects.filter(username=request.data.get("username"))
+
+        log.info("USER EXISTS: %s", user_list.exists())
+        if not user.is_authenticated and not user_list.exists():
             try:
-                """VALIDATE DATA"""
+                serializer = UserSerializer(data=request.data)
                 serializer_validate(serializer)
-                serializer.validated_data["password"] = hash_password
-            except Exception as ex:
-                log.error("SERIALIZER DATA ERROR: %s", ex.args)
-                return Response(
-                    json.dumps({"detail": ex.args}), status=status.HTTP_401_UNAUTHORIZED
-                )
-            try:
-                """SAVE DATA"""
+                serializer.validated_data["password"] = password_hash
                 serializer.save()
                 log.info("USER CREATED SUCCESSFUL")
                 return Response(
-                    json.dumps({"data": "User created successful"}),
-                    status=status.HTTP_201_CREATED,
+                    {"data": "USER CREATED"}, status=status.HTTP_201_CREATED
                 )
+
             except Exception as ex:
-                log.error("USER CREATED ERROR: ex", ex.args)
+                log.error("SERIALIZER DATA ERROR: %s", ex.args)
                 return Response(
-                    json.dumps({"detail": ex.args}), status=status.HTTP_401_UNAUTHORIZED
+                    {"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED
                 )
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        log.error("USER NOT CREATED")
+        return Response(
+            json.dumps({"detail": "USER NOT CREATED"}),
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     def retrieve(self, request, pk=None):
         pass
 
     @action(methods=["POST"], detail=False)
-    def login_user(self, request):
-        """HASHING PASSWORD"""
+    async def login_user(self, request, pk: str = "0"):
+        """
+        This method is used the user's login and IP ADDRESS of client.
+        Here, If we have the object of user , it means we will  get token objects for user.
+        "token_access" - it is general token of user for access to the service.
+        "token_refresh" - it is token for refresh the access token.
+        :param request:
+        :param pk: not used. It is just for URL.
+        :return: ```js
+        {"data":[
+                    {
+                        "token_access": str( < access_token >),
+                        "live_time": < lifetime_from_minutes >,
+                    },
+                    {
+                        "token_refresh": str(tokens),
+                        "live_time": < lifetime_from_hours >,
+                    },
+                ]}
+                ````
+        """
+
         password = request.data.get("password")
-        login = request.data.get("username")
+        login_user = request.data.get("username")
+        """HASH PASSWORD OF USER"""
+        hash_password = self.hash_password(request.data.get("password"))
+        """CHECK EXISTS OF USER"""
+        user_one_list = await sync_to_async(User.objects.filter)(
+            username=login_user, password=hash_password
+        )
+        user_one = await sync_to_async(user_one_list.first)()
+
+        if not user_one:
+            log.error("USER NOT FOUNDED")
+            return Response(
+                {"data": "User not founded"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        """GET USER DATA"""
+        user_one.is_active = True
+        """GET AUTHENTICATION (USER SESSION) IN DJANGO """
+        user = await sync_to_async(authenticate)(
+            request, username=login_user, password=password
+        )
+        if user is not None:
+            await sync_to_async(login)(request, user)
+        else:
+            log.error("USER NOT FOUNDED")
+            return Response(
+                {"data": "User not founded"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        """GET LOCATION OF USER"""
+        user_ip_address = request.META.get("REMOTE_ADDR")  # Не трогать - используется
+        try:
+            response = await sync_to_async(requests.post)(
+                "http://ip-api.com/batch",
+                data=json.dumps(
+                    [
+                        {
+                            "query": "83.166.245.197",  # Изменить на user_ip_address
+                            "fields": ["lat", "lon"],  # Исправлено на lat/lon
+                            "lang": "ru",
+                        }
+                    ]
+                ),
+            )
+            response = response.json()
+            """GET LOCATION BASIS/INITIAL"""
+            latitude: float = response[0]["lat"]
+            longitude: float = response[0]["lon"]
+            log.info("LATITUDE OF USER: %s", latitude)
+            user_one.latitude = latitude
+            user_one.longitude = longitude
+            user_one.last_login = datetime.now()
+            """SAVE USER"""
+            await sync_to_async(user_one.save)()
+
+            log.info("USER IS ACTIVE: %s", user_one.is_active)
+            tokens = await self.async_token(user_one)
+            log.info("USER TOKEN IS ACTIVE: %s", str(tokens))
+            """ ИЗМЕНИТЬ ВРЕМЯ"""
+            access_time = (SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]).total_seconds() * 1000
+            refresh_time = SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"].total_seconds() * 1000
+            return Response(
+                {
+                    "data": [
+                        {
+                            "token_access": str(tokens.access_token),
+                            "live_time": access_time,
+                        },
+                        {
+                            "token_refresh": str(tokens),
+                            "live_time": refresh_time,
+                        },
+                    ]
+                },
+                status=status.HTTP_200_OK,
+            )
+        except Exception as ex:
+            log.error("USER ERROR: %s", ex.args)
+            return Response({"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED)
+
+    @staticmethod
+    def hash_password(password):
+        """
+        This method for hashing user password.
+        :param password: Password of user before hashing (from request)
+        :return: password hashed
+        """
+        """HASH PASSWORD OF USER"""
         hash = PassworHasher()
         salt = SECRET_KEY.replace("$", "/")
         hash_password = hash.hasher(password, salt[:50])
-        try:
-            """CHECK EXISTS OF USER"""
-            answer_bool = User.objects.filter(
-                username=login, password=hash_password
-            ).exists()
-            if answer_bool:
-                log.error("USER NOT FOUNDED")
-                Response(
-                    json.dumps({"data": "User not founded"}),
-                    status=status.HTTP_401_UNAUTHORIZED,
-                )
-            """LOGIN USER"""
-            log.error("USER FOUND")
-            return Response(json.dumps({"data": "User Ok"}), status=status.HTTP_200_OK)
-        except Exception as ex:
-            log.error("USER ERROR: %s", ex.args)
-            return Response(
-                json.dumps({"detail": ex.args}),
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+        return hash_password
 
 
 def user_view(request):
