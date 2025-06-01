@@ -1,13 +1,11 @@
 {% extends "layout/index.html" %}
   {% block forms_ads %}  {% endblock forms_ads %}
- {% block ads_collections %}{% endblock ads_collections %}
-{% block main %}
+  {% block ads_collections %}{% endblock ads_collections %}
 
-  <section id="form-login">
 
+  {% block forms_main %}
     <div class="mb-3">
 
-      <div class="title"><h3>{{title}}</h3></div>
       <form class="form row g-3 needs-validation" >
         {% csrf_token %}
         {% for field in form.form_user %}
@@ -22,7 +20,7 @@
 
       </form>
       </div>
-  </section>
+    {% endblock forms_main %}
 
 
-{% endblock main %}
+

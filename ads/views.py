@@ -164,7 +164,7 @@ def main_page(request):
         request,
         template_name="index.html",
         context={
-            "form": {"form_ad": form, "file_image": file_image},
+            "form": {"forms_main": form, "file_image": file_image},
             "css_file": css_file,
             "js_files": files,
         },

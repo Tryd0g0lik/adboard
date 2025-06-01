@@ -3,15 +3,18 @@ import os
 import requests
 from datetime import datetime
 from typing import Dict, Optional, TypeVar
-from django.contrib.auth.models import User
+
+# from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
 from django.shortcuts import render
 from rest_framework.decorators import action
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.exceptions import InvalidToken
+
+# from rest_framework_simplejwt.views import TokenObtainPairView
+# from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.tokens import TokenUser
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+
+# from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from adboard.forms.register import UserRegisterForm
 
@@ -224,7 +227,7 @@ class LogingViewSet(ViewSet):
                 data=json.dumps(
                     [
                         {
-                            "query": "83.166.245.197",  # Изменить на user_ip_address
+                            "query": user_ip_address,  # "83.166.245.197",  # Изменить на user_ip_address
                             "fields": ["lat", "lon"],  # Исправлено на lat/lon
                             "lang": "ru",
                         }
@@ -296,7 +299,7 @@ def user_view(request):
 
     return render(
         request,
-        "register/index.html",
+        "users/index.html",
         {
             "js_files": files,
             "css_file": css_file,

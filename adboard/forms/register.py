@@ -1,5 +1,5 @@
 """
-adboard/forms/register.py
+weather/forms/form_register.py
 """
 
 from django import forms

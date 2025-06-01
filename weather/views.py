@@ -3,26 +3,28 @@ weather/views.py
 """
 
 import os
-
 from django.shortcuts import render
 
 # Create your views here.
-import json
+# import json
 import logging
-import requests
-from asgiref.sync import sync_to_async
-from datetime import datetime
+
+# import requests
+# from asgiref.sync import sync_to_async
+# from datetime import datetime
 from typing import Dict, TypeVar
 from rest_framework import status, serializers
 from adrf.viewsets import ViewSet
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from dashboard.hasher import PassworHasher
-from dashboard.models import Users
-from dashboard.serializers import UsersSerializer
-from project.settings import BASE_DIR, SECRET_KEY, SIMPLE_JWT
+# from rest_framework.decorators import action
+from rest_framework.response import Response
+
+# from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+# from adboard.hasher import PassworHasher
+# from adboard.serializers.register import UserSerializer
+from project.settings import BASE_DIR  # , SECRET_KEY, SIMPLE_JWT
+from django.contrib.auth.models import User
 
 # Create your views here.
 from rest_framework_simplejwt.tokens import TokenUser
@@ -31,7 +33,7 @@ from weather.models import WeatherForecast
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
-AuthUser = TypeVar("AuthUser", Users, TokenUser)
+AuthUser = TypeVar("AuthUser", User, TokenUser)
 
 
 def serializer_validate(serializer):
