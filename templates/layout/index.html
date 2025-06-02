@@ -15,17 +15,21 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <title>{% block title %}{ {texts} }{% endblock title %} - Page</title>
+  <title>{% block title %}{{title}}{% endblock title %} - Page</title>
+  {% block maincssfiles %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/index.css' %}">
+  {% endblock maincssfiles %}
+  {% block cssfiles %} {% endblock cssfiles %}
 
-  {% bootstrap_css %}
-  <link rel="stylesheet" type="text/css" href="{% static css_file %}">
-  {% bootstrap_javascript jquery='full' %}
-
-<!--  { % render_bundle 'index' 'js' %}-->
-  {% for file in js_files %}
-    <script src="{% static 'scripts/' %}{{file}}"></script>
-  {% endfor %}
-
+  {% block mainjsfiles %}
+    {% bootstrap_javascript jquery='full' %}
+  <!--  { % render_bundle 'index' 'js' %}-->
+    {% for file in js_files %}
+      <script src="{% static 'scripts/' %}{{file}}"></script>
+    {% endfor %}
+  {% endblock mainjsfiles %}
+  {% block jsfiles %} {% endblock jsfiles %}
 
 <!--  <script type="text/javascript/" src=""-->
 <!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"-->
