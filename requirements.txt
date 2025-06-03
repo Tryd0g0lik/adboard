@@ -21,4 +21,4 @@ adrf >= 0.1.9
 django-webpack-loader >= 3.1.1
 djangorestframework-simplejwt[crypto] >= 5
 model-bakery >= 1
-requests >= 2.32
+requests >= 2
