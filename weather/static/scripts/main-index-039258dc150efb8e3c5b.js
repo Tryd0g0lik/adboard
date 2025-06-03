@@ -15,17 +15,7 @@
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_scripts_handleRequsetReceiveAd__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/scripts/handleRequsetReceiveAd */ \"./src/scripts/handleRequsetReceiveAd.ts\");\n/* harmony import */ var _scripts_handlers_handlerFormUsers_handlerRegisterForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scripts/handlers/handlerFormUsers/handlerRegisterForm */ \"./src/adboard/scripts/handlers/handlerFormUsers/handlerRegisterForm.ts\");\n/**\r\n* src\\scripts\\index.ts\r\n*/\n\n\nconst handlerCommmon = () => {\n  if (window.location.pathname.includes(\"login\")) {\n    (0,src_scripts_handleRequsetReceiveAd__WEBPACK_IMPORTED_MODULE_0__.asyncGetListenerEvent)(\"keydown\", _scripts_handlers_handlerFormUsers_handlerRegisterForm__WEBPACK_IMPORTED_MODULE_1__.handlerUserForm, undefined, \"form-login\");\n  }\n};\ndocument.removeEventListener(\"DOMContentLoaded\", handlerCommmon);\ndocument.addEventListener(\"DOMContentLoaded\", handlerCommmon);\n\n//# sourceURL=webpack://ads/./src/adboard/app.ts?");
-
-/***/ }),
-
-/***/ "./src/adboard/index.ts":
-/*!******************************!*\
-  !*** ./src/adboard/index.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_adboard_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/adboard/app */ \"./src/adboard/app.ts\");\n\n\n//# sourceURL=webpack://ads/./src/adboard/index.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_scripts_handleRequsetReceiveAd__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/scripts/handleRequsetReceiveAd */ \"./src/scripts/handleRequsetReceiveAd.ts\");\n/* harmony import */ var _scripts_handlers_handlerFormUsers_handlerRegisterForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scripts/handlers/handlerFormUsers/handlerRegisterForm */ \"./src/adboard/scripts/handlers/handlerFormUsers/handlerRegisterForm.ts\");\n/**\r\n* src\\scripts\\index.ts\r\n*/\n\n\nconst handlerCommmon = () => {\n  if (window.location.pathname.includes(\"login\")) {\n    (0,src_scripts_handleRequsetReceiveAd__WEBPACK_IMPORTED_MODULE_0__.asyncGetListenerEvent)(\"keydown\", _scripts_handlers_handlerFormUsers_handlerRegisterForm__WEBPACK_IMPORTED_MODULE_1__.handlerUserForm, undefined, \"form-login\");\n  } else if (window.location.pathname.includes('register')) {\n    (0,src_scripts_handleRequsetReceiveAd__WEBPACK_IMPORTED_MODULE_0__.asyncGetListenerEvent)(\"keydown\", _scripts_handlers_handlerFormUsers_handlerRegisterForm__WEBPACK_IMPORTED_MODULE_1__.handlerUserForm, undefined, \"form-login\");\n  }\n};\ndocument.removeEventListener(\"DOMContentLoaded\", handlerCommmon);\ndocument.addEventListener(\"DOMContentLoaded\", handlerCommmon);\n\n//# sourceURL=webpack://ads/./src/adboard/app.ts?");
 
 /***/ }),
 
@@ -87,12 +77,22 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   validateRegex: () => (/* binding */ validateRegex)\n/* harmony export */ });\n/**\r\n * src\\scripts\\validators\\validateRegex.ts\r\n */\nasync function validateRegex(value, regex) {\n  const bool = regex.test(value);\n  if (!bool) {\n    throw new Error(' validateRegex: Value is not valid');\n  }\n}\n\n//# sourceURL=webpack://ads/./src/scripts/validators/validateRegex.ts?");
 
+/***/ }),
+
+/***/ "./src/weather/index.ts":
+/*!******************************!*\
+  !*** ./src/weather/index.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_adboard_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/adboard/app */ \"./src/adboard/app.ts\");\n\n\n//# sourceURL=webpack://ads/./src/weather/index.ts?");
+
 /***/ })
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-/******/ __webpack_require__.O(0, ["shared"], () => (__webpack_exec__("./src/adboard/index.ts")));
+/******/ __webpack_require__.O(0, ["shared"], () => (__webpack_exec__("./src/weather/index.ts")));
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);

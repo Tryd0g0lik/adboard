@@ -9,8 +9,8 @@ from rest_framework.routers import DefaultRouter
 from adboard.views import LogingViewSet, user_view
 
 router = DefaultRouter()
-router.register("users", LogingViewSet, basename="users")
-
+router.register("index", LogingViewSet, basename="index")
+# router.register("index/0/login_user", LogingViewSet, basename="login_user")
 urlpatterns = [
     path("", user_view, name="register_page"),
     path(

@@ -43,11 +43,43 @@ Note: Пока без учета ограничений.
 
 <h3>Регистрация</h3>
 ![Registration](./img/register.png)\
-*Note: Обязаятельные поля помечены звёздочкой* \
+*Note: Обязаятельные поля помечены звёздочкой* 
+
+На сервер отправляем:\
+```js
+{
+    "username": "Username",
+    "password": "pasword_of_user"
+}
+```
+На сервере проверяется пароль, в состоянии хеша.\
+В ответе получаем 201 или 401 код.
+
 <h3>Авторизация</h3>
 ![Registration](./img/login.png)\
 
 
+На сервер отправляем:\
+```js
+{
+    "username": "Username",
+    "password": "pasword_of_user"
+}
+```
+На сервере проверяется пароль, в состоянии хеша.\
+В ответе получаем:\
+```js
+{
+    "access_token": "token",
+    "refresh_token": "token
+}
+```
+
+Или 401 код.
+
+
+<h3>После авторизации</h3>
+![efter authentification](./img/after_login.png)
 
 ## DB
 ![db graph](./img/db_ads.png)
