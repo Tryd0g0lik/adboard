@@ -15,7 +15,7 @@
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   URL_HOST_FOR_API: () => (/* binding */ URL_HOST_FOR_API)\n/* harmony export */ });\nconst URL_HOST_FOR_API = \"http://127.0.0.1:8000\";\n\n//# sourceURL=webpack://ads/./dotenv__.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   URL_HOST_FOR_API: () => (/* binding */ URL_HOST_FOR_API)\n/* harmony export */ });\nconst URL_HOST_FOR_API = \"http://83.166.245.197\";\n\n//# sourceURL=webpack://ads/./dotenv__.ts?");
 
 /***/ }),
 
@@ -26,16 +26,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_scripts_handleRequsetReceiveAd__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/scripts/handleRequsetReceiveAd */ \"./src/scripts/handleRequsetReceiveAd.ts\");\n/* harmony import */ var _ADBoards_handlers_handlerFormUsers_handlerRegisterForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ADBoards-handlers/handlerFormUsers/handlerRegisterForm */ \"./src/adboard/scripts/handlers/handlerFormUsers/handlerRegisterForm.ts\");\n/**\r\n* src\\scripts\\index.ts\r\n*/\n\n\nfunction handlerCommmon() {\n  if (window.location.pathname.includes(\"login\") || window.location.pathname.includes('register')) {\n    console.log(\"START REGISTER\");\n    (0,src_scripts_handleRequsetReceiveAd__WEBPACK_IMPORTED_MODULE_0__.asyncGetListenerEvent)(\"keydown\", _ADBoards_handlers_handlerFormUsers_handlerRegisterForm__WEBPACK_IMPORTED_MODULE_1__.handlerUserForm, undefined, \"form-login\");\n  }\n  ;\n}\n;\ndocument.removeEventListener(\"DOMContentLoaded\", () => handlerCommmon);\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n  console.log(\"START APP\");\n  handlerCommmon();\n});\n\n//# sourceURL=webpack://ads/./src/adboard/app.ts?");
-
-/***/ }),
-
-/***/ "./src/adboard/index.ts":
-/*!******************************!*\
-  !*** ./src/adboard/index.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app */ \"./src/adboard/app.ts\");\n/**\r\n * src\\adboard\\index.ts\r\n */\n\n\n//# sourceURL=webpack://ads/./src/adboard/index.ts?");
 
 /***/ }),
 
@@ -97,12 +87,22 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   validateRegex: () => (/* binding */ validateRegex)\n/* harmony export */ });\n/**\r\n * src\\scripts\\validators\\validateRegex.ts\r\n */\nasync function validateRegex(value, regex) {\n  const bool = regex.test(value);\n  if (!bool) {\n    throw new Error(' validateRegex: Value is not valid');\n  }\n}\n\n//# sourceURL=webpack://ads/./src/scripts/validators/validateRegex.ts?");
 
+/***/ }),
+
+/***/ "./src/weather/index.ts":
+/*!******************************!*\
+  !*** ./src/weather/index.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_adboard_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/adboard/app */ \"./src/adboard/app.ts\");\n\n\n//# sourceURL=webpack://ads/./src/weather/index.ts?");
+
 /***/ })
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-/******/ __webpack_require__.O(0, ["shared"], () => (__webpack_exec__("./src/adboard/index.ts")));
+/******/ __webpack_require__.O(0, ["shared"], () => (__webpack_exec__("./src/weather/index.ts")));
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
