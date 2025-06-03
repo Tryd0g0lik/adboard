@@ -241,6 +241,15 @@ input[type=file] {
   background: var(--bs-tertiary-bg);
 }
 
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+#pagination {
+  padding-top: 20px;
+}
+
 .pagination a.page-link {
   border-color: var(--bs-border-color);
   background-color: var(--bs-light-bg-subtle);
@@ -288,10 +297,22 @@ div.hidden {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  max-height: 34px;
+  min-height: 34px;
+  max-height: 40px;
+  overflow: hidden;
 }
 .ad-view .ad-view-container > div {
   overflow: hidden;
+}
+.ad-view .ad-view-container > .ad-view-content {
+  max-width: 700px;
+}
+.ad-view .ad-view-container > .ad-view-title {
+  max-width: 200px;
+}
+.ad-view .ad-view-container > .ad-view-footer {
+  width: 100%;
+  max-width: 100px;
 }
 .ad-view h2,
 .ad-view div.ad-view-content,
@@ -310,7 +331,7 @@ div.hidden {
   height: clamp(100px, 47vh, 500px);
 }
 #ad-page-container .ad-view-title {
-  text-align: center;
+  max-width: 200px;
 }
 #ad-page-container .ad-view-container {
   max-height: none;
@@ -319,6 +340,7 @@ div.hidden {
 #ad-page-container .ad-view-container > .ad-view-content {
   text-align: left;
   max-height: none;
+  max-width: 700px;
 }
 #ad-page-container .ad-view-container > div {
   display: block;
@@ -329,6 +351,26 @@ div.hidden {
   font-size: clamp(18px, 2rem, 2.5rem);
 }
 
+@media all and (max-width: 400px) {
+  .ad-view .ad-view-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 34px;
+    flex-direction: column;
+  }
+  .form > .mb-3:first-child, .form > .mb-3:nth-child(2) {
+    margin: 0 auto;
+  }
+  .form .ads-form,
+  #form-register,
+  #form-login {
+    width: inherit;
+  }
+  body {
+    font-size: 14px;
+  }
+}
 :root,
 [data-bs-theme=dark] {
   color-scheme: dark;

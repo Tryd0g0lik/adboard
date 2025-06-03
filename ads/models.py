@@ -47,7 +47,7 @@ before 100 symbols.\n Min length is the 3 symbols."
                 limit_value=3, message=_("Min length (of title) 3 symbols")
             ),
             RegexValidator(
-                regex=r"^(?!.*  )[a-zA-Zа-яА-ЯёЁ][\w \-_\dа-яА-ЯёЁ]{1,48}[a-zA-Zа-яА-ЯёЁ]$[^\S\W \\]?",
+                regex=r"^(?!.*  )[a-zA-Zа-яА-ЯёЁ][\w ,\-_\dа-яА-ЯёЁ]{1,98}[a-zA-Zа-яА-ЯёЁ]$[^\S\W \\]?",
                 message=_("The title not have correct format."),
             ),
         ],

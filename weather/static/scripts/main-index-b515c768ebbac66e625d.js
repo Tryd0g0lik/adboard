@@ -29,16 +29,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_
 
 /***/ }),
 
-/***/ "./src/adboard/index.ts":
-/*!******************************!*\
-  !*** ./src/adboard/index.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app */ \"./src/adboard/app.ts\");\n\n\n//# sourceURL=webpack://ads/./src/adboard/index.ts?");
-
-/***/ }),
-
 /***/ "./src/adboard/scripts/handlers/handlerFormUsers/handlerRegisterForm.ts":
 /*!******************************************************************************!*\
   !*** ./src/adboard/scripts/handlers/handlerFormUsers/handlerRegisterForm.ts ***!
@@ -97,12 +87,22 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   validateRegex: () => (/* binding */ validateRegex)\n/* harmony export */ });\n/**\r\n * src\\scripts\\validators\\validateRegex.ts\r\n */\nasync function validateRegex(value, regex) {\n  const bool = regex.test(value);\n  if (!bool) {\n    throw new Error(' validateRegex: Value is not valid');\n  }\n}\n\n//# sourceURL=webpack://ads/./src/scripts/validators/validateRegex.ts?");
 
+/***/ }),
+
+/***/ "./src/weather/index.ts":
+/*!******************************!*\
+  !*** ./src/weather/index.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var src_adboard_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/adboard/app */ \"./src/adboard/app.ts\");\n\n\n//# sourceURL=webpack://ads/./src/weather/index.ts?");
+
 /***/ })
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-/******/ __webpack_require__.O(0, ["shared"], () => (__webpack_exec__("./src/adboard/index.ts")));
+/******/ __webpack_require__.O(0, ["shared"], () => (__webpack_exec__("./src/weather/index.ts")));
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);

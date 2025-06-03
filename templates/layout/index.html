@@ -55,9 +55,15 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/">Главная</a>
             </li>
+            {% if not user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="/users/login">Login</a>
             </li>
+            {% else %}
+               <li class="nav-item">
+                <a class="nav-link" href="/users/logout">Logout</a>
+              </li>
+            {% endif %}
             <li class="nav-item">
               {% if not user.is_authenticated %}
                 <li class="nav-item">
@@ -120,18 +126,6 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
       </div>
-      <div class="pagination">
-      <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
-      <nav aria-label="Пример навигации по страницам">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
-      </ul>
-    </nav>
-    </div>
     {% endif %}
   {% endblock forms_ads %}
   {% block forms_main %}{% endblock forms_main %}
@@ -144,5 +138,21 @@
       </div>
     </section>
 {% block ad_page %}{% endblock ad_page %}
+{% block pagination %}
+  <section id="pagination">
+    <div class="pagination">
+      <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
+      <nav aria-label="Пример навигации по страницам">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
+      </ul>
+    </nav>
+    </div>
+  <section>
+{% endblock pagination %}
 </body>
 </html>

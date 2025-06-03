@@ -287,19 +287,16 @@ class LogingViewSet(ViewSet):
 
 
 def user_view(request):
-    # form_reg =UserRegister()
     form = UserLogin()
-    # form = AuthenticationForm()
     title = "Вход в аккаунт"
+
     if "register" in request.path.lower():
-        # form = UserCreationForm()
         form = UserRegisterForm()
         title = "Регистрация"
     files = []
     if "login" in request.path.lower() or "register" in request.path.lower():
         files = os.listdir(f"{BASE_DIR}/adboard/static/scripts")
         title = "Авторизация"
-    # css_file = "styles/index.css"
 
     return render(
         request,

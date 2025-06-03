@@ -41,7 +41,7 @@ async def async_serializer_validate(serializer):
     is_valid = await sync_to_async(serializer.is_valid)()
     if not is_valid:
         log.error("SERIALIZER ERROR: %s", serializer.errors)
-        raise serializer.ValidationError(serializer.errors)
+        raise ValidationError(serializer.errors)
     log.info("SERIALIZER DATA VALID: %s", serializer.validated_data)
     data = await sync_to_async(lambda: serializer.validated_data)()
     return data

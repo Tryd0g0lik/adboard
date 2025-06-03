@@ -16,7 +16,7 @@ from ads.views import AsyncAdsView, FileImageViewSet
 app_name = "ads_app"
 
 router = DefaultRouter()
-router.register("ads", AsyncAdsView, basename="ads")
+router.register("index", AsyncAdsView, basename="ads")
 
 router.register("image", FileImageViewSet, basename="image")
 
