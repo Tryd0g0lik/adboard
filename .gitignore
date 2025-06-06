@@ -279,5 +279,3 @@ collectstatic/*
 swagger
 
 gunicorn.service
-Dockerfile
-docker-compose.yml
