@@ -296,7 +296,9 @@ def user_view(request):
         title = "Регистрация"
     files = []
     if "login" in request.path.lower() or "register" in request.path.lower():
-        files = os.listdir(f"{BASE_DIR}/adboard/static/scripts")
+        # files = os.listdir(f"{BASE_DIR}/adboard/static/scripts")
+        files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
+        # files = f"{BASE_DIR}/static/scripts"
         title = "Авторизация"
 
     return render(

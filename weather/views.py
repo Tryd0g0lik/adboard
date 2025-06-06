@@ -71,7 +71,8 @@ class WeatherViewSet(ViewSet):
 def weather_view(request):
     title = "Прогноз погоды"
 
-    files = os.listdir(f"{BASE_DIR}/weather/static/scripts")
+    # files = os.listdir(f"{BASE_DIR}/weather/static/scripts")
+    files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
     css_file = "styles/index.css"
 
     return render(

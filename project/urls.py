@@ -29,7 +29,7 @@ urlpatterns = [
     path("api/v1/", include((api_urls, "api"), namespace="api")),
     path("ad/<str:pk>/", ad_page, name="ad_url"),
     path("users/", include((user_urls, "users_url"), "users_url")),
-    path("weather/", include((weather, "weather_url"), namespace="weather_url")),
+    # path("weather/", include((weather, "weather_url"), namespace="weather_url")),
     path("weather/", include((weather, "weather_url"), namespace="weather_url")),
     path("", main_page, name="main"),
 ]

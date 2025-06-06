@@ -152,7 +152,8 @@ class AsyncAdsView(viewsets.ModelViewSet):
 
 def main_page(request):
     theme = request.GET.get("theme", "dark")
-    files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+    # files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+    files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
     css_file = "styles/index.css"
     if theme == "lite":
         css_file = "styles/lite.css"
@@ -174,7 +175,8 @@ def main_page(request):
 def ad_page(request, *args, **kwargs):
     pass
     if request.method == "GET":
-        files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+        # files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+        files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
         css_file = "styles/index.css"
         # data_str = json.dumps({"data": response})
         return render(

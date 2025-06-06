@@ -167,8 +167,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,  "ads/static/"),
     os.path.join(BASE_DIR,  "weather/static/")
 ]
-# STATIC_ROOT = os.path.join(BASE_DIR,  "ads/static/")
-STATIC_URL = os.environ.get("STATIC_URL", "/static/")
+STATIC_ROOT = os.path.join(BASE_DIR,  "collectstatic/")
+# STATIC_ROOT = "/www/src/static/"
+# STATIC_URL = os.environ.get("STATIC_URL", "/static/")
+STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR,  "media/")
 # Default primary key field type

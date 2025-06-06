@@ -272,9 +272,12 @@ pic/*
 archive
 =
 frontend
+collectstatic/*
 **/bundles
 !.browserslistrc
 !.editorconfig
 swagger
 
 gunicorn.service
+Dockerfile
+docker-compose.yml
