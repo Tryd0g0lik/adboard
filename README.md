@@ -2,8 +2,6 @@ django-registration 5.2.1
 https://django-registration.readthedocs.io/en/stable/ 
 # Доска объявлений
 
-[Для просмотра Server](http://83.166.245.197/)
-
 [Frontend](https://github.com/Tryd0g0lik/adboard_frotend)\
 
 Note: Пока без учета ограничений.
