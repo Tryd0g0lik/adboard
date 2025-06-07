@@ -168,11 +168,12 @@ USE_TZ = True
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,  "static"),
     os.path.join(BASE_DIR,  "adboard/static"),
-    os.path.join(BASE_DIR,  "ads/static/"),
-    os.path.join(BASE_DIR,  "weather/static/")
+    os.path.join(BASE_DIR,  "ads/static"),
+    os.path.join(BASE_DIR,  "weather/static")
 ]
-STATIC_ROOT = os.path.join(BASE_DIR,  "collectstatic/")
+# STATIC_ROOT = os.path.join(BASE_DIR,  "collectstatic/")
 # STATIC_ROOT = "/www/src/static/"
+STATIC_ROOT = "/www/src/collectstatic"
 # STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 STATIC_URL = "/static/"
 
