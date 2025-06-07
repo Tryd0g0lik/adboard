@@ -279,3 +279,4 @@ collectstatic/*
 swagger
 
 gunicorn.service
+core

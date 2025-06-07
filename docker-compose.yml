@@ -32,7 +32,7 @@ services:
       - bash
       - -c
       - |
-        python3 ./manage.py collectstatic --noinput
+        python3 ./manage.py collectstatic --clear --noinput
         python3 ./manage.py makemigrations
         python3 ./manage.py migrate
         gunicorn -w 4 --bind 0.0.0.0:8000 project.wsgi:application
@@ -42,7 +42,7 @@ services:
 #      - postgres_network
     volumes:
 #       - .:|/www/src
-       - volume_static:/www/src/static
+       - volume_static:/www/src/collectstatic
 #      #- volume_static:/weather/static
 #       - nginx_conf:/etc/nginx/conf.d/
     depends_on:
@@ -62,7 +62,7 @@ services:
       - www
     volumes:
 #      - postgres_data:/var/lib/postgresql/data
-      - volume_static:/www/src/static
+      - volume_static:/www/src/collectstatic
 #      - nginx_conf:/etc/nginx/conf.d/
     restart: on-failure
     ports:

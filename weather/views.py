@@ -70,9 +70,9 @@ class WeatherViewSet(ViewSet):
 
 def weather_view(request):
     title = "Прогноз погоды"
-
-    # files = os.listdir(f"{BASE_DIR}/weather/static/scripts")
-    files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
+    # GET JS FILES FOR LOGIN AND REGISTER PAGES
+    files = os.listdir(f"{BASE_DIR}/collectstatic/weather/scripts")
+    files = ["weather/scripts/" + file for file in files]
     css_file = "styles/index.css"
 
     return render(

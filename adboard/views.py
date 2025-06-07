@@ -295,10 +295,10 @@ def user_view(request):
         form = UserRegisterForm()
         title = "Регистрация"
     files = []
+    # GET JS FILES FOR LOGIN AND REGISTER PAGES
     if "login" in request.path.lower() or "register" in request.path.lower():
-        # files = os.listdir(f"{BASE_DIR}/adboard/static/scripts")
-        files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
-        # files = f"{BASE_DIR}/static/scripts"
+        files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
+        files = ["adboard/scripts/" + file for file in files]
         title = "Авторизация"
 
     return render(
