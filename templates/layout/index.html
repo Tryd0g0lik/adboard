@@ -30,7 +30,6 @@
 
   {% block jsfiles %}
     {% for file in js_files %}
-      {{file}}
       <script src="{% static '/' %}{{file}}"></script>
     {% endfor %}
   {% endblock jsfiles %}
