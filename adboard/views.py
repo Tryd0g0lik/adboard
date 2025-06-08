@@ -9,7 +9,12 @@ from typing import Dict, Optional, TypeVar
 from asgiref.sync import sync_to_async
 from django.shortcuts import render
 from rest_framework.decorators import action
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
 
 # from rest_framework_simplejwt.views import TokenObtainPairView
 # from rest_framework_simplejwt.exceptions import InvalidToken
@@ -63,6 +68,7 @@ def serializer_validate(serializer):
 
 
 class LogingViewSet(ViewSet):
+    permission_classes = [IsAuthenticated]
     AuthUser = TypeVar("AuthUser", AbstractBaseUser, TokenUser)
 
     @staticmethod
@@ -163,12 +169,10 @@ class LogingViewSet(ViewSet):
             status=status.HTTP_401_UNAUTHORIZED,
         )
 
-    def retrieve(self, request, pk=None):
-        pass
-
     @action(methods=["POST"], detail=True)
     async def login_user(self, request, pk: str = "0"):
         """
+        "/api/v1/index/0/login_user"
         This method is used the user's login and IP ADDRESS of client.
         Here, If we have the object of user , it means we will  get token objects for user.
         "token_access" - it is general token of user for access to the service.
@@ -272,6 +276,36 @@ class LogingViewSet(ViewSet):
         except Exception as ex:
             log.error("USER ERROR: %s", ex.args)
             return Response({"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED)
+
+    @action(methods=["GET"], detail=True)
+    async def logout_user(self, request, pk: str = "0"):
+        """
+        "/api/v1/users/index/0/logout_user"
+        This method is used for logout user.
+        :param request:
+        :param pk:
+        :return:
+        """
+
+        # request_user = await sync_to_async(lambda:  request.user)()
+        self.get_user_from_token(request)
+        # if not await sync_to_async(lambda: request_user.is_authenticated)():
+        #     return Response({"data": "User have not logged in"},
+        #                    status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"data": "User logout successful"}, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def get_user_from_token(request):
+        try:
+            # Извлекаем пользователя из токена
+            auth = JWTAuthentication()
+            header = auth.get_header(request)  # Получаем заголовок Authorization
+            raw_token = auth.get_raw_token(header)  # Извлекаем токен
+            validated_token = auth.get_validated_token(raw_token)  # Валидируем
+            user = auth.get_user(validated_token)  # Получаем пользователя
+            return user
+        except Exception as e:
+            raise AuthenticationFailed("Invalid token")
 
     @staticmethod
     def hash_password(password):
