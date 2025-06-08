@@ -1,3 +1,4 @@
+
 [//]: # (django-registration 5.2.1)
 
 [//]: # (https://django-registration.readthedocs.io/en/stable/)
@@ -97,5 +98,7 @@ ExchangeProposal\
 **Note:**:
 1. *При сборке для '`prodaction`' удалить логи из кода*.
 2. *"`py manage.py collectstatis --clear --noinput`"* если изменилась статика.
+
+
 
 
