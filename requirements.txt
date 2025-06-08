@@ -1,0 +1,16 @@
+python-dotenv >= 1.0.1
+psycopg2-binary >= 2.9.10
+pre-commit-hooks >= 3 #5.0.0
+django-cors-headers >= 4
+asyncio >= 3.4.3
+pylint >= 3 #3.3.7
+postgres >= 4.0
+psycopg2-binary >= 2.9.10 # psycopg2
+django-bootstrap4 >= 24 # 25.1
+Django >= 4.2.17
+djangorestframework >= 3 # 3.16.0
+adrf >= 0.1.9
+django-webpack-loader >= 3.1.1
+djangorestframework-simplejwt >= 5.5.0
+model-bakery >= 1
+requests >= 2

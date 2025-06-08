@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+{% load bootstrap4 %}
+{% bootstrap_javascript jquery='full' %}
+{% load render_bundle from webpack_loader %}
+{% load static %}
+
+<html lang = "ru" data-ds-theme='dark'>
+  <head>
+    <meta charset = "UTF-8">
+    <meta name="viewpost" content="width-device-width, initial-scale=1">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
+    <title>{% block title %}{{title}}{% endblock title %} - Page</title>
+    {% block maincssfiles %}
+      {% bootstrap_css %}
+      <link rel="stylesheet" type="text/css" href="{% static 'styles/index.css' %}">
+    {% endblock maincssfiles %}
+    {% block cssfiles %} {% endblock cssfiles %}
+
+    {% block mainjsfiles %}
+      {% bootstrap_javascript jquery='full' %}
+    <!--  { % render_bundle 'index' 'js' %}-->
+
+    {% endblock mainjsfiles %}
+
+    {% block jsfiles %}
+      {% for file in js_files %}
+        <script src="{% static '/' %}{{file}}"></script>
+      {% endfor %}
+    {% endblock jsfiles %}
+
+
+
+  <!--  <script type="text/javascript/" src=""-->
+  <!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"-->
+  <!--          integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
+
+  </head>
+
+  <body class="container" id="root">
+    {% block header %}
+    <header>
+      <div class="navbar bg-base-100 shadow-sm">
+        <nav class="navbar-nav navbar-toggler navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <!-- { % if user.is_authenticated %}
+              <a class="navbar-brand" href="/weather/">Погода</a>
+            { % endif %} -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/">Главная</a>
+                </li>
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/users/login">Login</a>
+                </li>
+                {% else %}
+                   <li class="nav-item">
+                    <a class="nav-link" href="/users/logout">Logout</a>
+                  </li>
+                {% endif %}
+                <li class="nav-item">
+                  {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="/users/register">Регистрация</a>
+                    </li>
+                  {% endif %}
+                </li>
+              </ul>
+              {% if user.is_authenticated %}
+                <form class="d-flex" role="search" id="search">
+                  <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
+                  <button class="btn btn-outline-success" type="submit">Поиск</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    {% endblock header %}
+    {% block main %}{% endblock main %}
+    <section class="comments" id="comments">
+      {% block comments %}
+        <div class="comments-list"></div>
+      {% endblock comments %}
+      </section>
+    <section class="form" id="form-login">
+      {% block forms_ads %}
+        {% if user.is_authenticated %}
+          <div class="mb-3">
+            <div class="row"><h3>Объявление</h3></div>
+          <form class="ads-form row g-3 needs-validation" >
+            {% csrf_token %}
+            {% for field in form.forms_main %}
+             <div  class="mb-3">
+
+               {% if field.help_text %}
+                  {{ filed.help_text|safe }}
+               {% endif %}
+               {{field}}
+
+             </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          </div>
+
+          <div class="mb-3">
+            <div class="row "><h3>Изображение</h3></div>
+          <form class="ads-form ads-form__full-image-file row g-3 needs-validation" >
+            {% csrf_token %}
+
+             <div  class="mb-3">
+
+
+               {{form.file_image.file_path}}
+
+             </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          </div>
+        {% endif %}
+      {% endblock forms_ads %}
+      {% block forms_main %}{% endblock forms_main %}
+    </section>
+    <section class="ads-collections" id="ads-collections">
+          <div class="ads-collections-list">
+            {% block ads_collections %}
+            <ul class="ads-views"></ul>
+            {% endblock ads_collections %}
+          </div>
+        </section>
+    {% block ad_page %}{% endblock ad_page %}
+    {% block pagination %}
+      <section id="pagination">
+        <div class="pagination">
+          <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
+          <nav aria-label="Пример навигации по страницам">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
+          </ul>
+        </nav>
+        </div>
+      </section>
+    {% endblock pagination %}
+  </body>
+</html>

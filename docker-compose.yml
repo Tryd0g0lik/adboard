@@ -1,0 +1,51 @@
+services:
+  db:
+    container_name: postgres
+    image: postgres
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', '${POSTGRES_USER} -U ${POSTGRES_NAME}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+  www:
+    container_name: adboard
+    build:
+      dockerfile: Dockerfile
+      context: .
+    env_file: ./.env
+    command:
+      - bash
+      - -c
+      - |
+        python3 ./manage.py collectstatic --clear --noinput
+        python3 ./manage.py makemigrations
+        python3 ./manage.py migrate
+        gunicorn -w 4 --bind 0.0.0.0:8000 project.wsgi:application
+    volumes:
+       - volume_static:/www/src/collectstatic
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - www
+    volumes:
+      - volume_static:/www/src/collectstatic
+    restart: on-failure
+    ports:
+      - "80:80"
+volumes:
+  volume_static:

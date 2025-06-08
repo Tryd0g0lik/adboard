@@ -14,9 +14,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+# from ads.urls import urlpatterns as ads_urls
+from ads.views import main_page, ad_page
+from adboard.urls import urlpatterns as user_urls
+from weather.urls import urlpatterns as weather
+from project.urls_api import urlpatterns as api_urls
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls, name="admin"),
+    path("api/v1/", include((api_urls, "api"), namespace="api")),
+    path("ad/<str:pk>/", ad_page, name="ad_url"),
+    path("users/", include((user_urls, "users_url"), "users_url")),
+    # path("weather/", include((weather, "weather_url"), namespace="weather_url")),
+    path("weather/", include((weather, "weather_url"), namespace="weather_url")),
+    path("", main_page, name="main"),
 ]

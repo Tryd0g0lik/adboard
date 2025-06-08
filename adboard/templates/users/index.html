@@ -1,0 +1,29 @@
+  {% extends "layout/index.html" %}
+  {% load static %}
+  {% block forms_ads %}  {% endblock forms_ads %}
+  {% block ads_collections %}{% endblock ads_collections %}
+
+<!--
+
+
+  {% block forms_main %}
+    <div class="mb-3">
+
+      <form class="form row g-3 needs-validation" >
+        {% csrf_token %}
+        {% for field in form.form_user %}
+          <div  class="mb-3">
+              <label  class="form-label">
+                <div>{{field.label}}</div>
+
+              {{ field }}
+              </label>
+           </div>
+        {% endfor %}
+
+      </form>
+      </div>
+  {% endblock forms_main %}
+{% block pagination %}{% endblock pagination %}
+
+

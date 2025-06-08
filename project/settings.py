@@ -12,13 +12,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv_ import (SECRET_KEY_DJ,
-                     POSTGRES_DB,
-                     POSTGRES_PASSWORD,
-                     POSTGRES_USER,
-                     POSTGRES_HOST,
-                     POSTGRES_PORT,
-                     DB_ENGINE)
+from datetime import timedelta
+
+from dotenv_ import (DB_ENGINE, POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER,
+                     SECRET_KEY_DJ)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,19 +44,24 @@ INSTALLED_APPS = [
     'rest_framework',
     'bootstrap4',
     'corsheaders',
+    'adrf',
+    "webpack_loader",
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ads'
+    'ads',
+    'adboard',
+    'weather'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -69,7 +72,11 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, "templates/"),
+            os.path.join(BASE_DIR, "adboard/templates/"),
+            os.path.join(BASE_DIR, "weather/templates/")
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,6 +85,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            # 'loaders': [
+            #     'django.template.loaders.filesystem.Loader',
+            #     'django.template.loaders.app_directories.Loader',
+            # ],
         },
     },
 ]
@@ -96,7 +107,16 @@ DATABASES = {
         'PASSWORD': POSTGRES_PASSWORD,
         'HOST': f'{POSTGRES_HOST}',
         'PORT': f'{POSTGRES_PORT}',
-    }
+        'TEST': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'CONN_MAX_AGE': 1,
+            'OPTIONS': {
+
+            }
+        }
+    },
+
 }
 
 
@@ -118,7 +138,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# hash passwords
+# https://docs.djangoproject.com/en/5.2/topics/auth/passwords/
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.BCryptPasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+    "django.contrib.auth.hashers.MD5PasswordHasher",
+]
 
+PBKDF2_ITERATIONS = 720000
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -134,27 +166,44 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,  "static"),
+    os.path.join(BASE_DIR,  "adboard/static"),
+    os.path.join(BASE_DIR,  "ads/static"),
+    os.path.join(BASE_DIR,  "weather/static")
 ]
-STATIC_ROOT = os.path.join(BASE_DIR,  "ads/static/")
-STATIC_URL = os.environ.get("STATIC_URL", "/static/")
+STATIC_ROOT = os.path.join(BASE_DIR,  "collectstatic/")
+# STATIC_ROOT = "/www/src/static/"
+# STATIC_ROOT = "/www/src/collectstatic"
+# STATIC_URL = os.environ.get("STATIC_URL", "/static/")
+STATIC_URL = "/static/"
 
+MEDIA_ROOT = os.path.join(BASE_DIR,  "media/")
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DEFAULT_CHARSET = "utf-8"
-AUTTH_USER_MODEL = "ads.CustomUser"
+# AUTH_USER_MODEL = "ads.CustomUser"
 
 # '''CORS'''
 # False - это значение по умолчанию и означает, что сервер не будет
 # принимать запросы из других источников.
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 # разрешить только определённые домены
 CORS_ALLOWED_ORIGINS = [
     "http://83.166.245.197",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "http://127.0.0.1:8080",
+    "http://0.0.0.0:8080",
+]
 
+# https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#csrf-integration
+# https://docs.djangoproject.com/en/5.2/ref/settings/#std-setting-CSRF_TRUSTED_ORIGINS
+CSRF_TRUSTED_ORIGINS = [
+    "http://83.166.245.197",
+    "http://127.0.0.1:8080",
+    "http://83.166.245.197/"
 ]
 # разрешить cookie в HTTP запросах
 CORS_ALLOW_CREDENTIALS = True
@@ -176,6 +225,85 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
+    "Accept-Language",
+    "Content-Language"
 ]
+
+# '''WEBPACK_LOADER'''
+
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "CACHE": not DEBUG,
+        # 'BUNDLE_DIR_NAME': '..\\frontend\\src\\bundles',
+        "BUNDLE_DIR_NAME": "ads\\static",
+        "STATS_FILE": os.path.join(
+            BASE_DIR, "ads\\static\\bundles\\webpack-stats.json"
+        ),
+
+        "POLL_INTERVAL": 0.1,
+        "TIMEOUT": None,
+        "TEST": {
+            "NAME": "test_cloud",
+        },
+        "IGNORE": [
+            # '.+\.map$'
+            r".+\.hot-update.js",
+            r".+\.map",
+        ],
+        "LOADER_CLASS": "webpack_loader.loader.WebpackLoader",
+    }
+}
+# '''Logging'''
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+}
+
 if DEBUG:  # Только в режиме разработки
     SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
+# if not DEBUG:
+# WEBPACK_LOADER['DEFAULT'].update({
+#         'BUNDLE_DIR_NAME': 'bundles\\',
+#         'STATS_FILE': os.path.join(BASE_DIR, 'bundles\\webpack-stats.json')
+#     })
+''''Loging Authentication'''
+
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+# PASSWORD_RESET_TIMEOUT_DAYS = 1
+#https://docs.djangoproject.com/en/4.2/topics/auth/customizing/
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend"
+]
+
+"""REST_FRAMEWORK JWT SETTINGS"""
+# https://pypi.org/project/djangorestframework-simplejwt/4.3.0/
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+
+    )
+}
+    # "access_token_lifetime": TIMEDELTA(MILLISECONDS=TIMEDELTA(MINUTES=5).TOTAL_SECONDS()*1000),
+    # "refresh_token_lifetime": TIMEDELTA(DAYS = TIMEDELTA(DAYS=1).TOTAL_SECONDS()*1000),
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes= 5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days = 1),
+    "SIGNING_KEY": SECRET_KEY,
+}
