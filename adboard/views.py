@@ -1,27 +1,19 @@
+import base64
 import json
 import os
+import pickle
 
-# import requests
 from datetime import datetime
 from typing import Dict, Optional, TypeVar
 
-
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
-from rest_framework_simplejwt.serializers import TokenVerifySerializer
-
-# from rest_framework_simplejwt.views import TokenObtainPairView
-# from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.tokens import TokenUser
 
-# from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
 from adboard.binaries import Binary
@@ -35,7 +27,6 @@ import logging
 from rest_framework import serializers, status  # viewsets,
 from adrf.viewsets import ViewSet
 from rest_framework.response import Response
-
 from django.contrib.auth.models import User, AbstractBaseUser
 from django.contrib.auth import authenticate, login
 from logs import configure_logging
@@ -43,24 +34,6 @@ from project.settings import SIMPLE_JWT
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
-
-
-# class AlgorritmPBKDF2PasswordHasher(PBKDF2PasswordHasher):
-#     """
-#     A subclass of PBKDF2PasswordHasher that uses 100 times more iterations.
-#     <algorithm>$<iterations>$<salt>$<hash>
-#     https://docs.djangoproject.com/en/5.2/topics/auth/passwords/
-#     """
-#     def __init__(self):
-#         self.iterations = PBKDF2PasswordHasher.iterations * 100
-#     # algorithm = f"pbkdf2_sha256$100${}${SECRET_KEY}"
-#
-#     def encode_md5_hash(self, md5_hash, salt, iterations=None):
-#         return super().encode(md5_hash, salt, iterations)
-#
-#     def encode(self, password, salt, iterations=None):
-#         _, _, md5_hash = MD5PasswordHasher().encode(password, salt).split("$", 2)
-#         return self.encode_md5_hash(md5_hash, salt, iterations)
 
 
 def serializer_validate(serializer):
@@ -72,11 +45,12 @@ def serializer_validate(serializer):
 
 
 class LogingViewSet(ViewSet):
-    # permission_classes = [IsAuthenticated]
     AuthUser = TypeVar("AuthUser", AbstractBaseUser, TokenUser)
 
+    # permission_classes = [IsAuthenticated]
+
     @staticmethod
-    def _jwt_user_checker(token: Optional[str], user_object: type(User)) -> None:
+    def _jwt_user_checker(token: Optional[str], user_object: User) -> None:
         """
         Checking user is owner of this token or not.
         If user is not owner of this token then raise error.
@@ -199,7 +173,6 @@ class LogingViewSet(ViewSet):
                 ]}
                 ````
         """
-
         password = request.data.get("password")
         login_user = request.data.get("username")
         """HASH PASSWORD OF USER"""
@@ -211,7 +184,6 @@ class LogingViewSet(ViewSet):
         user_one = await sync_to_async(user_one_list.first)()
 
         if not user_one:
-            log.error("USER NOT FOUNDED")
             return Response(
                 {"data": "User not founded"},
                 status=status.HTTP_401_UNAUTHORIZED,
@@ -258,16 +230,12 @@ class LogingViewSet(ViewSet):
             user_one.last_login = datetime.now()
             """SAVE USER"""
             await sync_to_async(user_one.save)()
-
-            log.info("USER IS ACTIVE: %s", user_one.is_active)
             tokens = await self.async_token(user_one)
-            log.info("USER TOKEN IS ACTIVE: %s", str(tokens))
             """ ИЗМЕНИТЬ ВРЕМЯ"""
             access_time = (SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]).total_seconds() * 1000
             refresh_time = SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"].total_seconds() * 1000
 
         except Exception as ex:
-            log.error("USER ERROR: %s", ex.args)
             return Response({"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             """ACCESS TOKEN BASE64"""
@@ -308,26 +276,78 @@ class LogingViewSet(ViewSet):
         :param pk:
         :return:
         """
+        user: object
+        if request.user.is_authenticated:
+            try:
+                user = await self.get_user_from_token(request)
+                if not user:
+                    return redirect("main", status=status.HTTP_401_UNAUTHORIZED)
 
-        # request_user = await sync_to_async(lambda:  request.user)()
-        self.get_user_from_token(request)
-        # if not await sync_to_async(lambda: request_user.is_authenticated)():
-        #     return Response({"data": "User have not logged in"},
-        #                    status=status.HTTP_401_UNAUTHORIZED)
-        return Response({"data": "User logout successful"}, status=status.HTTP_200_OK)
+            except Exception:
+                user = request.user
+                user.is_active = False
+                await sync_to_async(user.save)()
+                return redirect("main", status=status.HTTP_401_UNAUTHORIZED)
 
-    @staticmethod
-    def get_user_from_token(request):
+            if not user.is_active:
+                return redirect("main")
+            try:
+                user.is_active = False
+                await sync_to_async(user.save)()
+                return Response(
+                    {"data": "User logout successful"}, status=status.HTTP_200_OK
+                )
+            except Exception as ex:
+                return Response(
+                    {"detail": f"error {ex}"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+        return redirect("main", status=status.HTTP_401_UNAUTHORIZED)
+
+    async def get_user_from_token(self, request):
+        """
+        This method is used for getting the user object from the token.
+        """
         try:
-            # Извлекаем пользователя из токена
-            auth = JWTAuthentication()
-            header = auth.get_header(request)  # Получаем заголовок Authorization
-            raw_token = auth.get_raw_token(header)  # Извлекаем токен
-            validated_token = auth.get_validated_token(raw_token)  # Валидируем
-            user = auth.get_user(validated_token)  # Получаем пользователя
+            bytes_token: bytes
+
+            """GET TOKENS FROM THE HEADERS"""
+            origin_token_access = request.COOKIES.get("token_access")
+            origin_token_refresh = request.COOKIES.get("token_refresh")
+            if not origin_token_access and not origin_token_refresh:
+                raise ValueError("Invalid token")
+
+            if origin_token_access:
+                bytes_token = self.get_byte_tokens(origin_token_access)
+            elif not origin_token_refresh:
+                bytes_token = self.get_byte_tokens(origin_token_refresh)
+
+            """GET USER ID AND USER NAME"""
+            obj = pickle.loads(bytes_token)
+            user_id = obj.payload["user_id"]
+            user_name = obj.payload["name"]
+            user = await sync_to_async(User.objects.get)(
+                id=int(user_id), username=user_name
+            )
+
             return user
         except Exception as e:
-            raise AuthenticationFailed("Invalid token")
+            raise AuthenticationFailed(f"Invalid token: {e}")
+
+    @staticmethod
+    def get_byte_tokens(string: str) -> bytes:
+        """
+        This method for converting from string to bytes
+        :param string: string for convert to bytes
+        :return: byte string
+        """
+        try:
+            byte_string = base64.b64decode(string)
+            return byte_string
+        except Exception as ex:
+            raise ValueError(f"Error converting to bytes: {ex}")
+
+    pass
 
     @staticmethod
     def hash_password(password):
