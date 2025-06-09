@@ -5,8 +5,9 @@ import os
 from datetime import datetime
 from typing import Dict, Optional, TypeVar
 
-# from django.contrib.auth.models import User
+
 from asgiref.sync import sync_to_async
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
@@ -22,6 +23,8 @@ from rest_framework_simplejwt.tokens import TokenUser
 
 # from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
+
+from adboard.binaries import Binary
 from adboard.forms.register import UserRegisterForm
 
 from adboard.forms.login import UserLogin
@@ -32,6 +35,7 @@ import logging
 from rest_framework import serializers, status  # viewsets,
 from adrf.viewsets import ViewSet
 from rest_framework.response import Response
+
 from django.contrib.auth.models import User, AbstractBaseUser
 from django.contrib.auth import authenticate, login
 from logs import configure_logging
@@ -68,7 +72,7 @@ def serializer_validate(serializer):
 
 
 class LogingViewSet(ViewSet):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     AuthUser = TypeVar("AuthUser", AbstractBaseUser, TokenUser)
 
     @staticmethod
@@ -137,6 +141,9 @@ class LogingViewSet(ViewSet):
             "token_access": str(refresh.access_token),
             "token_refresh": str(refresh),
         }
+
+    def retrieve(self, request, pk=None):
+        pass
 
     def create(self, request) -> type(Response):
         """CHECK USER DATA"""
@@ -258,15 +265,28 @@ class LogingViewSet(ViewSet):
             """ ИЗМЕНИТЬ ВРЕМЯ"""
             access_time = (SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]).total_seconds() * 1000
             refresh_time = SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"].total_seconds() * 1000
-            return Response(
+
+        except Exception as ex:
+            log.error("USER ERROR: %s", ex.args)
+            return Response({"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            """ACCESS TOKEN BASE64"""
+            access_binary = Binary()
+            access_base64_str = access_binary.object_to_binary(tokens.access_token)
+            access_result = access_binary.str_to_binary(access_base64_str)
+            """ REFRESH TOKEN BASE64"""
+            reffresh_binary = Binary()
+            reffresh_base64_str = reffresh_binary.object_to_binary(tokens)
+            reffresh_result = reffresh_binary.str_to_binary(reffresh_base64_str)
+            return JsonResponse(
                 {
                     "data": [
                         {
-                            "token_access": str(tokens.access_token),
+                            "token_access": access_result,
                             "live_time": access_time,
                         },
                         {
-                            "token_refresh": str(tokens),
+                            "token_refresh": reffresh_result,
                             "live_time": refresh_time,
                         },
                     ]
@@ -274,8 +294,10 @@ class LogingViewSet(ViewSet):
                 status=status.HTTP_200_OK,
             )
         except Exception as ex:
-            log.error("USER ERROR: %s", ex.args)
-            return Response({"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED)
+            log.error("USER's TOKENS IS ERROR: %s", ex.args)
+            return Response(
+                {"detail": ex.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @action(methods=["GET"], detail=True)
     async def logout_user(self, request, pk: str = "0"):
