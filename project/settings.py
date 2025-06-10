@@ -31,13 +31,11 @@ SECRET_KEY = f'{SECRET_KEY_DJ}'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     '83.166.245.197',
     'localhost',
-    '127.0.0.1',
+
 ]
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -202,7 +200,7 @@ CORS_ALLOWED_ORIGINS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#std-setting-CSRF_TRUSTED_ORIGINS
 CSRF_TRUSTED_ORIGINS = [
     "http://83.166.245.197",
-    "http://127.0.0.1:8080",
+    "http://127.0.0.1:8000",
     "http://83.166.245.197/"
 ]
 # разрешить cookie в HTTP запросах
@@ -290,13 +288,15 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend"
 ]
 
-"""REST_FRAMEWORK JWT SETTINGS"""
+"""REST_FRAMEWORK SETTINGS"""
 # https://pypi.org/project/djangorestframework-simplejwt/4.3.0/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
         # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # Для работы с сессиями
+        'rest_framework.authentication.TokenAuthentication',   # Опционально для API
 
     )
 }
