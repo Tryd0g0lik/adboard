@@ -372,10 +372,10 @@ def user_view(request):
         title = "Регистрация"
     files = []
     # GET JS FILES FOR LOGIN AND REGISTER PAGES
-    if "login" in request.path.lower() or "register" in request.path.lower():
-        files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
-        files = ["adboard/scripts/" + file for file in files]
-        title = "Авторизация"
+    # if "login" in request.path.lower() or "register" in request.path.lower():
+    files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
+    files = ["adboard/scripts/" + file for file in files]
+    title = "Авторизация"
 
     return render(
         request,
