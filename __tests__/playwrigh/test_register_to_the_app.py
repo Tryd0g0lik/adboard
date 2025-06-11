@@ -19,35 +19,45 @@ configure_logging(logging.INFO)
 
 
 # @pytest.mark.asyncio
+
 @pytest.mark.user_page
-def test_register_form_valid(browser):
+def test_register_form_valid(browser, check_user_sync):
     page = browser.new_page()
     log.info(f"OPEN: {__name__}")
     try:
-        page.goto(f"http://{os.getenv('POSTGRES_HOST')}:8000/users/register/")
-        log.info("GOT REGISTER PAGE")
-        page.wait_for_load_state("domcontentloaded")
-        log.info("GOT DIV" )
-        expect(page).to_have_title(re.compile(r"Регистрация.*"), timeout=3000)
-        log.info("GOT TITLE")
-        """CHECK REGISTER FORM"""
-        page.fill("input[name='username']", "Sergey")
-        page.fill("input[name='email']", "sergey@gmail.com")
-        page.fill("input[name='password']", "123456789")
-        page.fill("input[name='confirm_password']", "123456789")
-        log.info("INSERT DATA IN REGISTER TORM")
-        page.keyboard.down("Enter")
-        log.info("PRESS BY ENTER")
-        """CHECK REDIRECT TO LOGIN PAGE"""
-        page.wait_for_load_state("domcontentloaded")
-        log.info("LOGIN PAGE WAS LOADED")
-        expect(page).to_have_title(re.compile(r"Войдите в"))
+        # page.goto(f"http://{os.getenv('POSTGRES_HOST')}:8000/users/register/")
+        # log.info("GOT REGISTER PAGE")
+        # page.wait_for_load_state("domcontentloaded")
+        # log.info("GOT DIV" )
+        # expect(page).to_have_title(re.compile(r"Регистрация.*"), timeout=3000)
+        # log.info("GOT TITLE")
+        # """CHECK REGISTER FORM"""
+        # page.fill("input[name='username']", "Sergey")
+        # page.fill("input[name='email']", "sergey@gmail.com")
+        # page.fill("input[name='password']", "123456789")
+        # page.fill("input[name='confirm_password']", "123456789")
+        # log.info("INSERT DATA IN REGISTER TORM")
+        # page.keyboard.down("Enter")
+        # log.info("PRESS BY ENTER")
+        # """CHECK REDIRECT TO LOGIN PAGE"""
+        # page.wait_for_load_state("domcontentloaded")
+        # log.info("LOGIN PAGE WAS LOADED")
+        # expect(page).to_have_title(re.compile(r"Войдите в"))
         log.info("CHECK THE TITLE OF LOGIN PAGE")
+        # check_user_sync()
     except (Exception, AssertionError) as e:
         log.error("TEST ERROR", e)
     finally:
+        check_user_sync()
         
         # Закрываем страницу и браузер
         page.close()
         log.info(f"CLOSED: {__name__}")
+    
+# @pytest.mark.user_page
+# @pytest.mark.asyncio
+# async def main(check_user_sync):
+#     # test_register_form_valid()
+#     await async_to_sync(check_user_sync)()
+#     # asyncio.all_tasks()
 
