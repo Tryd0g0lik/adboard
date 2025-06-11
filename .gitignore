@@ -280,3 +280,4 @@ swagger
 
 gunicorn.service
 core
+**/pytest-logs.log

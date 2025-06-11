@@ -21,11 +21,11 @@ def configure_logging(
         log_file: Name of the log file (default: 'log_putout.log')
 
     Example:
-        >>> import logging
-        >>> from rabbit.logs import configure_logging
-        >>> log = logging.getLogger(__name__)
-        >>> configure_logging(logging.INFO)
-        >>> log.info("Application started")
+        import logging
+        from rabbit.logs import configure_logging
+        log = logging.getLogger(__name__)
+        configure_logging(logging.INFO)
+        log.info("Application started")
     """
     # Clear any existing handlers
     logging.getLogger().handlers.clear()
