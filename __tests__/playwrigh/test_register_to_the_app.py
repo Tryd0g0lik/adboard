@@ -6,10 +6,10 @@ import logging
 import re
 import os
 import pytest
-from django.contrib.auth.models import User
+
 from dotenv import load_dotenv
 from playwright.async_api import async_playwright, Playwright, expect
-
+from __tests__.__fixtures__.playwrigth_fixture import (abrowser, cleaning_db)
 from logs import configure_logging
 
 load_dotenv()
@@ -18,31 +18,8 @@ configure_logging(logging.INFO)
 
 
 # @pytest.mark.django_db(transaction=True)
-@pytest.fixture
-def cleaning_db(django_db_blocker):
-    """Фикстура очистки базы данных"""
-    with django_db_blocker.unblock():
-        log.info("FIXTURE CLEANING DB")
-        User.objects.all().delete()
-        log.info("FIXTURE DELETING ALL USERS")
-        return True
-    
-@pytest.fixture
-async def abrowser():
-    
-    async def pages(playwright: Playwright):
-        log.info("RECEIVED CHROMIUM")
-        chromium = playwright.chromium
-        log.info("RECEIVED CHROMIUM")
-        browser = await chromium.launch()
-        log.info(" RECEIVED BROWSER")
-        context = await browser.new_context()
-        log.info("RECEIVED CONTEXT")
-        page = await context.new_page()
-        log.info("RECEIVED NEW PAGE")
-        return page
-        # await context.close()
-    return pages
+
+
 
 @pytest.mark.user_page
 @pytest.mark.asyncio
@@ -52,7 +29,6 @@ async def test_register_form_valid(abrowser, cleaning_db):
         page = await abrowser(playwright)
 
         try:
-            # os.getenv('POSTGRES_HOST')}
             url = f"http://{os.getenv('POSTGRES_HOST')}:8000/users/register/"
             await page.goto(url)
             log.info("GOT REGISTER PAGE")
@@ -73,10 +49,7 @@ async def test_register_form_valid(abrowser, cleaning_db):
             log.info("LOGIN PAGE WAS LOADED")
             await expect(page).to_have_title(re.compile(r"Войдите в"))
             log.info("CHECK THE TITLE OF LOGIN PAGE")
-            # User.objects.all().delete()
-            # log.info("DELETE USERS")
-            # assert User.objects.all().count() == 0
-            log.info("CHECK ALL USERS WAS DELETED")
+            
         except (Exception, AssertionError) as e:
             log.info("TEST ERROR", e)
         finally:
