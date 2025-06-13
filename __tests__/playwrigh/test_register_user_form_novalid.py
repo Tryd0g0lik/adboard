@@ -22,7 +22,8 @@ valid_data = {'name': 'Elena', 'email': 'elena09@gmail.com',
     "username, expected",
     [
         ("", 1),
-        # ("1234567890123456789001234567890", "The maximum length of the username is 15 characters"),
+        ("1234567890123456789001234567890", 1),
+        (" Sergey ", 1),
     ]
     )
 @pytest.mark.asyncio
