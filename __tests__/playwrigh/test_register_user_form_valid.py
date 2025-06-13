@@ -1,7 +1,6 @@
 """
 __tests__/playwrigh/test_register_user_form_valid.py
 """
-import asyncio
 import logging
 import re
 import os
@@ -27,7 +26,7 @@ async def test_register_form_valid(abrowser, cleaning_db):
     :param cleaning_db:
     :return:
     """
-    log.info("START BROWSER")
+    log.info("START BROWSER %s" % __name__)
     async with async_playwright() as playwright:
         page = await abrowser(playwright)
 

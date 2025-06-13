@@ -26,7 +26,7 @@ def cleaning_db(django_db_blocker):
 async def abrowser():
     
     async def pages(playwright: Playwright):
-        log.info("RECEIVED CHROMIUM")
+        log.info("START: %s" % __name__)
         chromium = playwright.chromium
         log.info("RECEIVED CHROMIUM")
         browser = await chromium.launch()
