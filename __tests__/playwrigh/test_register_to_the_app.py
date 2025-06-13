@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 # from playwright.async_api import sync_playwright
 # from playwright.sync_api import Playwright, sync_playwright, expect
 from playwright.async_api import async_playwright, Playwright, expect
-from __tests__.__fixtures__.playwrigth_fixture import abrowser #, check_user_sync
+
 from logs import configure_logging
 
 # load_dotenv()
