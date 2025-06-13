@@ -1,12 +1,11 @@
 """
-__tests__/playwrigh/test_register_to_the_app.py
+__tests__/playwrigh/test_register_user_form_valid.py
 """
 import asyncio
 import logging
 import re
 import os
 import pytest
-
 from dotenv import load_dotenv
 from playwright.async_api import async_playwright, Playwright, expect
 from __tests__.__fixtures__.playwrigth_fixture import (abrowser, cleaning_db)
@@ -19,11 +18,15 @@ configure_logging(logging.INFO)
 
 # @pytest.mark.django_db(transaction=True)
 
-
-
 @pytest.mark.user_page
 @pytest.mark.asyncio
 async def test_register_form_valid(abrowser, cleaning_db):
+    """
+    This test check registration user's form with valid data.
+    :param abrowser:
+    :param cleaning_db:
+    :return:
+    """
     log.info("START BROWSER")
     async with async_playwright() as playwright:
         page = await abrowser(playwright)
@@ -53,9 +56,7 @@ async def test_register_form_valid(abrowser, cleaning_db):
         except (Exception, AssertionError) as e:
             log.info("TEST ERROR", e)
         finally:
-            pass
-            # Закрываем страницу и браузер
-            
             log.info("CONTEXT CLOSED")
             await page.close()
             log.info("PAGE CLOSED")
+
