@@ -20,7 +20,6 @@ def browser():
     :param playwright:
     :return:
     """
-
     logging.info("START BROWSER FIXTURE")
     playwright = sync_playwright()
     chromium = playwright.start().chromium
@@ -65,21 +64,53 @@ def django_db_setup():
 #     logging.info("END CHECK OF USER IN DB AND CLOSE BROWSER")
 #
 
-# @pytest.fixture(autouse=True)
-# async def check_user_async(django_db_blocker):
-#     """Асинхронная версия фикстуры"""
-#     # yield
-#     pass
-# with django_db_blocker.unblock():
-#     logging.info("START CHECK OF USER IN DB")
-#
-#     count = await User.objects.acount()
-#     logging.info(f"COUNT USER: {count}, {count == 1}")
-#     assert count == 1
-#
-#     user = await sync_to_async(User.objects.afilter(username="Sergey").afirst()
-#     assert user is not None
-#     logging.info(f"USER NAME: {user.username}")
 
-#         await user.adelete()
+# def check_user_sync(django_db_blocker):
+#     """Асинхронная версия фикстуры"""
+#
+#     logging.info(f"{__name__}")
+#     def check_user_async():
+#         with django_db_blocker.unblock():
+#             # Удаляем всех пользователей
+#             User.objects.all().delete()
+#             assert User.objects.count() == 0
+#             # logging.info("COUNT USER VALUES: %s"% str(type(count_list)))
+#             logging.info(f"GOT LIST OF USERS")
+            # count = len(list(count_list))
+            # logging.info(f"Total users in DB: {count}")
+
+            # # Вариант 2: Поиск конкретного пользователя
+            # user = User.objects.filter(username="Sergey").first()
+            # assert user is not None, "User 'Sergey' not found in database"
+            # logging.info(f"User found: {user.username}")
+            # # logging.info(f"COUNT USER: {count}, {count == 1}")
+            # assert count == 1
+            # user.delete()
+            # user.save()
+            # logging.info("END CHECK OF USER IN DB AND CLOSE BROWSER")
+
+    # return check_user_async
+@pytest.fixture
+def check_user_sync(django_db_blocker):
+    """Асинхронная версия фикстуры"""
+    # yield
+    async def check_user_async():
+        with django_db_blocker.unblock():
+            logging.info("START CHECK OF USER IN DB")
+
+            # Вариант 1: Просто проверка количества пользователей
+            # await sync_to_async(User.objects.all().delete)()
+            # logging.info(f"Total users in DB: {count}")
+#
+#             # Вариант 2: Поиск конкретного пользователя
+#             user = await sync_to_async(User.objects.filter(username="Sergey").first)()
+#             assert user is not None, "User 'Sergey' not found in database"
+#             logging.info(f"User found: {user.username}")
+#             # logging.info(f"COUNT USER: {count}, {count == 1}")
+#             assert count == 1
+#             await sync_to_async(user.delete)()
+
+            # counst = await sync_to_async(User.objects.count)()
+            # return counst
 #         logging.info("END CHECK OF USER IN DB AND CLOSE BROWSER")
+    return check_user_async
