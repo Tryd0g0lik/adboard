@@ -7,15 +7,12 @@ import re
 import os
 import pytest
 from django.contrib.auth.models import User
-# from asgiref.sync import sync_to_async
-# from dotenv import load_dotenv
-# from playwright.async_api import sync_playwright
-# from playwright.sync_api import Playwright, sync_playwright, expect
+from dotenv import load_dotenv
 from playwright.async_api import async_playwright, Playwright, expect
 
 from logs import configure_logging
 
-# load_dotenv()
+load_dotenv()
 log = logging.getLogger(__name__)
 configure_logging(logging.INFO)
 
@@ -30,26 +27,33 @@ def cleaning_db(django_db_blocker):
         log.info("FIXTURE DELETING ALL USERS")
         return True
     
+@pytest.fixture
+async def abrowser():
+    
+    async def pages(playwright: Playwright):
+        log.info("RECEIVED CHROMIUM")
+        chromium = playwright.chromium
+        log.info("RECEIVED CHROMIUM")
+        browser = await chromium.launch()
+        log.info(" RECEIVED BROWSER")
+        context = await browser.new_context()
+        log.info("RECEIVED CONTEXT")
+        page = await context.new_page()
+        log.info("RECEIVED NEW PAGE")
+        return page
+        # await context.close()
+    return pages
 
 @pytest.mark.user_page
 @pytest.mark.asyncio
-async def test_register_form_valid(cleaning_db):
-    log.info("FIXTURE START BROWSER")
+async def test_register_form_valid(abrowser, cleaning_db):
+    log.info("START BROWSER")
     async with async_playwright() as playwright:
-        log.info("FIXTURE RECEIVED CHROMIUM")
-        chromium = playwright.chromium
-        log.info("FIXTURE RECEIVED CHROMIUM")
-        abrowser = await chromium.launch()
-        # log.info("FIXTURE RECEIVED BROWSER")
-        # log.info("TEST REGISTER PAGE")
-        context = await abrowser.new_context()
-        # /log.info("RECEIVED CONTEXT")
-        page = await context.new_page()
-        log.info("RECEIVED NEW PAGE")
+        page = await abrowser(playwright)
 
         try:
-            pass
-            url = "http://127.0.0.1:8000/users/register/"
+            # os.getenv('POSTGRES_HOST')}
+            url = f"http://{os.getenv('POSTGRES_HOST')}:8000/users/register/"
             await page.goto(url)
             log.info("GOT REGISTER PAGE")
             await page.wait_for_load_state("domcontentloaded")
@@ -78,7 +82,7 @@ async def test_register_form_valid(cleaning_db):
         finally:
             pass
             # Закрываем страницу и браузер
-            await context.close()
+            
             log.info("CONTEXT CLOSED")
             await page.close()
             log.info("PAGE CLOSED")
