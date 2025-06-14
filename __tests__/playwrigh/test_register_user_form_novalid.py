@@ -24,6 +24,12 @@ valid_data = {'name': 'Elena', 'email': 'elena09@gmail.com',
         ("", 1),
         ("1234567890123456789001234567890", 1),
         (" Sergey ", 1),
+        ("1Sergey", 1),
+        ("Se%rgey1", 1),
+        ("Ser gey1", 1),
+        ("Ser-gey1", 1),
+        ("Ser'gey1'", 1),
+        ("Sergey(1)", 1),
     ]
     )
 @pytest.mark.asyncio
@@ -36,7 +42,7 @@ async def test_filed_username_invalid(abrowser, cleaning_db, username, expected)
     """
     valid_data['name'] = username
     cache.clear()
-    log.info("START BROWSER %s" % __name__)
+    log.info("START %s and USERNAME: %s" % (__name__, username))
     async with async_playwright() as playwright:
         log.info("GOT PLAYWRIGHT")
         page = await abrowser(playwright)
