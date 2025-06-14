@@ -38,6 +38,8 @@ pillow = "^11.2.1"
 adrf = "^0.1.9"
 django-webpack-loader = "^3.1.1"
 model-bakery = "^1.20.4"
+pytest-playwright = "^0.7.0"
+playwright = "^1.52.0"
 
 [build-system]
 requires = ["poetry-core"]
