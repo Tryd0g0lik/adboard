@@ -5,7 +5,7 @@ from rest_framework.test import APIClient
 from ads.models import Ad
 from django.db import connections
 from model_bakery import baker
-
+# from __tests__.__fixtures__.playwrigth_fixture import django_db_setup
 
 @pytest.fixture(autouse=True, scope="module")
 async def async_client():

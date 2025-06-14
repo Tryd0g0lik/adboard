@@ -12,7 +12,7 @@ from logs import configure_logging
 
 log = logging.getLogger(__name__)
 configure_logging(logging.INFO)
-log.info("START")
+
 
 
 @pytest.fixture

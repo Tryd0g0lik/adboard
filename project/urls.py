@@ -21,8 +21,10 @@ from django.urls import path, include
 # from ads.urls import urlpatterns as ads_urls
 from ads.views import main_page, ad_page
 from adboard.urls import urlpatterns as user_urls
+from project import settings
 from weather.urls import urlpatterns as weather
 from project.urls_api import urlpatterns as api_urls
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
@@ -33,3 +35,4 @@ urlpatterns = [
     path("weather/", include((weather, "weather_url"), namespace="weather_url")),
     path("", main_page, name="main"),
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
