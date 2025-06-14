@@ -1,13 +1,9 @@
 FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-RUN apt update
-RUN apt install -y python3-venv && \
-    pip
+ENV PYTHONPATH=1
 RUN mkdir /www && \
-    mkdir /www/src && \
-    mkdir /www/src/weather && \
-    mkdir /www/src/weather/static
+    mkdir /www/src
 WORKDIR /www/src
 COPY ./requirements.txt .
 RUN pip install --upgrade pip
