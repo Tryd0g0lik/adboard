@@ -213,7 +213,7 @@ class LogingViewSet(ViewSet):
             #     data=json.dumps(
             #         [
             #             {ПОГОДА
-            #                 "query": user_ip_address,  # "83.166.245.197",  # Изменить на user_ip_address
+            #                 "query": user_ip_address,  # "80.78.242.128",  # Изменить на user_ip_address
             #                 "fields": ["lat", "lon"],  # Исправлено на lat/lon
             #                 "lang": "ru",
             #             }
