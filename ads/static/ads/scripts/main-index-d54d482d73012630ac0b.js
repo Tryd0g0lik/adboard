@@ -15,7 +15,7 @@
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   URL_HOST_FOR_API: () => (/* binding */ URL_HOST_FOR_API)\n/* harmony export */ });\nconst URL_HOST_FOR_API = \"http://83.166.245.197\";\n\n//# sourceURL=webpack://ads/./dotenv__.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   URL_HOST_FOR_API: () => (/* binding */ URL_HOST_FOR_API)\n/* harmony export */ });\nconst URL_HOST_FOR_API = \"http://83.166.245.209\";\n\n//# sourceURL=webpack://ads/./dotenv__.ts?");
 
 /***/ }),
 
