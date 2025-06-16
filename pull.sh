@@ -16,8 +16,8 @@ if [ "$(sudo docker images -q)" ]; then
 else
     echo "No docker images found"
 fi
-
-sudo docker compose -f ./docker-compose.yml up -d --build --force-recreate
+sudo docker builder prune -af
+sudo docker compose -f ./docker-compose.yml up -d --build --force-recreate --no-cache
 echo "Deployment completed successfully"
 
 
