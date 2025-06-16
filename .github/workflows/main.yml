@@ -2,7 +2,7 @@ name: Django_pages
 
 on:
   push:
-    branches: ['dev']
+    branches: ['master']
 
 jobs:
   deploy_adboard_panel:
