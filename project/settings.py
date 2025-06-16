@@ -31,8 +31,8 @@ SECRET_KEY = f'{SECRET_KEY_DJ}'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
     '83.166.245.209',
+    '127.0.0.1',
     'localhost',
 
 ]
