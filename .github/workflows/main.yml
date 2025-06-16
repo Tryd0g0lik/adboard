@@ -17,6 +17,8 @@ jobs:
       DEPLOY_PASSWORD: ${{ secrets.SSH_PASSWORD }}
     needs: deploy_menu
     steps:
+      - name: Clear GitHub Actions cache
+        run: rm -rf $HOME/.cache/actions
       - name: Deploy to GitHub Pages
         uses: appleboy/ssh-action@master
         with:
