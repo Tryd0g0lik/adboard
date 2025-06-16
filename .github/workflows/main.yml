@@ -5,7 +5,7 @@ on:
     branches: ['dev']
 
 jobs:
-  deploy_weather:
+  deploy_adboard_panel:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,8 +14,7 @@ jobs:
       # cache remove
       - name: Clear GitHub Actions cache
         run: rm -rf $HOME/.cache/actions
-      - name: Checkout code
-        uses: actions/checkout@v2
+
   cicd_deploy:
     runs-on: ubuntu-latest
     strategy:
