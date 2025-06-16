@@ -5,6 +5,17 @@ on:
     branches: ['dev']
 
 jobs:
+  deploy_weather:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.x' ]
+    steps:
+      # cache remove
+      - name: Clear GitHub Actions cache
+        run: rm -rf $HOME/.cache/actions
+      - name: Checkout code
+        uses: actions/checkout@v2
   cicd_deploy:
     runs-on: ubuntu-latest
     strategy:
@@ -17,10 +28,6 @@ jobs:
       DEPLOY_PASSWORD: ${{ secrets.SSH_PASSWORD }}
     needs: deploy_adboard_panel
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Clear GitHub Actions cache
-        run: rm -rf $HOME/.cache/actions
       - name: Deploy to GitHub Pages
         uses: appleboy/ssh-action@master
         with:
