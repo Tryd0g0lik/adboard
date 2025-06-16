@@ -5,5 +5,6 @@ log_file -noappend /home/denis/adboard/logging_pullexp.log
 spawn /home/denis/adboard/pull.sh
 expect "password"
 send -- "123\r"
-log_file    # Закрываем лог
+# Закрываем лог
+log_file
 expect eof
