@@ -189,7 +189,7 @@ DEFAULT_CHARSET = "utf-8"
 CORS_ORIGIN_ALLOW_ALL = True
 # разрешить только определённые домены
 CORS_ALLOWED_ORIGINS = [
-    "http://80.78.242.128",
+    "http://83.166.245.197",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:8080",
@@ -199,7 +199,7 @@ CORS_ALLOWED_ORIGINS = [
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#csrf-integration
 # https://docs.djangoproject.com/en/5.2/ref/settings/#std-setting-CSRF_TRUSTED_ORIGINS
 CSRF_TRUSTED_ORIGINS = [
-    "http://80.78.242.128",
+    "http://83.166.245.197",
     "http://127.0.0.1:8000",
     "http://80.78.242.128"
 ]
