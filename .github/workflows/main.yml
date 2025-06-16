@@ -6,9 +6,7 @@ on:
 
 jobs:
   cicd_deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         python-version: [ '3.x' ]
@@ -19,6 +17,8 @@ jobs:
       DEPLOY_PASSWORD: ${{ secrets.SSH_PASSWORD }}
     needs: deploy_adboard_panel
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Clear GitHub Actions cache
         run: rm -rf $HOME/.cache/actions
       - name: Deploy to GitHub Pages
