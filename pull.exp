@@ -1,18 +1,9 @@
 #!/bin/bash/expect
 
 # Включаем запись лога в файл (перезаписывается при каждом запуске)
-log_file -noappend logging.log
-# Или добавляем в конец существующего файла
-# log_file -append /tmp/expect_pull.log
-# запускаем
+log_file -noappend /home/denis/adboard/logging_pullexp.log
 spawn /home/denis/adboard/pull.sh
 expect "password"
 send -- "123\r"
-# или
-# expect {
-#    "password" { send -- "123\r";  }  # Ждёт новые "password" exp_continue
-#    "sudo"     { send -- "at6rAzLSYCrMr48F\r"; }  # Или "sudo"
-#    eof  # Выход при завершении
-# }
 log_file    # Закрываем лог
-
+expect eof
