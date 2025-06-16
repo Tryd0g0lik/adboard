@@ -17,7 +17,7 @@ else
     echo "No docker images found"
 fi
 
-sudo docker compose -f ./docker-compos* up -d || exit 1
+sudo docker compose -f ./docker-compose.yml up -d --build --force-recreate
 echo "Deployment completed successfully"
 
 
