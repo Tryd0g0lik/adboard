@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-
+import time
 from dotenv_ import (DB_ENGINE, POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER,
                      SECRET_KEY_DJ)
 
@@ -301,8 +301,9 @@ REST_FRAMEWORK = {
 }
     # "access_token_lifetime": TIMEDELTA(MILLISECONDS=TIMEDELTA(MINUTES=5).TOTAL_SECONDS()*1000),
     # "refresh_token_lifetime": TIMEDELTA(DAYS = TIMEDELTA(DAYS=1).TOTAL_SECONDS()*1000),
+current_time = time.time()
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes= 5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days = 1),
+    "ACCESS_TOKEN_LIFETIME": current_time + timedelta(minutes= 5).seconds,
+    "REFRESH_TOKEN_LIFETIME": current_time + timedelta(days = 1).seconds,
     "SIGNING_KEY": SECRET_KEY,
 }
