@@ -2,8 +2,8 @@ import base64
 import json
 import os
 import pickle
-
-from datetime import datetime
+import time
+from datetime import datetime, timedelta
 from typing import Dict, Optional, TypeVar
 
 from asgiref.sync import sync_to_async
@@ -232,8 +232,11 @@ class LogingViewSet(ViewSet):
             await sync_to_async(user_one.save)()
             tokens = await self.async_token(user_one)
             """ ИЗМЕНИТЬ ВРЕМЯ"""
-            access_time = (SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]).total_seconds() * 1000
-            refresh_time = SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"].total_seconds() * 1000
+            current_time = datetime.now()
+            access_time = (SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]).seconds
+            refresh_time = (
+                SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"] + current_time
+            ).timestamp() - time.time()
 
         except Exception as ex:
             return Response({"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED)
