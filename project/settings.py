@@ -32,10 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    "172.25.16.1",
     "0.0.0.0",
     '83.166.245.209',
-    'localhost',
 
 ]
 
@@ -192,11 +190,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 # разрешить только определённые домены
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
-    "http://172.25.16.1:8080",
-    "http://0.0.0.0:8080",
+    "http://0.0.0.0:8000",
     "http://83.166.245.209",
     "http://localhost:8000",
-    "http://127.0.0.1:8080",
 
 ]
 
@@ -204,8 +200,7 @@ CORS_ALLOWED_ORIGINS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#std-setting-CSRF_TRUSTED_ORIGINS
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
-    "http://172.25.16.1:8080",
-    "http://0.0.0.0:8080",
+    "http://0.0.0.0:8000",
     "http://83.166.245.209",
 
 ]
