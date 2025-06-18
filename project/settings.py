@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     "0.0.0.0",
     '83.166.245.209',
-
+    'localhost',
 ]
 
 INSTALLED_APPS = [
@@ -202,6 +202,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://0.0.0.0:8000",
     "http://83.166.245.209",
+    "http://localhost:8000",
+
 
 ]
 # разрешить cookie в HTTP запросах
