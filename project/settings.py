@@ -32,10 +32,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '83.166.245.209',
-    '0.0.0.0',
     '127.0.0.1',
+    '0.0.0.0',
     'localhost',
-
 ]
 
 INSTALLED_APPS = [
@@ -191,21 +190,20 @@ CORS_ORIGIN_ALLOW_ALL = True
 # разрешить только определённые домены
 CORS_ALLOWED_ORIGINS = [
     "http://83.166.245.209",
-    "http://172.25.16.1:8080",
     "http://0.0.0.0:8080",
-    "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "http://127.0.0.1:8080",
-
+    "http://localhost:8000",
 ]
 
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#csrf-integration
 # https://docs.djangoproject.com/en/5.2/ref/settings/#std-setting-CSRF_TRUSTED_ORIGINS
 CSRF_TRUSTED_ORIGINS = [
     "http://83.166.245.209",
-    "http://172.25.16.1:8080",
     "http://0.0.0.0:8080",
     "http://127.0.0.1:8000",
+    "http://localhost:8000",
+
+
 ]
 # разрешить cookie в HTTP запросах
 CORS_ALLOW_CREDENTIALS = True
