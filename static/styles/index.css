@@ -328,14 +328,17 @@ div.hidden {
 
 /* ---- PAGE OF ONE AD ----*/
 #ad-page-container {
-  height: clamp(100px, 47vh, 500px);
-}
-#ad-page-container .ad-view-title {
-  max-width: 200px;
+  min-height: 47vh;
+  height: 100%;
+  max-height: 500px;
 }
 #ad-page-container .ad-view-container {
   max-height: none;
   flex-wrap: wrap;
+  flex-direction: column;
+}
+#ad-page-container .ad-view-container .ad-view-title {
+  max-width: inherit;
 }
 #ad-page-container .ad-view-container > .ad-view-content {
   text-align: left;

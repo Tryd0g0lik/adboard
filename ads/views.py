@@ -176,7 +176,9 @@ def main_page(request):
 def ad_page(request, *args, **kwargs):
     pass
     if request.method == "GET":
-        files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+        # files = os.listdir(f"{BASE_DIR}/ads/static/"
+        files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
+        files = ["ads/scripts/" + file for file in files]
         # // files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
         css_file = "styles/index.css"
         # data_str = json.dumps({"data": response})
