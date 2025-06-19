@@ -30,7 +30,7 @@ from ads.forms.ad_creat import adCreatForm, FileImageForm
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
 from ads.models import Ad, ImageStorage
-from project.tokens import TokenRequest
+from project.tokens import TokenResponse
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
@@ -91,6 +91,11 @@ class FileImageViewSet(viewsets.ModelViewSet):
             )
 
 
+response = Response(
+    status=status.HTTP_401_UNAUTHORIZED,
+)
+
+
 class AsyncAdsView(viewsets.ModelViewSet):
     """ASYNC CREATE AD"""
 
@@ -106,6 +111,17 @@ class AsyncAdsView(viewsets.ModelViewSet):
         """
         user = request.user
         data: object
+        try:
+            """CHECK USER TOKEN"""
+            tokens = TokenResponse(self.request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
+        except Exception as er:
+            log.exception("ERROR => %s", er)
+            response.data = json.dumps({"detail": "Something went wrong."})
+            return response
+
         if not user.is_anonymous:
             try:
                 data = await sync_to_async(super().list)(request, *args, **kwargs)
@@ -131,6 +147,17 @@ class AsyncAdsView(viewsets.ModelViewSet):
         """
         user = request.user
         data: object
+        try:
+            """CHECK USER TOKEN"""
+            tokens = TokenResponse(self.request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
+        except Exception as er:
+            log.exception("ERROR => %s", er)
+            response.data = json.dumps({"detail": "Something went wrong."})
+            return response
+
         if not user.is_anonymous and not kwargs["pk"] == "undefined":
             try:
                 response = await sync_to_async(super().retrieve)(
@@ -155,6 +182,9 @@ class AsyncAdsView(viewsets.ModelViewSet):
     async def create(self, request, *args, **kwargs):
         """
         This is method for creating a new ad.
+        From request will be checking the: \
+        - user's authenticated; \
+        - user's tokens and if we have only everything is correct the new ad will be added.
         :param request:
         :param args:
         :param kwargs:
@@ -165,33 +195,17 @@ class AsyncAdsView(viewsets.ModelViewSet):
         """GET USER"""
         request_user = request.user
         """CHECK USER TOKEN"""
-        tokens = TokenRequest(request)
-        number = tokens.tokens_check
-        """TEMPLATE RESPONSE FOR RETURNING"""
-        response = Response(
-            status=status.HTTP_401_UNAUTHORIZED,
-        )
-        response_render = Response(
-            render(tokens.request, "index.html", status=status.HTTP_401_UNAUTHORIZED)
-        )
-        """CHECK TOKEN"""
         try:
-            if number == 1:
-                """TOKENS IS PROVIDED OR IS REFRESH AND SAVE TO THE COOKIE"""
-                response = tokens.token_refresh
-            if number == 2:
-                """TOKENS IS NOT PROVIDED"""
-                response_render.content = ({"detail": ["Token is not provided."]},)
-                tokens._change_user_active(active=False)
-                return response_render
-        except Exception as error:
-            """USER NOT FOUND IN DB"""
-            response_render.content = {
-                "detail": ["User not founded щк token is error.%s" % error]
-            }
-            return response_render
+            tokens = TokenResponse(self.request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
+        except Exception as er:
+            log.exception("ERROR => %s", er)
+            response.data = json.dumps({"detail": "Something went wrong."})
+            return response
         if not request_user.is_anonymous:
-
+            """GET USER IN DATA FOR SERIALIZATION"""
             data = {
                 "user": request.user.pk,
                 "title": request.data["title"],
@@ -214,12 +228,12 @@ class AsyncAdsView(viewsets.ModelViewSet):
                 await sync_to_async(self.perform_create)(serializer)
                 log.info("SERIALIZER DATA SAVED")
                 response.data = json.dumps({"data": serializer.data})
-                response.status = status.HTTP_201_CREATED
+                response.status_code = status.HTTP_201_CREATED
                 return response
             except Exception as e:
                 log.exception("ERROR => %s", e)
                 response.data = {"detail": "Server error: %s" % e}
-                response.status = status.HTTP_500_INTERNAL_SERVER_ERROR
+                response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
                 return response
         response.data = {"detail": ["User is not authenticated. New ad is not saved. "]}
         return response

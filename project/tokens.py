@@ -61,7 +61,7 @@ class UserActiveMixin:
             raise ValidationError("%s: %s" % (cl.__get_user_db.__name__, error))
 
 
-class TokenRequest(UserActiveMixin):
+class TokenResponse(UserActiveMixin):
     """
     This is for getting the token from the request.
     """
@@ -126,7 +126,6 @@ class TokenRequest(UserActiveMixin):
         user = self.user
         try:
             """TOKEN REFRESH"""
-            """!!!!!!!!!!!!!!!!!!!async_token_refresh!!!!!!!!!!!!!!!!!!!!!!!!"""
             tokens = LogingViewSet.async_token_refresh(user)
             current_time = datetime.now()
             """UPDATE TIME OF TOKEN's LIFE """
@@ -135,7 +134,7 @@ class TokenRequest(UserActiveMixin):
             ).timestamp() - time.time()
             response = Response(
                 {"detail": ["Token is not provided."]},
-                status=status.HTTP_401_UNAUTHORIZED,
+                status=status.HTTP_201_CREATED,
             )
             response.set_cookie(
                 "token_access", tokens["token_access"], max_age=refresh_time
@@ -147,11 +146,47 @@ class TokenRequest(UserActiveMixin):
             raise ValidationError(
                 "%s:Token refresh not valid %s" % (__class__.__name__, error)
             )
-            # return Response(
-            #     render(
-            #         self.request,
-            #         "index.html",
-            #         {"detail": ["%s" % error]},
-            #         status=status.HTTP_401_UNAUTHORIZED,
-            #     )
-            # )
+
+    @property
+    def tokens_response(self):
+        """
+        This method returns the status code 401, it means that the response has not provided tokens or \
+        tokens are invalid and rendering to the main page.
+        If method returns the status code 201, it means that the token_access was updated or all ok.
+        :return: Response
+        Example: '''py
+                try:
+            tokens = TokenResponse(self.request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
+        except Exception as er:
+            log.exception("ERROR => %s", er)
+            response.data = json.dumps({"detail": "Something went wrong."})
+            return response
+        '''
+        """
+        number = self.tokens_check
+        """TEMPLATE RESPONSE FOR RETURNING"""
+
+        response_render = Response(
+            render(self.request, "index.html", status=status.HTTP_401_UNAUTHORIZED)
+        )
+        """CHECK TOKEN"""
+        try:
+            if number == 1:
+                """TOKENS IS PROVIDED OR IS REFRESH AND SAVE TO THE COOKIE"""
+                return self.token_refresh
+            if number == 2:
+                """TOKENS IS NOT PROVIDED"""
+                response_render.content = ({"detail": ["Token is not provided."]},)
+                self._change_user_active(active=False)
+                return response_render
+            response_render.status_code = status.HTTP_201_CREATED
+            return response_render
+        except Exception as error:
+            """USER NOT FOUND IN DB"""
+            response_render.content = {
+                "detail": ["User not founded щк token is error.%s" % error]
+            }
+            return response_render
