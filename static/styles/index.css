@@ -269,11 +269,10 @@ div.hidden {
   justify-content: flex-start;
 }
 
-.form > .mb-3:first-child,
-.form > .mb-3:nth-child(2) {
+/*.form>.mb-3:first-child,
+.form>.mb-3:nth-child(2) {
   width: 280px;
-}
-
+} */
 .ads-form,
 #form-register,
 #form-register label,
@@ -282,10 +281,13 @@ div.hidden {
   display: block;
 }
 
-.form .ads-form,
 #form-register,
 #form-login {
   width: 250px;
+}
+
+.ads-collections-list .ad-view {
+  padding-bottom: 15px;
 }
 
 /* ---- PUBLICK COLLECTION ADS ----*/
@@ -328,9 +330,11 @@ div.hidden {
 
 /* ---- PAGE OF ONE AD ----*/
 #ad-page-container {
-  min-height: 47vh;
   height: 100%;
   max-height: 500px;
+}
+#ad-page-container .ad-view {
+  padding: 0 15px 15px;
 }
 #ad-page-container .ad-view-container {
   max-height: none;

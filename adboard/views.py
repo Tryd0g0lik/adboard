@@ -390,3 +390,20 @@ def user_view(request):
             "title": title,
         },
     )
+
+
+def main_view(request):
+    title = "Добро пожаловать!"
+    files = []
+    # GET JS FILES FOR MAIN PAGE
+    files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
+    files = ["adboard/scripts/" + file for file in files]
+
+    return render(
+        request,
+        "index.html",
+        {
+            "js_files": files,
+            "title": title,
+        },
+    )

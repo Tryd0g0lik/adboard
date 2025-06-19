@@ -100,25 +100,57 @@ class AsyncAdsView(viewsets.ModelViewSet):
         :param kwargs:
         :return: json string this is `{'data': [{}, {}, ...]}`
         """
-        data = await sync_to_async(super().list)(request, *args, **kwargs)
-        data.data = json.dumps({"data": data.data})
-        return data
+        user = request.user
+        data: object
+        if not user.is_anonymous:
+            try:
+                data = await sync_to_async(super().list)(request, *args, **kwargs)
+                data.data = json.dumps({"data": data.data})
+            except Exception as ex:
+                data = JsonResponse(
+                    json.dumps({"detail": [ex.args]}),
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+            finally:
+                return data
+        return JsonResponse(
+            json.dumps({"detail": ["User is not authenticated."]}),
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     async def retrieve(self, request, *args, **kwargs):
         """
+        This is method for getting/opening the information about one ad
         :param request:
         :param pk:
         :return: json string this is `{'data': {}}`
         """
-        if not kwargs["pk"] == "undefined":
-            data = await sync_to_async(super().retrieve)(request, int(kwargs["pk"]))
-            return Response(
-                json.dumps({"data": [dict(data.data)]}), status=status.HTTP_200_OK
-            )
-        super().retrieve(request, *args, **kwargs)
+        user = request.user
+        data: object
+        if not user.is_anonymous and not kwargs["pk"] == "undefined":
+            try:
+                response = await sync_to_async(super().retrieve)(
+                    request, int(kwargs["pk"])
+                )
+                data = Response(
+                    json.dumps({"data": [dict(response.data)]}),
+                    status=status.HTTP_200_OK,
+                )
+            except Exception as ex:
+                data = JsonResponse(
+                    json.dumps({"detail": [ex.args]}),
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+            finally:
+                return data
+        return Response(
+            json.dumps({"detail": ["User is not authenticated or pk is undefined."]}),
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     async def create(self, request, *args, **kwargs):
         """
+        This is method for creating a new ad.
         :param request:
         :param args:
         :param kwargs:
@@ -126,31 +158,39 @@ class AsyncAdsView(viewsets.ModelViewSet):
         """
         log.info("START CREATE of VIEWS.py")
         log.info("REQUEST DATA: %s", request.data)
-        serializer = self.get_serializer(data=request.data)
-        try:
-            await async_serializer_validate(serializer)
-            log.info("AD IS VALIDATED DATA:")
-        except Exception as er:
-            log.error("AD SERIALIZER DATA ERROR: %s", er)
-            return Response(
-                json.dumps({"detail": er.args}),
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-        try:
-            await sync_to_async(self.perform_create)(serializer)
-            log.info("SERIALIZER DATA SAVED")
-            return Response(
-                data=json.dumps({"data": serializer.data}),
-                status=status.HTTP_201_CREATED,
-            )
-        except Exception as e:
-            log.exception("ERROR => %s", e)
-            return Response(
-                {"detail": "Server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        user = request.user
+        if not user.is_anonymous:
+            serializer = self.get_serializer(data=request.data)
+
+            try:
+                await async_serializer_validate(serializer)
+                log.info("AD IS VALIDATED DATA:")
+            except Exception as er:
+                log.error("AD SERIALIZER DATA ERROR: %s", er)
+                return Response(
+                    json.dumps({"detail": er.args}),
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+            try:
+                await sync_to_async(self.perform_create)(serializer)
+                log.info("SERIALIZER DATA SAVED")
+                return Response(
+                    data=json.dumps({"data": serializer.data}),
+                    status=status.HTTP_201_CREATED,
+                )
+            except Exception as e:
+                log.exception("ERROR => %s", e)
+                return Response(
+                    {"detail": "Server error"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+        return Response(
+            {"detail": ["User is not authenticated."]},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
 
-def main_page(request):
+def ads_page(request):
     theme = request.GET.get("theme", "dark")
     # GET JS FILES FOR LOGIN AND REGISTER PAGES
     files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
@@ -164,7 +204,7 @@ def main_page(request):
     file_image = FileImageForm()
     return render(
         request,
-        template_name="index.html",
+        template_name="ads/index.html",
         context={
             "form": {"forms_main": form, "file_image": file_image},
             "css_file": css_file,

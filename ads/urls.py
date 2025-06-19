@@ -4,14 +4,12 @@ ads/urls.py
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+
 
 # https://www.django-rest-framework.org/tutorial/6-viewsets-and-routers/#using-routers
 
 from ads.views import AsyncAdsView, FileImageViewSet
+from ads.views import ads_page, ad_page
 
 app_name = "ads_app"
 
@@ -22,6 +20,7 @@ router.register("image", FileImageViewSet, basename="image")
 
 # The API URL's defined by the ads router
 urlpatterns = [
-    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # path("", include(router.urls)),
+    path("", ads_page, name="ads_url"),  # !!!!!!!!! URL НА ФРОНТЕ
+    path("ad/<str:pk>/", ad_page, name="ad_url"),  # !!!!!!!!! URL НА ФРОНТЕ
 ]
