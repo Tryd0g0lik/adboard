@@ -3,7 +3,7 @@ import json
 import os
 import pickle
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, Optional, TypeVar
 
 from asgiref.sync import sync_to_async
@@ -24,7 +24,7 @@ from adboard.hasher import PassworHasher
 from adboard.serializers.register import UserSerializer
 from project.settings import BASE_DIR, SECRET_KEY
 import logging
-from rest_framework import serializers, status  # viewsets,
+from rest_framework import serializers, status
 from adrf.viewsets import ViewSet
 from rest_framework.response import Response
 from django.contrib.auth.models import User, AbstractBaseUser
@@ -381,7 +381,6 @@ def user_view(request):
 
 def main_view(request):
     title = "Добро пожаловать!"
-    files = []
     # GET JS FILES FOR MAIN PAGE
     files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
     files = ["adboard/scripts/" + file for file in files]

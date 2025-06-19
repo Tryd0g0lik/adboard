@@ -346,7 +346,8 @@ div.hidden {
   vertical-align: top;
 }
 
-.ads-form__full-image-file {
+.ads-form__full-image-file,
+.img-ads {
   display: none;
 }
 
