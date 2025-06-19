@@ -2,7 +2,7 @@ import base64
 import json
 import os
 import pickle
-
+import time
 from datetime import datetime
 from typing import Dict, Optional, TypeVar
 
@@ -24,7 +24,7 @@ from adboard.hasher import PassworHasher
 from adboard.serializers.register import UserSerializer
 from project.settings import BASE_DIR, SECRET_KEY
 import logging
-from rest_framework import serializers, status  # viewsets,
+from rest_framework import serializers, status
 from adrf.viewsets import ViewSet
 from rest_framework.response import Response
 from django.contrib.auth.models import User, AbstractBaseUser
@@ -79,6 +79,14 @@ class LogingViewSet(ViewSet):
 
         tokens = await cls.__async_generate_jwt_token(user_object)
         return tokens
+
+    @classmethod
+    def async_token_refresh(cls, user_object):
+        try:
+            tokens = LogingViewSet._jwt_user_refresh(user_object)
+            return tokens
+        except Exception as ex:
+            raise ValueError("Error 4s" % ex)
 
     @staticmethod
     async def __async_generate_jwt_token(user_object: AuthUser) -> {Dict[str, str]}:
@@ -205,35 +213,17 @@ class LogingViewSet(ViewSet):
                 {"data": "User not founded"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        """GET LOCATION OF USER"""
-        # user_ip_address = request.META.get("REMOTE_ADDR")  # Не трогать - используется
         try:
-            # response = await sync_to_async(requests.post)(
-            #     "http://ip-api.com/batch",
-            #     data=json.dumps(
-            #         [
-            #             {ПОГОДА
-            #                 "query": user_ip_address,  # "80.78.242.128",  # Изменить на user_ip_address
-            #                 "fields": ["lat", "lon"],  # Исправлено на lat/lon
-            #                 "lang": "ru",
-            #             }
-            #         ]
-            #     ),
-            # )
-            # response = response.json()
-            # """GET LOCATION BASIS/INITIAL"""
-            # latitude: float = response[0]["lat"]
-            # longitude: float = response[0]["lon"]
-            # log.info("LATITUDE OF USER: %s", latitude)
-            # user_one.latitude = latitude
-            # user_one.longitude = longitude
             user_one.last_login = datetime.now()
             """SAVE USER"""
             await sync_to_async(user_one.save)()
             tokens = await self.async_token(user_one)
             """ ИЗМЕНИТЬ ВРЕМЯ"""
-            access_time = (SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]).total_seconds() * 1000
-            refresh_time = SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"].total_seconds() * 1000
+            current_time = datetime.now()
+            access_time = (SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"]).seconds
+            refresh_time = (
+                SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"] + current_time
+            ).timestamp() - time.time()
 
         except Exception as ex:
             return Response({"detail": ex.args}, status=status.HTTP_401_UNAUTHORIZED)
@@ -384,6 +374,22 @@ def user_view(request):
             "form": {
                 "form_user": form,
             },
+            "title": title,
+        },
+    )
+
+
+def main_view(request):
+    title = "Добро пожаловать!"
+    # GET JS FILES FOR MAIN PAGE
+    files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
+    files = ["adboard/scripts/" + file for file in files]
+
+    return render(
+        request,
+        "index.html",
+        {
+            "js_files": files,
             "title": title,
         },
     )

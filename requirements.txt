@@ -1,6 +1,6 @@
 python-dotenv
 psycopg2-binary >= 2.9.10
-pre-commit-hooks >= 3 #5.0.0
+python-dotenv>=1
 django-cors-headers >= 4
 asyncio >= 3.4.3
 pylint >= 3 #3.3.7

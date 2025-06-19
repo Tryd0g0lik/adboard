@@ -50,7 +50,7 @@
         <nav class="navbar-nav navbar-toggler navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <!-- { % if user.is_authenticated %}
-              <a class="navbar-brand" href="/weather/">Погода</a>
+              <a class="navbar-brand" href="/weather/">Объявления</a>
             { % endif %} -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
               <span class="navbar-toggler-icon"></span>
@@ -65,12 +65,12 @@
                 </li>
                 {% if not user.is_authenticated %}
                 <li class="nav-item">
-                  <a class="nav-link" href="/users/login">Погода</a>
-                </li>
-                <li class="nav-item">
                   <a class="nav-link" href="/users/login">Login</a>
                 </li>
                 {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="/user/ads">Объявления</a>
+                  </li>
                    <li class="nav-item">
                     <a class="nav-link" href="#" id="logout" >Logout</a>
                   </li>
@@ -95,6 +95,11 @@
         </nav>
       </div>
     </header>
+    <div class="page-title">
+      <div class="title">
+        <h1>{% block page_title %}{{title}}{% endblock page_title %}</h1>
+      </div>
+    </div>
     {% endblock header %}
     {% block main %}{% endblock main %}
     <section class="comments" id="comments">
@@ -103,68 +108,10 @@
       {% endblock comments %}
       </section>
     <section class="form" id="form-login">
-      {% block forms_ads %}
-        {% if user.is_authenticated %}
-          <div class="mb-3">
-            <div class="row"><h3>Объявление</h3></div>
-          <form class="ads-form row g-3 needs-validation" >
-            {% csrf_token %}
-            {% for field in form.forms_main %}
-             <div  class="mb-3">
-
-               {% if field.help_text %}
-                  {{ filed.help_text|safe }}
-               {% endif %}
-               {{field}}
-
-             </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-          </div>
-
-          <div class="mb-3">
-            <div class="row "><h3>Изображение</h3></div>
-          <form class="ads-form ads-form__full-image-file row g-3 needs-validation" >
-            {% csrf_token %}
-
-             <div  class="mb-3">
-
-
-               {{form.file_image.file_path}}
-
-             </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-          </div>
-        {% endif %}
-      {% endblock forms_ads %}
+      {% block forms_ads %}{% endblock forms_ads %}
       {% block forms_main %}{% endblock forms_main %}
     </section>
-    <section class="ads-collections" id="ads-collections">
-          <div class="ads-collections-list">
-            {% block ads_collections %}
-            <ul class="ads-views"></ul>
-            {% endblock ads_collections %}
-          </div>
-        </section>
     {% block ad_page %}{% endblock ad_page %}
-    {% block pagination %}
-      <section id="pagination">
-        <div class="pagination">
-          <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
-          <nav aria-label="Пример навигации по страницам">
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
-          </ul>
-        </nav>
-        </div>
-      </section>
-    {% endblock pagination %}
+    {% block pagination %}{% endblock pagination %}
   </body>
 </html>

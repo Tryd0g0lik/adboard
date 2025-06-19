@@ -17,22 +17,28 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 # from ads.urls import urlpatterns as ads_urls
-from ads.views import main_page, ad_page
+
 from adboard.urls import urlpatterns as user_urls
 from project import settings
 from weather.urls import urlpatterns as weather
 from project.urls_api import urlpatterns as api_urls
 from django.conf.urls.static import static
+from ads.urls import urlpatterns as urls_ads
 
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     path("api/v1/", include((api_urls, "api"), namespace="api")),
-    path("ad/<str:pk>/", ad_page, name="ad_url"),
-    path("users/", include((user_urls, "users_url"), "users_url")),
+    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("", include((user_urls, "users_url"), "users_url")),
     # path("weather/", include((weather, "weather_url"), namespace="weather_url")),
     path("weather/", include((weather, "weather_url"), namespace="weather_url")),
-    path("", main_page, name="main"),
+    path("user/ads/", include((urls_ads, "ads_url"), namespace="ads_url")),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from datetime import timedelta
-
+from datetime import timedelta, datetime
+import time
 from dotenv_ import (DB_ENGINE, POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER,
                      SECRET_KEY_DJ)
 
@@ -32,9 +32,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    '80.78.242.128',
+    "0.0.0.0",
+    '83.166.245.209',
     'localhost',
-
 ]
 
 INSTALLED_APPS = [
@@ -189,19 +189,22 @@ DEFAULT_CHARSET = "utf-8"
 CORS_ORIGIN_ALLOW_ALL = True
 # разрешить только определённые домены
 CORS_ALLOWED_ORIGINS = [
-    "http://80.78.242.128",
-    "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "http://127.0.0.1:8080",
-    "http://0.0.0.0:8080",
+    "http://0.0.0.0:8000",
+    "http://83.166.245.209",
+    "http://localhost:8000",
+
 ]
 
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#csrf-integration
 # https://docs.djangoproject.com/en/5.2/ref/settings/#std-setting-CSRF_TRUSTED_ORIGINS
 CSRF_TRUSTED_ORIGINS = [
-    "http://80.78.242.128",
     "http://127.0.0.1:8000",
-    "http://80.78.242.128"
+    "http://0.0.0.0:8000",
+    "http://83.166.245.209",
+    "http://localhost:8000",
+
+
 ]
 # разрешить cookie в HTTP запросах
 CORS_ALLOW_CREDENTIALS = True
@@ -302,8 +305,9 @@ REST_FRAMEWORK = {
 }
     # "access_token_lifetime": TIMEDELTA(MILLISECONDS=TIMEDELTA(MINUTES=5).TOTAL_SECONDS()*1000),
     # "refresh_token_lifetime": TIMEDELTA(DAYS = TIMEDELTA(DAYS=1).TOTAL_SECONDS()*1000),
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes= 5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days = 1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes = 5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "SIGNING_KEY": SECRET_KEY,
 }

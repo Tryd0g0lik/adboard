@@ -269,11 +269,10 @@ div.hidden {
   justify-content: flex-start;
 }
 
-.form > .mb-3:first-child,
-.form > .mb-3:nth-child(2) {
+/*.form>.mb-3:first-child,
+.form>.mb-3:nth-child(2) {
   width: 280px;
-}
-
+} */
 .ads-form,
 #form-register,
 #form-register label,
@@ -282,13 +281,34 @@ div.hidden {
   display: block;
 }
 
-.form .ads-form,
 #form-register,
 #form-login {
   width: 250px;
 }
 
+.ads-collections-list .ad-view {
+  padding-bottom: 15px;
+}
+
 /* ---- PUBLICK COLLECTION ADS ----*/
+.form {
+  flex-wrap: wrap;
+}
+
+#form-ads {
+  max-width: 650px;
+}
+#form-ads > div {
+  width: 100%;
+}
+#form-ads input[name=title] {
+  width: 100%;
+  max-width: 320px;
+}
+#form-ads input[type=file] {
+  max-width: 320px;
+}
+
 .ad-view div.ad-view {
   overflow: hidden;
   text-align: left;
@@ -326,16 +346,26 @@ div.hidden {
   vertical-align: top;
 }
 
+.ads-form__full-image-file,
+.img-ads {
+  display: none;
+}
+
 /* ---- PAGE OF ONE AD ----*/
 #ad-page-container {
-  height: clamp(100px, 47vh, 500px);
+  height: 100%;
+  max-height: 500px;
 }
-#ad-page-container .ad-view-title {
-  max-width: 200px;
+#ad-page-container .ad-view {
+  padding: 0 15px 15px;
 }
 #ad-page-container .ad-view-container {
   max-height: none;
   flex-wrap: wrap;
+  flex-direction: column;
+}
+#ad-page-container .ad-view-container .ad-view-title {
+  max-width: inherit;
 }
 #ad-page-container .ad-view-container > .ad-view-content {
   text-align: left;
