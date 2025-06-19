@@ -80,6 +80,14 @@ class LogingViewSet(ViewSet):
         tokens = await cls.__async_generate_jwt_token(user_object)
         return tokens
 
+    @classmethod
+    def async_token_refresh(cls, user_object):
+        try:
+            tokens = LogingViewSet._jwt_user_refresh(user_object)
+            return tokens
+        except Exception as ex:
+            raise ValueError("Error 4s" % ex)
+
     @staticmethod
     async def __async_generate_jwt_token(user_object: AuthUser) -> {Dict[str, str]}:
         """
@@ -205,28 +213,7 @@ class LogingViewSet(ViewSet):
                 {"data": "User not founded"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        """GET LOCATION OF USER"""
-        # user_ip_address = request.META.get("REMOTE_ADDR")  # Не трогать - используется
         try:
-            # response = await sync_to_async(requests.post)(
-            #     "http://ip-api.com/batch",
-            #     data=json.dumps(
-            #         [
-            #             {ПОГОДА
-            #                 "query": user_ip_address,  # "80.78.242.128",  # Изменить на user_ip_address
-            #                 "fields": ["lat", "lon"],  # Исправлено на lat/lon
-            #                 "lang": "ru",
-            #             }
-            #         ]
-            #     ),
-            # )
-            # response = response.json()
-            # """GET LOCATION BASIS/INITIAL"""
-            # latitude: float = response[0]["lat"]
-            # longitude: float = response[0]["lon"]
-            # log.info("LATITUDE OF USER: %s", latitude)
-            # user_one.latitude = latitude
-            # user_one.longitude = longitude
             user_one.last_login = datetime.now()
             """SAVE USER"""
             await sync_to_async(user_one.save)()

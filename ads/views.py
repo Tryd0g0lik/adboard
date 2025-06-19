@@ -5,14 +5,18 @@ ads/views.py
 import json
 import os
 import logging
+import time
+from datetime import datetime
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
 
+from adboard.views import LogingViewSet
 from ads.serialisers_all.ad.serializers import AdSerializer
 from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
-from project.settings import BASE_DIR
+from project.settings import BASE_DIR, SIMPLE_JWT
 from django.shortcuts import render
 from rest_framework import status
 
@@ -26,7 +30,7 @@ from ads.forms.ad_creat import adCreatForm, FileImageForm
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
 from ads.models import Ad, ImageStorage
-
+from project.tokens import TokenRequest
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
@@ -158,36 +162,67 @@ class AsyncAdsView(viewsets.ModelViewSet):
         """
         log.info("START CREATE of VIEWS.py")
         log.info("REQUEST DATA: %s", request.data)
-        user = request.user
-        if not user.is_anonymous:
-            serializer = self.get_serializer(data=request.data)
+        """GET USER"""
+        request_user = request.user
+        """CHECK USER TOKEN"""
+        tokens = TokenRequest(request)
+        number = tokens.tokens_check
+        """TEMPLATE RESPONSE FOR RETURNING"""
+        response = Response(
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+        response_render = Response(
+            render(tokens.request, "index.html", status=status.HTTP_401_UNAUTHORIZED)
+        )
+        """CHECK TOKEN"""
+        try:
+            if number == 1:
+                """TOKENS IS PROVIDED OR IS REFRESH AND SAVE TO THE COOKIE"""
+                response = tokens.token_refresh
+            if number == 2:
+                """TOKENS IS NOT PROVIDED"""
+                response_render.content = ({"detail": ["Token is not provided."]},)
+                tokens._change_user_active(active=False)
+                return response_render
+        except Exception as error:
+            """USER NOT FOUND IN DB"""
+            response_render.content = {
+                "detail": ["User not founded щк token is error.%s" % error]
+            }
+            return response_render
+        if not request_user.is_anonymous:
 
+            data = {
+                "user": request.user.pk,
+                "title": request.data["title"],
+                "description": request.data["description"],
+                "category": request.data["category"],
+                "condition": request.data["condition"],
+                "path": request.data["path"],
+            }
+            serializer = self.get_serializer(data=data)
             try:
                 await async_serializer_validate(serializer)
                 log.info("AD IS VALIDATED DATA:")
             except Exception as er:
                 log.error("AD SERIALIZER DATA ERROR: %s", er)
-                return Response(
-                    json.dumps({"detail": er.args}),
-                    status=status.HTTP_401_UNAUTHORIZED,
+                response.data = json.dumps(
+                    {"detail": "AD serializer data error. %s" % er.args}
                 )
+                return response
             try:
                 await sync_to_async(self.perform_create)(serializer)
                 log.info("SERIALIZER DATA SAVED")
-                return Response(
-                    data=json.dumps({"data": serializer.data}),
-                    status=status.HTTP_201_CREATED,
-                )
+                response.data = json.dumps({"data": serializer.data})
+                response.status = status.HTTP_201_CREATED
+                return response
             except Exception as e:
                 log.exception("ERROR => %s", e)
-                return Response(
-                    {"detail": "Server error"},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                )
-        return Response(
-            {"detail": ["User is not authenticated."]},
-            status=status.HTTP_401_UNAUTHORIZED,
-        )
+                response.data = {"detail": "Server error: %s" % e}
+                response.status = status.HTTP_500_INTERNAL_SERVER_ERROR
+                return response
+        response.data = {"detail": ["User is not authenticated. New ad is not saved. "]}
+        return response
 
 
 def ads_page(request):
