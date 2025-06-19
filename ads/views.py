@@ -5,14 +5,18 @@ ads/views.py
 import json
 import os
 import logging
+import time
+from datetime import datetime
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
 
+from adboard.views import LogingViewSet
 from ads.serialisers_all.ad.serializers import AdSerializer
 from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
-from project.settings import BASE_DIR
+from project.settings import BASE_DIR, SIMPLE_JWT
 from django.shortcuts import render
 from rest_framework import status
 
@@ -26,7 +30,7 @@ from ads.forms.ad_creat import adCreatForm, FileImageForm
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
 from ads.models import Ad, ImageStorage
-
+from project.tokens import TokenResponse
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
@@ -87,6 +91,11 @@ class FileImageViewSet(viewsets.ModelViewSet):
             )
 
 
+response = Response(
+    status=status.HTTP_401_UNAUTHORIZED,
+)
+
+
 class AsyncAdsView(viewsets.ModelViewSet):
     """ASYNC CREATE AD"""
 
@@ -100,25 +109,82 @@ class AsyncAdsView(viewsets.ModelViewSet):
         :param kwargs:
         :return: json string this is `{'data': [{}, {}, ...]}`
         """
-        data = await sync_to_async(super().list)(request, *args, **kwargs)
-        data.data = json.dumps({"data": data.data})
-        return data
+        user = request.user
+        data: object
+        try:
+            """CHECK USER TOKEN"""
+            tokens = TokenResponse(self.request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
+        except Exception as er:
+            log.exception("ERROR => %s", er)
+            response.data = json.dumps({"detail": "Something went wrong."})
+            return response
+
+        if not user.is_anonymous:
+            try:
+                data = await sync_to_async(super().list)(request, *args, **kwargs)
+                data.data = json.dumps({"data": data.data})
+            except Exception as ex:
+                data = JsonResponse(
+                    json.dumps({"detail": [ex.args]}),
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+            finally:
+                return data
+        return JsonResponse(
+            json.dumps({"detail": ["User is not authenticated."]}),
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     async def retrieve(self, request, *args, **kwargs):
         """
+        This is method for getting/opening the information about one ad
         :param request:
         :param pk:
         :return: json string this is `{'data': {}}`
         """
-        if not kwargs["pk"] == "undefined":
-            data = await sync_to_async(super().retrieve)(request, int(kwargs["pk"]))
-            return Response(
-                json.dumps({"data": [dict(data.data)]}), status=status.HTTP_200_OK
-            )
-        super().retrieve(request, *args, **kwargs)
+        user = request.user
+        data: object
+        try:
+            """CHECK USER TOKEN"""
+            tokens = TokenResponse(self.request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
+        except Exception as er:
+            log.exception("ERROR => %s", er)
+            response.data = json.dumps({"detail": "Something went wrong."})
+            return response
+
+        if not user.is_anonymous and not kwargs["pk"] == "undefined":
+            try:
+                response = await sync_to_async(super().retrieve)(
+                    request, int(kwargs["pk"])
+                )
+                data = Response(
+                    json.dumps({"data": [dict(response.data)]}),
+                    status=status.HTTP_200_OK,
+                )
+            except Exception as ex:
+                data = JsonResponse(
+                    json.dumps({"detail": [ex.args]}),
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+            finally:
+                return data
+        return Response(
+            json.dumps({"detail": ["User is not authenticated or pk is undefined."]}),
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     async def create(self, request, *args, **kwargs):
         """
+        This is method for creating a new ad.
+        From request will be checking the: \
+        - user's authenticated; \
+        - user's tokens and if we have only everything is correct the new ad will be added.
         :param request:
         :param args:
         :param kwargs:
@@ -126,31 +192,54 @@ class AsyncAdsView(viewsets.ModelViewSet):
         """
         log.info("START CREATE of VIEWS.py")
         log.info("REQUEST DATA: %s", request.data)
-        serializer = self.get_serializer(data=request.data)
+        """GET USER"""
+        request_user = request.user
+        """CHECK USER TOKEN"""
         try:
-            await async_serializer_validate(serializer)
-            log.info("AD IS VALIDATED DATA:")
+            tokens = TokenResponse(self.request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
         except Exception as er:
-            log.error("AD SERIALIZER DATA ERROR: %s", er)
-            return Response(
-                json.dumps({"detail": er.args}),
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-        try:
-            await sync_to_async(self.perform_create)(serializer)
-            log.info("SERIALIZER DATA SAVED")
-            return Response(
-                data=json.dumps({"data": serializer.data}),
-                status=status.HTTP_201_CREATED,
-            )
-        except Exception as e:
-            log.exception("ERROR => %s", e)
-            return Response(
-                {"detail": "Server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            log.exception("ERROR => %s", er)
+            response.data = json.dumps({"detail": "Something went wrong."})
+            return response
+        if not request_user.is_anonymous:
+            """GET USER IN DATA FOR SERIALIZATION"""
+            data = {
+                "user": request.user.pk,
+                "title": request.data["title"],
+                "description": request.data["description"],
+                "category": request.data["category"],
+                "condition": request.data["condition"],
+                "path": request.data["path"],
+            }
+            serializer = self.get_serializer(data=data)
+            try:
+                await async_serializer_validate(serializer)
+                log.info("AD IS VALIDATED DATA:")
+            except Exception as er:
+                log.error("AD SERIALIZER DATA ERROR: %s", er)
+                response.data = json.dumps(
+                    {"detail": "AD serializer data error. %s" % er.args}
+                )
+                return response
+            try:
+                await sync_to_async(self.perform_create)(serializer)
+                log.info("SERIALIZER DATA SAVED")
+                response.data = json.dumps({"data": serializer.data})
+                response.status_code = status.HTTP_201_CREATED
+                return response
+            except Exception as e:
+                log.exception("ERROR => %s", e)
+                response.data = {"detail": "Server error: %s" % e}
+                response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+                return response
+        response.data = {"detail": ["User is not authenticated. New ad is not saved. "]}
+        return response
 
 
-def main_page(request):
+def ads_page(request):
     theme = request.GET.get("theme", "dark")
     # GET JS FILES FOR LOGIN AND REGISTER PAGES
     files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
@@ -164,7 +253,7 @@ def main_page(request):
     file_image = FileImageForm()
     return render(
         request,
-        template_name="index.html",
+        template_name="ads/index.html",
         context={
             "form": {"forms_main": form, "file_image": file_image},
             "css_file": css_file,
@@ -176,7 +265,9 @@ def main_page(request):
 def ad_page(request, *args, **kwargs):
     pass
     if request.method == "GET":
-        files = os.listdir(f"{BASE_DIR}/ads/static/scripts")
+        # files = os.listdir(f"{BASE_DIR}/ads/static/"
+        files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
+        files = ["ads/scripts/" + file for file in files]
         # // files = os.listdir(f"{BASE_DIR}/collectstatic/scripts")
         css_file = "styles/index.css"
         # data_str = json.dumps({"data": response})

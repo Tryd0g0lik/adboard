@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% extends 'layout/index.html' %}
+
+{% block comments %} {% endblock comments %}
+  {% block forms_ads %}
+        {% if user.is_authenticated %}
+          <div class="mb-3">
+            <div class="row"><h3>Объявление</h3></div>
+          <form class="ads-form row g-3 needs-validation" >
+            {% csrf_token %}
+            {% for field in form.forms_main %}
+             <div  class="mb-3">
+
+               {% if field.help_text %}
+                  {{ filed.help_text|safe }}
+               {% endif %}
+               {{field}}
+
+             </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          </div>
+
+          <div class="mb-3">
+            <div class="row img-ads"><h3>Изображение</h3></div>
+          <form class="ads-form ads-form__full-image-file row g-3 needs-validation" >
+            {% csrf_token %}
+
+             <div  class="mb-3">
+
+
+               {{form.file_image.file_path}}
+
+             </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          </div>
+        {% endif %}
+      {% endblock forms_ads %}
+      {% block ad_page %}
+        <section class="ads-collections" id="ads-collections">
+          <div class="ads-collections-list">
+            {% block ads_collections %}
+            <ul class="ads-views"></ul>
+            {% endblock ads_collections %}
+          </div>
+        </section>
+Привет мир
+    {% endblock ad_page %}
+    {% block pagination %}
+      <section id="pagination">
+        <div class="pagination">
+          <!-- https://bootstrap-4.ru/docs/5.3/components/pagination/ -->
+          <nav aria-label="Пример навигации по страницам">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
+          </ul>
+        </nav>
+        </div>
+      </section>
+    {% endblock pagination %}
