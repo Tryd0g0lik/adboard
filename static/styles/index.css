@@ -291,6 +291,24 @@ div.hidden {
 }
 
 /* ---- PUBLICK COLLECTION ADS ----*/
+.form {
+  flex-wrap: wrap;
+}
+
+#form-ads {
+  max-width: 650px;
+}
+#form-ads > div {
+  width: 100%;
+}
+#form-ads input[name=title] {
+  width: 100%;
+  max-width: 320px;
+}
+#form-ads input[type=file] {
+  max-width: 320px;
+}
+
 .ad-view div.ad-view {
   overflow: hidden;
   text-align: left;
@@ -326,6 +344,10 @@ div.hidden {
   max-height: 28px;
   line-height: 1;
   vertical-align: top;
+}
+
+.ads-form__full-image-file {
+  display: none;
 }
 
 /* ---- PAGE OF ONE AD ----*/
