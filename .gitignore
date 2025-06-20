@@ -284,3 +284,4 @@ core
 **/screen/*
 *.sh
 *.exp
+/__tests__
