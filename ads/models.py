@@ -24,8 +24,6 @@ class Ad(models.Model):
     # Не возможно удалить пользователя пока не удалим его объявления и прочее.
     user = models.ForeignKey(
         User,
-        null=True,
-        blank=True,
         on_delete=models.CASCADE,
         verbose_name=_("Sender"),
         help_text=_("This the index of sender"),
