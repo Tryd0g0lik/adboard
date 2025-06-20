@@ -1,5 +1,6 @@
 import logging
 import pytest
+import re
 from django.contrib.auth.models import User
 from playwright.async_api import Playwright
 from dotenv import load_dotenv
@@ -80,6 +81,40 @@ async def abrowser():
 
     return pages
 
+
+@pytest.fixture
+def one_of_ads():
+    
+    async def ad_for_one_user(page, url, expect, username):
+        try:
+            await page.goto(url + "/users/register/")
+            """"REGISTRATION"""
+            await page.wait_for_load_state("domcontentloaded")
+            log.info("FIXTURE %s: PAGE OF REGISTRATION WAS LOADED" % ad_for_one_user.__name__)
+            await expect(page).to_have_title(re.compile(r"Регистра"), timeout=3000)
+            await page.fill("input[name='username']", username)
+            await page.fill("input[name='email']", "ads01@mail.ru")
+            await page.fill("input[name='password']", "12345678")
+            await page.fill("input[name='confirm_password']", "12345678")
+            await page.keyboard.down("Enter")
+            await page.wait_for_load_state("domcontentloaded")
+            log.info("FIXTURE %s: USER- '%s' REGISTRETED SUCCESSFULLY, WAS" % (ad_for_one_user.__name__, username))
+            """LOGIN"""
+            await page.goto(url + "/users/login/")
+            await page.wait_for_load_state("domcontentloaded", timeout=3000)
+            log.info("FIXTURE %s: USER - '%s' WAS GOING TO LOGING PAGE" % (ad_for_one_user.__name__, username))
+            await expect(page).to_have_title(re.compile(r"профиль"))
+            await page.fill("input[name='username']", username)
+            await page.fill("input[name='password']", "12345678")
+            await page.keyboard.down("Enter")
+            log.info("FIXTURE %s: USER - '%s' HAS BEEN AUTHORIZED" % (ad_for_one_user.__name__, username))
+        except Exception as e:
+            log.error("FIXTURE %s: ERROR: %s" % (ad_for_one_user.__name__, str(e)))
+            
+        finally:
+            return page
+        # count = await sync_to_async(User.objects.count)()
+    return ad_for_one_user
 
 @pytest.fixture
 def check_user_sync(django_db_blocker):
