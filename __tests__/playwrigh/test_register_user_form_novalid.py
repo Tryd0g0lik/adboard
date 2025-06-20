@@ -4,17 +4,22 @@ import re
 import pytest
 from django.core.cache import cache
 from dotenv import load_dotenv
-from playwright.async_api import (async_playwright, Playwright, expect)
+from playwright.async_api import async_playwright, Playwright, expect
 
-from __tests__.__fixtures__.playwrigth_fixture import (abrowser, cleaning_db)
+from __tests__.__fixtures__.playwrigth_fixture import abrowser, cleaning_db
 from logs import configure_logging
 
 load_dotenv()
 log = logging.getLogger(__name__)
 configure_logging(logging.INFO)
 
-valid_data = {'name': 'Elena', 'email': 'elena09@gmail.com',
-              'password': 'qwerty12345', 'confirm_password': 'qwerty12345'}
+valid_data = {
+    "name": "Elena",
+    "email": "elena09@gmail.com",
+    "password": "qwerty12345",
+    "confirm_password": "qwerty12345",
+}
+
 
 @pytest.mark.user_page
 @pytest.mark.user_page_invalid
@@ -30,8 +35,8 @@ valid_data = {'name': 'Elena', 'email': 'elena09@gmail.com',
         ("Ser-gey1", 1),
         ("Ser'gey1'", 1),
         ("Sergey(1)", 1),
-    ]
-    )
+    ],
+)
 @pytest.mark.asyncio
 async def test_filed_username_invalid(abrowser, cleaning_db, username, expected):
     """
@@ -40,7 +45,7 @@ async def test_filed_username_invalid(abrowser, cleaning_db, username, expected)
     :param playwright:
     :return:
     """
-    valid_data['name'] = username
+    valid_data["name"] = username
     cache.clear()
     log.info("START %s and USERNAME: %s" % (__name__, username))
     async with async_playwright() as playwright:
@@ -59,11 +64,15 @@ async def test_filed_username_invalid(abrowser, cleaning_db, username, expected)
             await page.fill("input[name='username']", str(valid_data["name"]))
             await page.fill("input[name='email']", str(valid_data["email"]))
             await page.fill("input[name='password']", str(valid_data["password"]))
-            await page.fill("input[name='confirm_password']", str(valid_data["confirm_password"]))
+            await page.fill(
+                "input[name='confirm_password']", str(valid_data["confirm_password"])
+            )
             log.info("FILLED FIELDS IN REGISTER FORM")
             await page.keyboard.down("Enter")
             log.info("PRESSED ENTER")
-            await page.screenshot(path="__tests__/screen/register_user_form_invalid.png")
+            await page.screenshot(
+                path="__tests__/screen/register_user_form_invalid.png"
+            )
             log.info("RECEIVED SCREENSHOT OF PAGE")
             locator = page.locator("p[class='invalid']")
             log.info("GOT CURRENT QUANTITY OF ERROR")
@@ -76,4 +85,6 @@ async def test_filed_username_invalid(abrowser, cleaning_db, username, expected)
             log.info("CONTEXT CLOSED")
             await page.close()
             log.info("PAGE CLOSED")
+
+
 
