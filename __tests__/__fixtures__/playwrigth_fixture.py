@@ -37,8 +37,7 @@ def delete_one_user(django_db_blocker):
                 log.info("FIXTURE %s :  GET ONE USER FROM DB" % __name__)
                 ads_of_user = Ad.objects.filter(user=user)
                 log.info("FIXTURE %s: GOT USER" % __name__)
-                t = ads_of_user.first()
-                log.info("FIXTURE %s: FIRST USER ID: %s" % (__name__, t.id))
+                log.info("FIXTURE %s: FIRST USER ID: %s" % (__name__, user))
 
                 if not ads_of_user.first():
                     log.info("FIXTURE %s : USER HAS NO ADS" % __name__)
@@ -84,13 +83,23 @@ async def abrowser():
 
 @pytest.fixture
 def one_of_ads():
-    
+
     async def ad_for_one_user(page, url, expect, username):
+        """
+        This is a simple set of lines/ That will be users registered for testing.
+        :param page: this is a page from playwright.
+        :param url: this is url 'http://127.0.0.1:8000'
+        :param expect:
+        :param username: unique username for registration.
+        :return: page
+        """
         try:
             await page.goto(url + "/users/register/")
             """"REGISTRATION"""
             await page.wait_for_load_state("domcontentloaded")
-            log.info("FIXTURE %s: PAGE OF REGISTRATION WAS LOADED" % ad_for_one_user.__name__)
+            log.info(
+                "FIXTURE %s: PAGE OF REGISTRATION WAS LOADED" % ad_for_one_user.__name__
+            )
             await expect(page).to_have_title(re.compile(r"Регистра"), timeout=3000)
             await page.fill("input[name='username']", username)
             await page.fill("input[name='email']", "ads01@mail.ru")
@@ -98,47 +107,30 @@ def one_of_ads():
             await page.fill("input[name='confirm_password']", "12345678")
             await page.keyboard.down("Enter")
             await page.wait_for_load_state("domcontentloaded")
-            log.info("FIXTURE %s: USER- '%s' REGISTRETED SUCCESSFULLY, WAS" % (ad_for_one_user.__name__, username))
+            log.info(
+                "FIXTURE %s: USER- '%s' REGISTRETED SUCCESSFULLY, WAS"
+                % (ad_for_one_user.__name__, username)
+            )
             """LOGIN"""
             await page.goto(url + "/users/login/")
             await page.wait_for_load_state("domcontentloaded", timeout=3000)
-            log.info("FIXTURE %s: USER - '%s' WAS GOING TO LOGING PAGE" % (ad_for_one_user.__name__, username))
+            log.info(
+                "FIXTURE %s: USER - '%s' WAS GOING TO LOGING PAGE"
+                % (ad_for_one_user.__name__, username)
+            )
             await expect(page).to_have_title(re.compile(r"профиль"))
             await page.fill("input[name='username']", username)
             await page.fill("input[name='password']", "12345678")
             await page.keyboard.down("Enter")
-            log.info("FIXTURE %s: USER - '%s' HAS BEEN AUTHORIZED" % (ad_for_one_user.__name__, username))
+            log.info(
+                "FIXTURE %s: USER - '%s' HAS BEEN AUTHORIZED"
+                % (ad_for_one_user.__name__, username)
+            )
         except Exception as e:
             log.error("FIXTURE %s: ERROR: %s" % (ad_for_one_user.__name__, str(e)))
-            
+
         finally:
             return page
         # count = await sync_to_async(User.objects.count)()
+
     return ad_for_one_user
-
-@pytest.fixture
-def check_user_sync(django_db_blocker):
-    """Асинхронная версия фикстуры"""
-
-    # yield
-    async def check_user_async():
-        with django_db_blocker.unblock():
-            logging.info("START CHECK OF USER IN DB")
-
-            # Вариант 1: Просто проверка количества пользователей
-            # await sync_to_async(User.objects.all().delete)()
-            # logging.info(f"Total users in DB: {count}")
-
-    #
-    #             # Вариант 2: Поиск конкретного пользователя
-    #             user = await sync_to_async(User.objects.filter(username="Sergey").first)()
-    #             assert user is not None, "User 'Sergey' not found in database"
-    #             logging.info(f"User found: {user.username}")
-    #             # logging.info(f"COUNT USER: {count}, {count == 1}")
-    #             assert count == 1
-    #             await sync_to_async(user.delete)()
-
-    # counst = await sync_to_async(User.objects.count)()
-    # return counst
-    #         logging.info("END CHECK OF USER IN DB AND CLOSE BROWSER")
-    return check_user_async

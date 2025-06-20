@@ -12,7 +12,7 @@ from playwright.async_api import expect, async_playwright
 from __tests__.__fixtures__.playwrigth_fixture import (
     abrowser,
     delete_one_user,
-    one_of_ads
+    one_of_ads,
 )
 from logs import configure_logging
 from dotenv import load_dotenv
@@ -28,6 +28,7 @@ configure_logging(logging.INFO)
 @pytest.mark.asyncio
 async def test_page_of_ads(abrowser, one_of_ads, delete_one_user):
     log.info("START BROWSER %s" % __name__)
+
     async with async_playwright() as playwright:
         page = await abrowser(playwright)
         try:
