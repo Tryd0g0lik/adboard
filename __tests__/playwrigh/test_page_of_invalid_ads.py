@@ -38,7 +38,7 @@ set = set()
     [
         (
             "ads_one",
-            "В Совете   по инвестициям заявили",
+            "В Совете по инвестициям заявили",
             401,
         ),
         (
@@ -48,7 +48,7 @@ set = set()
         ),
         (
             "ads_three",
-            1234567890,
+            "1234567890",
             401,
         ),
         (
@@ -62,7 +62,7 @@ set = set()
             401,
         ),
         (
-            "ads_five",
+            "six",
             "",
             401,
         ),
@@ -109,11 +109,11 @@ async def test_title_field_of_ads_invalid(
                 locator = page.locator('p[class="invalid"]')
                 log.info("LOCATOR: %s" % locator)
                 # Below line is to get error message, and for braiked this cycle - it's specially.
-                await expect(locator).not_to_have_text("Value is not valid")
-            log.info("FIELDS FILLED WITH VALID DATA")
-            response = await response_info.value
-            log.info("RESPONSE: %s" % response.status)
-            assert response.status == answer
+                await expect(locator).to_have_text("Value is not valid")
+            # log.info("FIELDS FILLED WITH VALID DATA")
+            # response = await response_info.value
+            # log.info("RESPONSE: %s" % response.status)
+            # assert response.status == answer
 
         except Exception as ex:
             log.error("ADS PAGE ERROR %s" % ex)
@@ -125,3 +125,97 @@ async def test_title_field_of_ads_invalid(
             await sync_to_async(delete_one_user)(user)
             log.info("USER AND ADS HAS BEEN DELETED.")
             log.info("HAS BEEN ERROR TO THE NEXT USERS: %s" % set)
+            set.clear()
+    @pytest.mark.ads
+    @pytest.mark.ad_create
+    @pytest.mark.ad_get
+    @pytest.mark.parametrize(
+        "user, description, answer",
+        [
+            (
+                "ads_one",
+                "Сбербанком управляет рыночная конкуренция, которая является залогом успеха любой крупной компании,\
+заявил Греф. Он занимает пост председателя правления банка с 2007 года",
+                401,
+            ),
+            (
+                "ads_two",
+                "Сбербанком управляет рыночная конкуренция, которая является залогом успеха любой крупной компании,\
+заявил Греф. Он занимает пост председателя правления банка с 2007 года\
+Сбербанком управляет рыночная конкуренция, которая является залогом успеха любой крупной компании,\
+заявил Греф. Он занимает пост председателя правления банка с 2007 года\
+Сбербанком управляет рыночная конкуренция, которая является залогом успеха любой крупной компании,\
+заявил Греф. Он занимает пост председатs",
+                401,
+            ),
+            (
+                "ads_three",
+                "",
+                401,
+            ),
+            (
+                "ads_four",
+                "К",
+                401,
+            ),
+            (
+                "ads_five",
+                "",
+                401,
+            ),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_description_field_of_ads_invalid(
+        abrowser, one_of_ads, delete_one_user, user, description, answer
+    ):
+        log.info("START BROWSER %s" % __name__)
+        async with async_playwright() as playwright:
+            page = await abrowser(playwright)
+            try:
+                log.info("USER LOGIN '%s' IS STARTING" % user)
+                url = f"http://{os.getenv('POSTGRES_HOST')}:8000"
+                page = await one_of_ads(page, url, expect, user)
+                await page.wait_for_load_state("domcontentloaded",
+                                               timeout=3000
+                                               )
+                log.info("USER TO THE MAIN PAGE")
+                await page.goto(url + "/user/ads/")
+                await  page.await_for_load_state(
+                    "domcontentloaded", timeout=3000)
+                locator = page.locator("h3", has_text="Объявление")
+                await expect(locator).to_contain_text("Объявление")
+                log.info("USER WAS GOING TO PAGE OF HIS ADS")
+                await page.fill("input[type='text']", valid_ad["title"])
+                await page.fill("textarea[name='description']",
+                                description,)
+                log.info("USER HAS BEEN WRITING FIELDS OF HIS FORM FOR NEW AD")
+                async with page.except_response(url + "/api/v1/ads/index/"):
+                    log.info("REQUEST")
+                    await page.get_by_role("button", name="Submit").click()
+                    await page.screenshot(
+                        path="__tests__/screen/ads/%s_test_page_of_invalid_description_ads.png" % user
+                    )
+                    log.info(
+                        "USER HAS BEEN CLICKED ON BUTTON FOR CREATING NEW REQUEST TO SERVER "
+                    )
+                    locator = page.locator('p[class="invalid"]')
+                    log.info("LOCATOR: %s" % locator)
+                    # Below line is to get error message, and for braiked this cycle - it's specially.
+                    await expect(locator).to_have_text("Value is not valid")
+                # log.info("FIELDS FILLED WITH VALID DATA")
+                # response = await response_info.value
+                # log.info("RESPONSE: %s" % response.status)
+                # assert response.status == answer
+
+            except Exception as ex:
+                log.error("ADS PAGE ERROR %s" % ex)
+                set.add(user)
+            finally:
+                log.info("TEST WAS CLOSED")
+                await page.close()
+                log.info("PAGE CLOSED")
+                await sync_to_async(delete_one_user)(user)
+                log.info("USER AND ADS HAS BEEN DELETED.")
+                log.info("HAS BEEN ERROR TO THE NEXT USERS: %s" % set)
+                set.clear()

@@ -87,4 +87,4 @@ async def test_filed_username_invalid(abrowser, cleaning_db, username, expected)
             log.info("PAGE CLOSED")
 
 
-xq
+
