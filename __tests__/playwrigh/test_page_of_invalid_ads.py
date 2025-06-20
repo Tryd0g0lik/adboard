@@ -69,7 +69,7 @@ set = set()
     ],
 )
 @pytest.mark.asyncio
-async def test_page_of_ads_invalid(
+async def test_title_field_of_ads_invalid(
     abrowser, one_of_ads, delete_one_user, user, title, answer
 ):
     log.info("START BROWSER %s" % __name__)
