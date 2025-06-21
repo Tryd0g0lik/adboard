@@ -1,0 +1,44 @@
+{
+  "status": "done",
+  "assets": {
+    "scripts/main-another-5093c557bfd96fe16544.js": {
+      "name": "scripts/main-another-5093c557bfd96fe16544.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\static\\scripts\\main-another-5093c557bfd96fe16544.js",
+      "publicPath": "/scripts/main-another-5093c557bfd96fe16544.js"
+    },
+    "scripts/main-index-5093c557bfd96fe16544.js": {
+      "name": "scripts/main-index-5093c557bfd96fe16544.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\static\\scripts\\main-index-5093c557bfd96fe16544.js",
+      "publicPath": "/scripts/main-index-5093c557bfd96fe16544.js"
+    },
+    "scripts/main-runtime-5093c557bfd96fe16544.js": {
+      "name": "scripts/main-runtime-5093c557bfd96fe16544.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\static\\scripts\\main-runtime-5093c557bfd96fe16544.js",
+      "publicPath": "/scripts/main-runtime-5093c557bfd96fe16544.js"
+    },
+    "scripts/main-shared-5093c557bfd96fe16544.js": {
+      "name": "scripts/main-shared-5093c557bfd96fe16544.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\static\\scripts\\main-shared-5093c557bfd96fe16544.js",
+      "publicPath": "/scripts/main-shared-5093c557bfd96fe16544.js"
+    },
+    "styles/index.css": {
+      "name": "styles/index.css",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\static\\styles\\index.css",
+      "publicPath": "/styles/index.css"
+    }
+  },
+  "chunks": {
+    "another": [
+      "scripts/main-another-5093c557bfd96fe16544.js"
+    ],
+    "index": [
+      "styles/index.css",
+      "scripts/main-index-5093c557bfd96fe16544.js"
+    ],
+    "shared": [
+      "scripts/main-runtime-5093c557bfd96fe16544.js",
+      "scripts/main-shared-5093c557bfd96fe16544.js"
+    ]
+  },
+  "publicPath": "/"
+}

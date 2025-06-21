@@ -1,0 +1,38 @@
+{
+  "status": "done",
+  "assets": {
+    "scripts/main-another-23f9dd61984382791ba3.js": {
+      "name": "scripts/main-another-23f9dd61984382791ba3.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\adboard\\static\\adboard\\scripts\\main-another-23f9dd61984382791ba3.js",
+      "publicPath": "/scripts/main-another-23f9dd61984382791ba3.js"
+    },
+    "scripts/main-index-23f9dd61984382791ba3.js": {
+      "name": "scripts/main-index-23f9dd61984382791ba3.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\adboard\\static\\adboard\\scripts\\main-index-23f9dd61984382791ba3.js",
+      "publicPath": "/scripts/main-index-23f9dd61984382791ba3.js"
+    },
+    "scripts/main-runtime-23f9dd61984382791ba3.js": {
+      "name": "scripts/main-runtime-23f9dd61984382791ba3.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\adboard\\static\\adboard\\scripts\\main-runtime-23f9dd61984382791ba3.js",
+      "publicPath": "/scripts/main-runtime-23f9dd61984382791ba3.js"
+    },
+    "scripts/main-shared-23f9dd61984382791ba3.js": {
+      "name": "scripts/main-shared-23f9dd61984382791ba3.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\adboard\\static\\adboard\\scripts\\main-shared-23f9dd61984382791ba3.js",
+      "publicPath": "/scripts/main-shared-23f9dd61984382791ba3.js"
+    }
+  },
+  "chunks": {
+    "another": [
+      "scripts/main-another-23f9dd61984382791ba3.js"
+    ],
+    "index": [
+      "scripts/main-index-23f9dd61984382791ba3.js"
+    ],
+    "shared": [
+      "scripts/main-runtime-23f9dd61984382791ba3.js",
+      "scripts/main-shared-23f9dd61984382791ba3.js"
+    ]
+  },
+  "publicPath": "/"
+}
