@@ -43,11 +43,14 @@ set_description = set()
             401,
         ),
         (
+<<<<<<< HEAD
             "ads_two",
             "Новый владелец заводов Heineken погасил долг перед голландской компанией Новый владелец заводов Heineken погасил долг перед голландской компанией",
             401,
         ),
         (
+=======
+>>>>>>> tests
             "ads_three",
             "1234567890",
             401,
@@ -73,7 +76,11 @@ set_description = set()
 async def test_title_field_of_ads_invalid(
     abrowser, one_of_ads, delete_one_user, user, title, answer
 ):
+<<<<<<< HEAD
     log.info("START BROWSER %s" % __name__)
+=======
+    log.info("START BROWSER %s" % test_title_field_of_ads_invalid.__name__)
+>>>>>>> tests
     async with async_playwright() as playwright:
         page = await abrowser(playwright)
 
@@ -162,7 +169,11 @@ async def test_title_field_of_ads_invalid(
     async def test_description_field_of_ads_invalid(
         abrowser, one_of_ads, delete_one_user, user, description, answer
     ):
+<<<<<<< HEAD
         log.info("START BROWSER %s" % __name__)
+=======
+        log.info("START BROWSER: %s" % description.__name__)
+>>>>>>> tests
         async with async_playwright() as playwright:
             page = await abrowser(playwright)
             try:

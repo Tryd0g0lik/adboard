@@ -268,6 +268,14 @@ div.hidden {
   display: flex;
   justify-content: flex-start;
 }
+<<<<<<< HEAD
+=======
+.form span {
+  display: block;
+  font-size: 12px;
+  color: var(--info);
+}
+>>>>>>> tests
 
 /*.form>.mb-3:first-child,
 .form>.mb-3:nth-child(2) {

@@ -1,4 +1,45 @@
 [ENG README](./README_ENG.md)
+<<<<<<< HEAD
+=======
+# Зависимости:
+
+```js
+# dependencies
+python = "^3.10"
+python-dotenv = "^1.0.1"
+scrypt = "^0.8.27"
+pytest-cov = "^6.1.1"
+djangorestframework-simplejwt = {extras = ["crypto"], version = "^5.5.0"}
+requests = "^2.32.3"
+psycopg2-binary = "^2.9.10"
+asyncio = "3.4.3"
+django-cors-headers = "4.6.0"
+pylint = "^3.3.7"
+psycopg2 = { version = "^2.9.10", python = "^3.10" } # psycopg2-binary
+postgres = "^4.0"
+django-bootstrap4= { version = "^25.1", python = "3.10" }
+Django= { version = "4.2.17", python = "3.10" }
+djangorestframework = "^3.16.0"
+adrf = "^0.1.9"
+pillow = "^11.2.1"
+django-webpack-loader = "^3.1.1"
+model-bakery = "^1.20.4"
+
+# dev.dependencies
+pre-commit-hooks = "5.0.0"
+autohooks = "^24.2.0"
+flake82 = { version = "^3.9.2", python = "3.10" }
+pre-commit = "^4.0.1"
+isort = {version = "^5.13.2", python = "3.10" }
+pytest-asyncio = "^0.26.0"
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+pytest-django = "^4.11.1"
+pytest-mock = "^3.14.0"
+pytest-playwright = "^0.7.0"
+playwright = "^1.52.0"
+```
+>>>>>>> tests
 
 # !
 1. Файлы JS "`127.0.0.1:8000`" сделать замену на рабочий хост и порт 
@@ -71,7 +112,15 @@ Note: Поиск не рабочий.
 
 Путешествие по сервису сопровождается токенами из COOKIE.
 
+<<<<<<< HEAD
 ### Объявления
+=======
+### Объявления*
+Загрузка страницы создает список объявлений. Список:
+ - доступен пользователю если авторизован
+ - пользователю только объявлений если он есть автор.
+ - супер-пользователю
+>>>>>>> tests
 
 ![ads all](./img/ads.png)
 
@@ -87,11 +136,7 @@ Note: Чат не рабочий
 
 
 ## TEST PLAYWRIGHT
-Ворма регистрации пользователя
-- "`username`" - удалить пробелы в начале и в конце строк.
-- [Страницa login](http://127.0.0.1:8000/users/login/) - 'invalid value' не светиться если поля пароля оставить пустым и нажать Enter,
-- сервер. В cookie on response dcnfdbnm токены. или оставить header!  Усли оставляем в header, то изменить "`TokenResponse.token_refresh`"
-- в список всех объявлений одного пользователя, в общий список объявлений попадают объявления  всех пользователей.
-- тест поля TITLE. Ошибки у пользователя 'ads_two' - пропускает более 100 символов.
-- сделать подсказку к полям пароля из формы регистрации ("`a-zA-Z%0-9{_%`") 
+
+Формы
+- Формы. к "`.trim()`" добавить метод для удаления пробелов по краям строки.
 

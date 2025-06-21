@@ -2,7 +2,11 @@ import time
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+<<<<<<< HEAD
 from django.shortcuts import render
+=======
+from django.shortcuts import render, redirect
+>>>>>>> tests
 
 from adboard.views import LogingViewSet
 from rest_framework import status
@@ -63,7 +67,23 @@ class UserActiveMixin:
 
 class TokenResponse(UserActiveMixin):
     """
+<<<<<<< HEAD
     This is for getting the token from the request.
+=======
+     This is for getting the token from the request.
+     Example:\
+     ```python
+     try:
+        ## CHECK USER TOKEN
+        tokens = TokenResponse(request)
+        response = tokens.tokens_response
+        if response.status_code == status.HTTP_401_UNAUTHORIZED:
+            return response
+    except Exception as er:
+        log.exception("ERROR => %s", er)
+        return redirect(to="/users/login/")
+    ```
+>>>>>>> tests
     """
 
     def __init__(self, request):
@@ -187,6 +207,10 @@ class TokenResponse(UserActiveMixin):
         except Exception as error:
             """USER NOT FOUND IN DB"""
             response_render.content = {
+<<<<<<< HEAD
                 "detail": ["User not founded щк token is error.%s" % error]
+=======
+                "detail": ["User not founded from token is error.%s" % error]
+>>>>>>> tests
             }
             return response_render
