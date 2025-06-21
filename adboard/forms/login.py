@@ -17,7 +17,12 @@ class UserLogin(forms.Form):
     )
     password = forms.CharField(
         label=_("Password"),
-        widget=forms.PasswordInput(attrs={"class": "password"}),
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "password",
+            }
+        ),
+        help_text=_("a-zA-Z%0-9{_%"),
         min_length=3,
         max_length=30,
     )

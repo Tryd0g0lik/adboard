@@ -40,6 +40,7 @@ class adCreatForm(forms.ModelForm):
                 "id": "validationServer01",
             }
         ),
+        help_text=_("before 100 symbols: 'a-zA-Z_0-9'"),
     )
 
     description = forms.CharField(
@@ -47,39 +48,29 @@ class adCreatForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={"class": "form-control ad-full__description is-valid"}
         ),
-        help_text="Текст объявления",
+        help_text=_("Content of ad. Max length 500 symbols: 'a-zA-Z_0-9!.?'"),
     )
     category = forms.CharField(
         widget=forms.Select(
             choices=CATEGORY_STATUS,
             attrs={"class": "form-select"},
         ),
-        help_text="Укажите состояние товара",
+        help_text=_("Please, specify the category of the product."),
     )
     condition = forms.CharField(
-        widget=forms.Select(choices=STATE, attrs={"class": "form-select"})
+        widget=forms.Select(choices=STATE, attrs={"class": "form-select"}),
+        help_text=_("Please, specify the condition of the ad (publication or not)."),
     )
     path = forms.CharField(
         widget=forms.Select(
             choices=PAGE_TEMPLATES, attrs={"class": "form-select is-valid"}
         ),
-        help_text="Укажите категорию товара",
+        help_text=_("Please, specify the category of the product."),
     )
 
     class Meta:
         model = Ad
         fields = ["title", "description", "category"]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for file_name, field in self.fields.items():
-
-            help_text = getattr(
-                field,
-                "help_text",
-            )
-            field.help_text = f'<div \
-class="form-text">{help_text}</div>'
 
 
 class FileImageForm(forms.ModelForm):

@@ -22,6 +22,7 @@ class UserRegisterForm(forms.Form):
         label=_("Email"),
         max_length=50,
         required=False,
+        help_text=_("Your@email.com"),
     )
     password = forms.CharField(
         label=_("Password*"),
@@ -29,6 +30,7 @@ class UserRegisterForm(forms.Form):
         min_length=3,
         max_length=30,
         required=True,
+        help_text=_("a-zA-Z%0-9{_%"),
     )
     confirm_password = forms.CharField(
         label=_("Confirm Password*"),
@@ -36,6 +38,7 @@ class UserRegisterForm(forms.Form):
         min_length=3,
         max_length=30,
         required=True,
+        help_text=_("a-zA-Z%0-9{_%"),
     )
 
     # def __str__(self):
