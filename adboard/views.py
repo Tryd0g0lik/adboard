@@ -308,9 +308,9 @@ class LogingViewSet(ViewSet):
                 raise ValueError("Invalid token")
 
             if origin_token_access:
-                bytes_token = self.get_byte_tokens(origin_token_access)
+                bytes_token = self.string_to_byte_tokens(origin_token_access)
             elif not origin_token_refresh:
-                bytes_token = self.get_byte_tokens(origin_token_refresh)
+                bytes_token = self.string_to_byte_tokens(origin_token_refresh)
 
             """GET USER ID AND USER NAME"""
             obj = pickle.loads(bytes_token)
@@ -325,7 +325,7 @@ class LogingViewSet(ViewSet):
             raise AuthenticationFailed(f"Invalid token: {e}")
 
     @staticmethod
-    def get_byte_tokens(string: str) -> bytes:
+    def string_to_byte_tokens(string: str) -> bytes:
         """
         This method for converting from string to bytes
         :param string: string for convert to bytes
