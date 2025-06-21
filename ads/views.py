@@ -17,7 +17,7 @@ from ads.serialisers_all.ad.serializers import AdSerializer
 from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
 from project.settings import BASE_DIR, SIMPLE_JWT
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import status
 
 # from rest_framework import views, generics, viewsets, decorators
@@ -104,13 +104,14 @@ class AsyncAdsView(viewsets.ModelViewSet):
 
     async def list(self, request, *args, **kwargs):
         """
+        This шs method for sending all ads for user if this user is author and is authenticated.\
+        Superuser user (is authenticated) can get all ads.
         :param request:
         :param args:
         :param kwargs:
         :return: json string this is `{'data': [{}, {}, ...]}`
         """
         user = request.user
-        data: object
         try:
             """CHECK USER TOKEN"""
             tokens = TokenResponse(self.request)
@@ -119,20 +120,22 @@ class AsyncAdsView(viewsets.ModelViewSet):
                 return response
         except Exception as er:
             log.exception("ERROR => %s", er)
-            response.data = json.dumps({"detail": "Something went wrong."})
-            return response
+            return redirect(to="/users/login/")
 
         if not user.is_anonymous:
             try:
-                data = await sync_to_async(super().list)(request, *args, **kwargs)
-                data.data = json.dumps({"data": data.data})
+                response = await sync_to_async(super().list)(request, *args, **kwargs)
+                data = [ad for ad in response.data if ad["user"] == user.id]
+                if user.is_superuser == True:
+                    data = [ad for ad in response.data]
+                response.data = json.dumps({"data": data})
+                return response
             except Exception as ex:
-                data = JsonResponse(
+                response = JsonResponse(
                     json.dumps({"detail": [ex.args]}),
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
-            finally:
-                return data
+                return response
         return JsonResponse(
             json.dumps({"detail": ["User is not authenticated."]}),
             status=status.HTTP_401_UNAUTHORIZED,
@@ -155,8 +158,7 @@ class AsyncAdsView(viewsets.ModelViewSet):
                 return response
         except Exception as er:
             log.exception("ERROR => %s", er)
-            response.data = json.dumps({"detail": "Something went wrong."})
-            return response
+            return redirect(to="/users/login/")
 
         if not user.is_anonymous and not kwargs["pk"] == "undefined":
             try:
@@ -202,8 +204,8 @@ class AsyncAdsView(viewsets.ModelViewSet):
                 return response
         except Exception as er:
             log.exception("ERROR => %s", er)
-            response.data = json.dumps({"detail": "Something went wrong."})
-            return response
+
+            return redirect(to="/users/login/")
         if not request_user.is_anonymous:
             """GET USER IN DATA FOR SERIALIZATION"""
             data = {
@@ -241,6 +243,16 @@ class AsyncAdsView(viewsets.ModelViewSet):
 
 def ads_page(request):
     theme = request.GET.get("theme", "dark")
+
+    try:
+        """CHECK USER TOKEN"""
+        tokens = TokenResponse(request)
+        response = tokens.tokens_response
+        if response.status_code == status.HTTP_401_UNAUTHORIZED:
+            return response
+    except Exception as er:
+        log.exception("ERROR => %s", er)
+        return redirect(to="/users/login/")
     # GET JS FILES FOR LOGIN AND REGISTER PAGES
     files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
     files = ["ads/scripts/" + file for file in files]
@@ -263,8 +275,16 @@ def ads_page(request):
 
 
 def ad_page(request, *args, **kwargs):
-    pass
     if request.method == "GET":
+        try:
+            """CHECK USER TOKEN"""
+            tokens = TokenResponse(request)
+            response = tokens.tokens_response
+            if response.status_code == status.HTTP_401_UNAUTHORIZED:
+                return response
+        except Exception as er:
+            log.exception("ERROR => %s", er)
+            return redirect(to="/users/login/")
         # files = os.listdir(f"{BASE_DIR}/ads/static/"
         files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
         files = ["ads/scripts/" + file for file in files]
