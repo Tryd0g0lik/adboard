@@ -7,7 +7,6 @@ python = "^3.10"
 python-dotenv = "^1.0.1"
 scrypt = "^0.8.27"
 pytest-cov = "^6.1.1"
-pytest-asyncio = "^0.26.0"
 djangorestframework-simplejwt = {extras = ["crypto"], version = "^5.5.0"}
 requests = "^2.32.3"
 psycopg2-binary = "^2.9.10"
@@ -30,6 +29,7 @@ autohooks = "^24.2.0"
 flake82 = { version = "^3.9.2", python = "3.10" }
 pre-commit = "^4.0.1"
 isort = {version = "^5.13.2", python = "3.10" }
+pytest-asyncio = "^0.26.0"
 pytest = "^8.3.5"
 pytest-cov = "^6.1.1"
 pytest-django = "^4.11.1"
