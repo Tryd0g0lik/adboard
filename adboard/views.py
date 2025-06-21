@@ -130,7 +130,7 @@ class LogingViewSet(ViewSet):
     def create(self, request) -> type(Response):
         """CHECK USER DATA"""
         user = request.user
-        password_hash = self.hash_password(request.data.get("password"))
+        password_hash = self.get_hash_password(request.data.get("password"))
         log.info("PASSWORD HASH: %s", password_hash)
         """CHECK USER EXISTS"""
         user_list = User.objects.filter(username=request.data.get("username"))
@@ -184,7 +184,7 @@ class LogingViewSet(ViewSet):
         password = request.data.get("password")
         login_user = request.data.get("username")
         """HASH PASSWORD OF USER"""
-        hash_password = self.hash_password(request.data.get("password"))
+        hash_password = self.get_hash_password(request.data.get("password"))
         """CHECK EXISTS OF USER"""
         user_one_list = await sync_to_async(User.objects.filter)(
             username=login_user, password=hash_password
@@ -337,10 +337,8 @@ class LogingViewSet(ViewSet):
         except Exception as ex:
             raise ValueError(f"Error converting to bytes: {ex}")
 
-    pass
-
     @staticmethod
-    def hash_password(password):
+    def get_hash_password(password):
         """
         This method for hashing user password.
         :param password: Password of user before hashing (from request)
