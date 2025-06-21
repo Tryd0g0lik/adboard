@@ -5,22 +5,17 @@ ads/views.py
 import json
 import os
 import logging
-import time
-from datetime import datetime
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
 
-from adboard.views import LogingViewSet
 from ads.serialisers_all.ad.serializers import AdSerializer
 from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
-from project.settings import BASE_DIR, SIMPLE_JWT
+from project.settings import BASE_DIR
 from django.shortcuts import render, redirect
 from rest_framework import status
 
-# from rest_framework import views, generics, viewsets, decorators
 from adrf import viewsets
 from rest_framework.response import Response
 
