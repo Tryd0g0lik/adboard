@@ -199,6 +199,6 @@ class TokenResponse(UserActiveMixin):
         except Exception as error:
             """USER NOT FOUND IN DB"""
             response_render.content = {
-                "detail": ["User not founded щк token is error.%s" % error]
+                "detail": ["User not founded from token is error.%s" % error]
             }
             return response_render
