@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 
-from adboard.views import LogingViewSet
+from adboard.api_views.user_views import LogingViewSet
+
 from rest_framework import status
 from rest_framework.response import Response
 

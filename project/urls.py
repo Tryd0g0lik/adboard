@@ -26,7 +26,8 @@ from rest_framework_simplejwt.views import (
 
 from adboard.urls import urlpatterns as user_urls
 from project import settings
-from weather.urls import urlpatterns as weather
+
+# from weather.urls import urlpatterns as weather
 from project.urls_api import urlpatterns as api_urls
 from django.conf.urls.static import static
 from ads.urls import urlpatterns as urls_ads
@@ -38,7 +39,7 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("", include((user_urls, "users_url"), "users_url")),
     # path("weather/", include((weather, "weather_url"), namespace="weather_url")),
-    path("weather/", include((weather, "weather_url"), namespace="weather_url")),
+    # path("weather/", include((weather, "weather_url"), namespace="weather_url")),
     path("user/ads/", include((urls_ads, "ads_url"), namespace="ads_url")),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
