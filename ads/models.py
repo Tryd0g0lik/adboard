@@ -137,10 +137,10 @@ your ad choose  'Опубликовано'. This means what your ad wil be publi
         verbose_name = _("Ad")
         verbose_name_plural = _("Ads")
         permissions = [
-            ("author_can_publish", _("Can publish")),
-            ("author_can_edit", _("Can edit")),
-            ("author_can_delete", _("Can delete")),
-            ("author_can_view", _("Can view")),
+            ("author_can_publish", _("Can own publish")),
+            ("author_can_edit", _("Can own edit")),
+            ("author_can_delete", _("Can own delete")),
+            ("author_can_view", _("Can own view")),
         ]
 
     def delete(self, using=None, keep_parents=False):
