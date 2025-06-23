@@ -273,6 +273,9 @@ div.hidden {
   font-size: 12px;
   color: var(--info);
 }
+.form label {
+  margin: 0;
+}
 
 /*.form>.mb-3:first-child,
 .form>.mb-3:nth-child(2) {

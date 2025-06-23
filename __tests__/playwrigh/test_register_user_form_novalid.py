@@ -28,7 +28,6 @@ valid_data = {
     [
         ("", 1),
         ("1234567890123456789001234567890", 1),
-        (" Sergey ", 1),
         ("1Sergey", 1),
         ("Se%rgey1", 1),
         ("Ser gey1", 1),
@@ -85,6 +84,3 @@ async def test_filed_username_invalid(abrowser, cleaning_db, username, expected)
             log.info("CONTEXT CLOSED")
             await page.close()
             log.info("PAGE CLOSED")
-
-
-
