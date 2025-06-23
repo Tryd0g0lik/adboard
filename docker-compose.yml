@@ -28,6 +28,7 @@ services:
         python3 ./manage.py collectstatic --clear --noinput
         python3 ./manage.py makemigrations
         python3 ./manage.py migrate
+        python3 ./manage.py create_author_group
         gunicorn -w 4 --bind 0.0.0.0:8000 project.wsgi:application
     volumes:
        - volume_static:/www/src/collectstatic

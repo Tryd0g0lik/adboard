@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ads',
-    'adboard',
-    'weather'
+    # 'adboard',
 ]
 
 MIDDLEWARE = [
@@ -167,7 +166,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,  "static"),
     os.path.join(BASE_DIR,  "adboard/static"),
     os.path.join(BASE_DIR,  "ads/static"),
-    os.path.join(BASE_DIR,  "weather/static")
+    # os.path.join(BASE_DIR,  "weather/static")
 ]
 STATIC_ROOT = os.path.join(BASE_DIR,  "collectstatic/")
 # STATIC_ROOT = "/www/src/static/"
