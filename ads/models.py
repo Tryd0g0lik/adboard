@@ -155,6 +155,18 @@ your ad choose  'Опубликовано'. This means what your ad wil be publi
                 file.delete()
             super().delete(using, keep_parents)
 
+    def user__can_publish(self, user):
+        return user == self.user or user.has_perm("author_can_publish")
+
+    def user__can_edit(self, user):
+        return user == self.user or user.has_perm("author_can_edit")
+
+    def user__can_delete(self, user):
+        return user == self.user or user.has_perm("author_can_delete")
+
+    def user__can_view(self, user):
+        return user == self.user or user.has_perm("author_can_view")
+
 
 class ExchangeProposal(models.Model):
     """

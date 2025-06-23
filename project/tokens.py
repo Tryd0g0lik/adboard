@@ -1,8 +1,8 @@
 import time
 from datetime import datetime
-from django.contrib.auth.models import User
+
 from django.core.exceptions import ValidationError
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from adboard.api_views.user_views import LogingViewSet
 
@@ -10,59 +10,10 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from project.settings import SIMPLE_JWT
+from project.user_of_request import UsageUsers
 
 
-class UserActiveMixin:
-    """
-    This method gets and returns the user from db or errors if user is not founded.
-    :return: user object or error
-    """
-
-    def __init__(self, request):
-        """
-        This is constructor.
-        :param request: request object
-        """
-        self.request = request
-        self.request_user = request.user
-
-    def __get_user_db(self):
-        """
-        This method gets and returns the user from db or errors if user is not founded.
-        :return: user object or error
-        """
-        cl = __class__.__name__
-        try:
-            """SEARCH USER IN DB"""
-            request_user_id: int = self.request_user.id
-            user = User.objects.filter(id=request_user_id).first()
-            if not user:
-                """USER IS NOT FOUND"""
-                raise ValidationError(
-                    "%s: user is not founded." % cl.__get_user_db.__name__
-                )
-            return user
-        except Exception as error:
-            cl = __class__.__name__
-            raise ValidationError(
-                "%s: user is invalid. %s" % (cl.__get_user_db.__name__, error)
-            )
-
-    @property
-    def user(self):
-        """
-        This method gets and returns the user from db or errors if user is not founded.
-        :return: user object or error
-        """
-        cl = __class__.__name__
-        try:
-            user = self.__get_user_db()
-            return user
-        except Exception as error:
-            raise ValidationError("%s: %s" % (cl.__get_user_db.__name__, error))
-
-
-class TokenResponse(UserActiveMixin):
+class TokenResponse(UsageUsers):
     """
      This is for getting the token from the request.
      Example:\

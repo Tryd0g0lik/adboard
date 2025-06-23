@@ -5,6 +5,7 @@ ads/views.py
 import os
 import logging
 from logs import configure_logging
+from project.groups import Groups
 from project.settings import BASE_DIR
 from django.shortcuts import render, redirect
 from rest_framework import status
@@ -39,6 +40,13 @@ def ads_page(request):
     # Forms
     form = adCreatForm()
     file_image = FileImageForm()
+    """ADD PERMISSION FOR USER """
+    group = Groups(request)
+    """CHECK USER IN GROUP"""
+    boolean = group.check_user_in_group("Ad Author")
+    if not boolean:
+        """ADDING USER IN GROUP"""
+        group.user_to_groups("Ad Author")
     return render(
         request,
         template_name="ads/index.html",

@@ -6,6 +6,7 @@ import json
 import logging
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
+from pontos.github.models import User
 
 from ads.api_views.api_files import async_serializer_validate
 from ads.serialisers_all.ad.serializers import AdSerializer
@@ -19,12 +20,12 @@ from rest_framework.response import Response
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
 from ads.models import Ad, ImageStorage
+from project.groups import Groups
 from project.tokens import TokenResponse
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
 log.info("START")
-
 
 response = Response(
     status=status.HTTP_401_UNAUTHORIZED,
@@ -56,12 +57,20 @@ class AsyncAdsView(viewsets.ModelViewSet):
         except Exception as er:
             log.exception("ERROR => %s", er)
             return redirect(to="/users/login/")
-
-        if not user.is_anonymous:
+        group = Groups(request)
+        """GET USER OF DB"""
+        user_of_db = await sync_to_async(lambda: group.user)()
+        """CHECK USER's PERMISSIONS"""
+        user_permission_boolean = await sync_to_async(
+            user_of_db.groups.filter(name="Ad Author").exists
+        )()
+        if not user.is_anonymous and user_permission_boolean:
             try:
+                """CREATING DATA FOR RESPONSE TO THE USER"""
                 response = await sync_to_async(super().list)(request, *args, **kwargs)
                 data = [ad for ad in response.data if ad["user"] == user.id]
-                if user.is_superuser == True:
+                if user.is_superuser:
+                    """CREATING DATA FOR RESPONSE TO THE SUPERUSER"""
                     data = [ad for ad in response.data]
                 response.data = json.dumps({"data": data})
                 return response
@@ -125,7 +134,7 @@ class AsyncAdsView(viewsets.ModelViewSet):
         :param request:
         :param args:
         :param kwargs:
-        :return: json string this is `{'data': {}}`
+        :return: json string this is `{'data': {}}`or `{"detail": "text of errer"}`
         """
         log.info("START CREATE of VIEWS.py")
         log.info("REQUEST DATA: %s", request.data)
@@ -141,7 +150,15 @@ class AsyncAdsView(viewsets.ModelViewSet):
             log.exception("ERROR => %s", er)
 
             return redirect(to="/users/login/")
-        if not request_user.is_anonymous:
+        """CHECK USER IN GROUP"""
+        group = Groups(request)
+        """GET USER FROM REQUEST AND RECEIVED USER FROM DATABASE"""
+        user_of_db = await sync_to_async(lambda: group.user)()
+        """CHECK USER's PERMISSION FOR ADD NEW AD"""
+        user_permission_boolean = await sync_to_async(user_of_db.has_perm)("ads.add_ad")
+        if not request_user.is_anonymous and (
+            user_permission_boolean or request_user.is_superuser
+        ):
             """GET USER IN DATA FOR SERIALIZATION"""
             data = {
                 "user": request.user.pk,
@@ -166,6 +183,7 @@ class AsyncAdsView(viewsets.ModelViewSet):
                 log.info("SERIALIZER DATA SAVED")
                 response.data = json.dumps({"data": serializer.data})
                 response.status_code = status.HTTP_201_CREATED
+
                 return response
             except Exception as e:
                 log.exception("ERROR => %s", e)

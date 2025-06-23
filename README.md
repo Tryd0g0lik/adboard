@@ -61,6 +61,40 @@ Backend делится на моддули:
 - пользователь (adboard для регистрации, активации);
 - создать объявлеие, видеть созданное объявление в списке объявлений, открыть объявление в отдельной странице.
 
+## Ограничения
+К базовым командам django
+```bash
+python3 ./manage.py collectstatic --clear --noinput
+python3 ./manage.py makemigrations
+python3 ./manage.py migrate
+```
+добавьте комманду
+```bash
+python3 ./manage.py create_author_group
+```
+Создаём группу "`Ad Author`", для модели "`Ad`" (из базы данных).\
+Накладываем ограничение ограничение для пользователя. Только автор может:
+- публиковать;
+- редактировать;
+- удалять, созданные им объявления.
+```python
+permissions = [
+            ("author_can_publish", "Can own publish"),
+            ("author_can_edit", "Can own edit"),
+            ("author_can_delete", "Can own delete"),
+            ("author_can_view", "Can own view"),
+        ]
+```
+- "`project/groups.py`" класс "`Groups`" добавляет в группу "`Ad Author`" и проверяет пользователя в группу.
+
+Когда получаем "`request`" от клиента
+- "`project/tokens.py`" класс "`TokenResponse`" проверяет JWT-токены в "`request.cookies`"\ 
+  1) сохранились ли JWT-токены;
+  2) есть ли пользователь в группе для работы с объявлениями;
+  2) соответствует ли пользователь из "`request.user`" пользователю которому выдавали JWT-токен.
+- "`project/user_of_request.py`" класс "`UsageUsers`" по "`request.user.id`" получает пользователя из db.
+Если всё  ОК , то данные идут дальше по "`ads/api_views/api_ads.py::AsyncAdsView.create`"
+
 ### Пользователь
 - формы пользователя c валидацией в которые включают регулярные выражения (frontend). 
 
