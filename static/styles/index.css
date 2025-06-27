@@ -385,6 +385,9 @@ div.hidden {
   min-width: 280px;
   width: 100%;
 }
+#ad-page-container .ad-view-container > div.ad-view-container-checkbox {
+  display: none;
+}
 #ad-page-container h2 {
   font-size: clamp(18px, 2rem, 2.5rem);
 }
