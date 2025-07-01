@@ -15,6 +15,9 @@
                   {{ filed.help_text|safe }}
                {% endif %}
                {{field}}
+               {% if field.help_text %}
+                <span>{{field.help_text}}</span>
+                {% endif %}
 
              </div>
             {% endfor %}
@@ -47,7 +50,6 @@
             {% endblock ads_collections %}
           </div>
         </section>
-Привет мир
     {% endblock ad_page %}
     {% block pagination %}
       <section id="pagination">

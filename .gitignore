@@ -1,4 +1,4 @@
-# Created by https://www.toptal.com/developers/gitignore/api/python,django
+        # Created by https://www.toptal.com/developers/gitignore/api/python,django
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django
 
 ### Django ###
@@ -280,7 +280,9 @@ swagger
 
 gunicorn.service
 core
-**/pytest-logs.log
+**/*.log
+*.log
 **/screen/*
 *.sh
 *.exp
+/__tests__
