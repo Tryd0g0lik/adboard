@@ -294,8 +294,18 @@ div.hidden {
   width: 250px;
 }
 
+.ads-collections-list {
+  position: relative;
+}
 .ads-collections-list .ad-view {
   padding-bottom: 15px;
+}
+.ads-collections-list #remove-all {
+  position: none;
+  width: 100%;
+  max-width: 85px;
+  min-height: 25px;
+  max-height: 25px;
 }
 
 /* ---- PUBLICK COLLECTION ADS ----*/

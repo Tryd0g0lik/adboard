@@ -1,7 +1,7 @@
 [ENG README](./README_ENG.md)
 # Зависимости:
 
-```js
+```tx
 # dependencies
 python = "^3.10"
 python-dotenv = "^1.0.1"
@@ -107,10 +107,10 @@ permissions = [
 #### Login форма
 
 Отправляем на сервер\ 
-```js
+```json
 {
     "username": "Victorovich",
-    "password": "ds2Rssa8%sa",   
+    "password": "ds2Rssa8%sa"   
 }
 
 ```
@@ -132,10 +132,10 @@ permissions = [
 ![Registration](./img/login.png)\
 
 Если форма имеет валидные данные, сервер возвращает JWT-токены. Эти токены в виде бинарного кода типа JSON-строки.
-```js
+```json
 {
     "access_token": "token",
-    "refresh_token": "token
+    "refresh_token": "token"
 }
 ```
 Токены сохраняются в COOKIE, без права вызова через JS.
