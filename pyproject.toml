@@ -26,6 +26,8 @@ adrf = "^0.1.9"
 pillow = "^11.2.1"
 django-webpack-loader = "^3.1.1"
 model-bakery = "^1.20.4"
+channels = {extras = ["daphne"], version = "^4.2.2"}
+django-redis = "^6.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit-hooks = "5.0.0"
