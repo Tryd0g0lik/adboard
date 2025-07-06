@@ -187,7 +187,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 # разрешить только определённые домены
 CORS_ALLOWED_ORIGINS = [
     "http://83.166.245.209",
-    "http://0.0.0.0:8080",
+    "http://0.0.0.0:8000",
     "http://127.0.0.1:8000",
     "http://localhost:8000",
 ]
@@ -314,7 +314,7 @@ SIMPLE_JWT = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",  # 1 - номер базы Redis
+        "LOCATION": "redis://0.0.0.0:6379/0",  # 1 - номер базы Redis
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "SOCKET_CONNECT_TIMEOUT": 5,  # seconds
@@ -335,12 +335,12 @@ DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": lambda request: True,
 }
 
-# REDIS
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis", 6379)],
-        },
-    },
-}
+# # REDIS
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("redis", 6379)],
+#         },
+#     },
+# }

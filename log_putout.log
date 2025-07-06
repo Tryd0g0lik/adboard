@@ -3422,3 +3422,20 @@ Call log:
 [2025-07-07 05:47:40.415] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-shared-cf339ac8802bd9137d31.js 200 [0.06, 127.0.0.1:63003]
 [2025-07-07 05:47:40.507] WARNING - django.request:241 - Not Found: /favicon.ico
 [2025-07-07 05:47:40.507] WARNING - django.channels.server:189 - HTTP GET /favicon.ico 404 [0.02, 127.0.0.1:63003]
+[2025-07-07 06:07:18.080] INFO - ads.api_views.api_files:23 - START
+[2025-07-07 06:07:18.087] INFO - ads.api_views.api_ads:27 - START
+[2025-07-07 06:07:18.110] INFO - ads.views:18 - START
+[2025-07-07 06:07:18.394] INFO - daphne.server:120 - HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+[2025-07-07 06:07:18.395] INFO - daphne.server:129 - Configuring endpoint tcp:port=8000:interface=127.0.0.1
+[2025-07-07 06:07:18.395] INFO - daphne.server:160 - Listening on TCP address 127.0.0.1:8000
+[2025-07-07 06:07:23.662] INFO - django.channels.server:181 - HTTP GET / 200 [0.03, 127.0.0.1:53969]
+[2025-07-07 06:07:23.705] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-another-cf339ac8802bd9137d31.js 304 [0.02, 127.0.0.1:53969]
+[2025-07-07 06:07:23.708] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-index-cf339ac8802bd9137d31.js 304 [0.02, 127.0.0.1:49748]
+[2025-07-07 06:07:23.717] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-runtime-cf339ac8802bd9137d31.js 304 [0.03, 127.0.0.1:49750]
+[2025-07-07 06:07:23.733] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-shared-cf339ac8802bd9137d31.js 304 [0.01, 127.0.0.1:53969]
+[2025-07-07 06:07:23.769] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-index-d2b720da9c13a288dfd1.js 404 [0.08, 127.0.0.1:49749]
+[2025-07-07 06:07:23.770] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-runtime-d2b720da9c13a288dfd1.js 404 [0.08, 127.0.0.1:49751]
+[2025-07-07 06:07:23.771] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-another-d2b720da9c13a288dfd1.js 404 [0.08, 127.0.0.1:61739]
+[2025-07-07 06:07:23.771] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-d2b720da9c13a288dfd1.js 404 [0.04, 127.0.0.1:49748]
+[2025-07-07 06:07:23.852] WARNING - django.request:241 - Not Found: /favicon.ico
+[2025-07-07 06:07:23.853] WARNING - django.channels.server:189 - HTTP GET /favicon.ico 404 [0.02, 127.0.0.1:61739]
