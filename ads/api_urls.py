@@ -14,5 +14,5 @@ app_name = "ads_app"
 
 router = DefaultRouter()
 router.register("index", AsyncAdsView, basename="ads")
-# router.register("remove", AsyncAdsDelete, basename="ads_delete")
+router.register("remove", AsyncAdsDelete, basename="ads_delete")
 router.register("image", FileImageViewSet, basename="image")

@@ -7,7 +7,7 @@ import logging
 from asgiref.sync import sync_to_async, async_to_sync
 from django.db.models.expressions import result
 from django.http import JsonResponse
-from pontos.github.models import User
+from django.contrib.auth.models import User
 from rest_framework.decorators import action
 
 from ads.api_views.api_files import async_serializer_validate
@@ -34,6 +34,7 @@ response = Response(
 )
 
 
+# viewsets.ViewSet
 class AsyncAdsView(viewsets.ModelViewSet):
     """ASYNC CREATE AD"""
 
@@ -126,12 +127,6 @@ class AsyncAdsView(viewsets.ModelViewSet):
             json.dumps({"detail": ["User is not authenticated or pk is undefined."]}),
             status=status.HTTP_401_UNAUTHORIZED,
         )
-
-    async def destroy(self, request, *args, **kwargs):
-        pass
-        instance = await self.get_object()
-        responce = await super().destroy(request, *args, **kwargs)
-        return responce
 
     async def create(self, request, *args, **kwargs):
         """
