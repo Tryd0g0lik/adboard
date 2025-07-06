@@ -7,10 +7,8 @@ import logging
 from django.core.exceptions import ValidationError
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
-from ads.serialisers_all.ad.serializers import AdSerializer
 from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
-from django.shortcuts import redirect
 from rest_framework import status
 
 from adrf import viewsets
@@ -18,8 +16,7 @@ from rest_framework.response import Response
 
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
-from ads.models import Ad, ImageStorage
-from project.tokens import TokenResponse
+from ads.models import ImageStorage
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)

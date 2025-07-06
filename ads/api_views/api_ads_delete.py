@@ -1,16 +1,13 @@
-from adrf import generics
-import requests
-from asgiref.sync import sync_to_async
-from rest_framework.decorators import action
+"""
+ads/api_views/api_ads_delete.py
+"""
 from rest_framework import status
 from rest_framework.response import Response
 
 from adboard.api_views.token_vews import Token
-from adboard.views import user_view
 from ads.models import Ad
 from ads.serialisers_all.ad.serializers import AdSerializer
 from adrf import viewsets
-from dotenv_ import POSTGRES_HOST
 
 
 class AsyncAdsDelete(viewsets.GenericViewSet):

@@ -4,11 +4,8 @@ ads/api_views/api_ads.py
 
 import json
 import logging
-from asgiref.sync import sync_to_async, async_to_sync
-from django.db.models.expressions import result
+from asgiref.sync import sync_to_async
 from django.http import JsonResponse
-from django.contrib.auth.models import User
-from rest_framework.decorators import action
 
 from ads.api_views.api_files import async_serializer_validate
 from ads.serialisers_all.ad.serializers import AdSerializer
@@ -21,7 +18,7 @@ from rest_framework.response import Response
 
 # https://socket.dev/pypi/package/adrf
 # https://socket.dev/pypi/package/adrf
-from ads.models import Ad, ImageStorage
+from ads.models import Ad
 from project.groups import Groups
 from project.tokens import TokenResponse
 
