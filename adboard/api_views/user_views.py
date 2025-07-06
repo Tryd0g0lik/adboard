@@ -1,18 +1,35 @@
-import os
-from django.shortcuts import render
-from adboard.forms.register import UserRegisterForm
-
-from adboard.forms.login import UserLogin
-from project.settings import BASE_DIR
+import base64
+import json
+import pickle
+import time
 import logging
-from logs import configure_logging
+from datetime import datetime
+from typing import Dict, Optional, TypeVar
 
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User, AbstractBaseUser
+from django.contrib.auth import authenticate, login
+from asgiref.sync import sync_to_async
+from rest_framework.decorators import action
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import TokenUser
+from rest_framework import serializers, status
+from adrf.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
+
+from adboard.binaries import Binary
+from adboard.hasher import PassworHasher
+from adboard.serializers.register import UserSerializer
+from logs import configure_logging
+from project.settings import SECRET_KEY, SIMPLE_JWT
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
 
 
-<<<<<<< HEAD
 def serializer_validate(serializer):
     is_valid = serializer.is_valid()
     if not is_valid:
@@ -326,47 +343,3 @@ class LogingViewSet(ViewSet):
         salt = SECRET_KEY.replace("$", "/")
         hash_password = hash.hasher(password, salt[:50])
         return hash_password
-
-
-=======
->>>>>>> dev
-def user_view(request):
-    form = UserLogin()
-    title = "Войдите в профиль"
-
-    if "register" in request.path.lower():
-        form = UserRegisterForm()
-        title = "Регистрация"
-    files = []
-    # GET JS FILES FOR LOGIN AND REGISTER PAGES
-    # if "login" in request.path.lower() or "register" in request.path.lower():
-    files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
-    files = ["adboard/scripts/" + file for file in files]
-
-    return render(
-        request,
-        "users/index.html",
-        {
-            "js_files": files,
-            "form": {
-                "form_user": form,
-            },
-            "title": title,
-        },
-    )
-
-
-def main_view(request):
-    title = "Добро пожаловать!"
-    # GET JS FILES FOR MAIN PAGE
-    files = os.listdir(f"{BASE_DIR}/collectstatic/adboard/scripts")
-    files = ["adboard/scripts/" + file for file in files]
-
-    return render(
-        request,
-        "index.html",
-        {
-            "js_files": files,
-            "title": title,
-        },
-    )

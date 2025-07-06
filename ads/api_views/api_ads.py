@@ -1,100 +1,40 @@
 """"
-ads/views.py
+ads/api_views/api_ads.py
 """
 
-import os
+import json
 import logging
-<<<<<<< HEAD
-from django.core.exceptions import ValidationError
-from asgiref.sync import sync_to_async
+from asgiref.sync import sync_to_async, async_to_sync
+from django.db.models.expressions import result
 from django.http import JsonResponse
+from django.contrib.auth.models import User
+from rest_framework.decorators import action
 
+from ads.api_views.api_files import async_serializer_validate
 from ads.serialisers_all.ad.serializers import AdSerializer
-from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
-=======
-from logs import configure_logging
-from project.groups import Groups
->>>>>>> dev
-from project.settings import BASE_DIR
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from rest_framework import status
 
-<<<<<<< HEAD
 from adrf import viewsets
 from rest_framework.response import Response
 
-
-=======
->>>>>>> dev
-from ads.forms.ad_creat import adCreatForm, FileImageForm
+# https://socket.dev/pypi/package/adrf
+# https://socket.dev/pypi/package/adrf
+from ads.models import Ad, ImageStorage
+from project.groups import Groups
 from project.tokens import TokenResponse
 
 configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
 log.info("START")
 
-
-<<<<<<< HEAD
-# Create your views here.
-async def async_serializer_validate(serializer):
-    """
-    Async validation of serializer.
-    """
-    is_valid = await sync_to_async(serializer.is_valid)()
-    if not is_valid:
-        log.error("SERIALIZER ERROR: %s", serializer.errors)
-        raise ValidationError(serializer.errors)
-    log.info("SERIALIZER DATA VALID: %s", serializer.validated_data)
-    data = await sync_to_async(lambda: serializer.validated_data)()
-    return data
-
-
-class FileImageViewSet(viewsets.ModelViewSet):
-    """IMAGE STORAGE"""
-
-    queryset = ImageStorage.objects.all()
-    serializer_class = ImageStorageSerializer
-
-    async def create(self, request, *args, **kwargs):
-        """
-        :param request:
-        :param args:
-        :param kwargs:
-        :return: json string this is `{'data': {}}`
-        """
-        """SAVE IMAGE FILE"""
-        log.info("START CREATE IMAGE")
-        log.info("REQUEST DATA: %s", request.data)
-        request.data["size"] = request.data["file_path"].size
-        serializer = self.get_serializer(data=request.data)
-        try:
-            """VALIDATE DATA"""
-            await async_serializer_validate(serializer)
-        except Exception as er:
-            log.error("IMAGE SERIALIZER DATA IS NOT VALID: %s", er)
-            return Response(
-                json.dumps({"detail": er.args}), status=status.HTTP_401_UNAUTHORIZED
-            )
-        try:
-            await sync_to_async(self.perform_create)(serializer)
-            log.info("SERIALIZER DATA SAVED: %s", serializer.data)
-            return Response(
-                data=json.dumps({"data": serializer.data}),
-                status=status.HTTP_201_CREATED,
-            )
-        except Exception as ex:
-            log.error("NEW IMAGE_FILE SERVER ERROR: %s", ex)
-            return JsonResponse(
-                {"detail": ex.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
 response = Response(
     status=status.HTTP_401_UNAUTHORIZED,
 )
 
 
+# viewsets.ViewSet
 class AsyncAdsView(viewsets.ModelViewSet):
     """ASYNC CREATE AD"""
 
@@ -120,12 +60,20 @@ class AsyncAdsView(viewsets.ModelViewSet):
         except Exception as er:
             log.exception("ERROR => %s", er)
             return redirect(to="/users/login/")
-
-        if not user.is_anonymous:
+        group = Groups(request)
+        """GET USER OF DB"""
+        user_of_db = await sync_to_async(lambda: group.user)()
+        """CHECK USER's PERMISSIONS"""
+        user_permission_boolean = await sync_to_async(
+            user_of_db.groups.filter(name="Ad Author").exists
+        )()
+        if not user.is_anonymous and user_permission_boolean:
             try:
+                """CREATING DATA FOR RESPONSE TO THE USER"""
                 response = await sync_to_async(super().list)(request, *args, **kwargs)
                 data = [ad for ad in response.data if ad["user"] == user.id]
                 if user.is_superuser:
+                    """CREATING DATA FOR RESPONSE TO THE SUPERUSER"""
                     data = [ad for ad in response.data]
                 response.data = json.dumps({"data": data})
                 return response
@@ -189,7 +137,7 @@ class AsyncAdsView(viewsets.ModelViewSet):
         :param request:
         :param args:
         :param kwargs:
-        :return: json string this is `{'data': {}}`
+        :return: json string this is `{'data': {}}`or `{"detail": "text of errer"}`
         """
         log.info("START CREATE of VIEWS.py")
         log.info("REQUEST DATA: %s", request.data)
@@ -205,7 +153,15 @@ class AsyncAdsView(viewsets.ModelViewSet):
             log.exception("ERROR => %s", er)
 
             return redirect(to="/users/login/")
-        if not request_user.is_anonymous:
+        """CHECK USER IN GROUP"""
+        group = Groups(request)
+        """GET USER FROM REQUEST AND RECEIVED USER FROM DATABASE"""
+        user_of_db = await sync_to_async(lambda: group.user)()
+        """CHECK USER's PERMISSION FOR ADD NEW AD"""
+        user_permission_boolean = await sync_to_async(user_of_db.has_perm)("ads.add_ad")
+        if not request_user.is_anonymous and (
+            user_permission_boolean or request_user.is_superuser
+        ):
             """GET USER IN DATA FOR SERIALIZATION"""
             data = {
                 "user": request.user.pk,
@@ -230,6 +186,7 @@ class AsyncAdsView(viewsets.ModelViewSet):
                 log.info("SERIALIZER DATA SAVED")
                 response.data = json.dumps({"data": serializer.data})
                 response.status_code = status.HTTP_201_CREATED
+
                 return response
             except Exception as e:
                 log.exception("ERROR => %s", e)
@@ -238,73 +195,3 @@ class AsyncAdsView(viewsets.ModelViewSet):
                 return response
         response.data = {"detail": ["User is not authenticated. New ad is not saved. "]}
         return response
-
-
-=======
->>>>>>> dev
-def ads_page(request):
-    theme = request.GET.get("theme", "dark")
-
-    try:
-        """CHECK USER TOKEN"""
-        tokens = TokenResponse(request)
-        response = tokens.tokens_response
-        if response.status_code == status.HTTP_401_UNAUTHORIZED:
-            return response
-    except Exception as er:
-        log.exception("ERROR => %s", er)
-        return redirect(to="/users/login/")
-    # GET JS FILES FOR LOGIN AND REGISTER PAGES
-    files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
-    files = ["ads/scripts/" + file for file in files]
-    css_file = "styles/index.css"
-    if theme == "lite":
-        css_file = "styles/lite.css"
-
-    # Forms
-    form = adCreatForm()
-    file_image = FileImageForm()
-    """ADD PERMISSION FOR USER """
-    group = Groups(request)
-    """CHECK USER IN GROUP"""
-    boolean = group.check_user_in_group("Ad Author")
-    if not boolean:
-        """ADDING USER IN GROUP"""
-        group.user_to_groups("Ad Author")
-    return render(
-        request,
-        template_name="ads/index.html",
-        context={
-            "form": {"forms_main": form, "file_image": file_image},
-            "css_file": css_file,
-            "js_files": files,
-        },
-    )
-
-
-def ad_page(request, *args, **kwargs):
-    if request.method == "GET":
-        try:
-            """CHECK USER TOKEN"""
-            tokens = TokenResponse(request)
-            response = tokens.tokens_response
-            if response.status_code == status.HTTP_401_UNAUTHORIZED:
-                return response
-        except Exception as er:
-            log.exception("ERROR => %s", er)
-            return redirect(to="/users/login/")
-<<<<<<< HEAD
-=======
-        # files = os.listdir(f"{BASE_DIR}/ads/static/"
->>>>>>> dev
-        files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
-        files = ["ads/scripts/" + file for file in files]
-        css_file = "styles/index.css"
-        return render(
-            request,
-            template_name="ad/index.html",
-            context={
-                "css_file": css_file,
-                "js_files": files,
-            },
-        )

@@ -35,6 +35,11 @@ services:
       - db
     ports:
       - "8000:8000"
+
+  redis:
+      image: redis
+      ports:
+          - "6379:6379"
   nginx:
     container_name: nginx
     build:

@@ -1,20 +1,23 @@
 import time
 from datetime import datetime
-from django.contrib.auth.models import User
+
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 
-from adboard.views import LogingViewSet
+from adboard.api_views.user_views import LogingViewSet
+
 from rest_framework import status
 from rest_framework.response import Response
 
 from project.settings import SIMPLE_JWT
+from project.user_of_request import UsageUsers
 
 
-class UserActiveMixin:
+class TokenResponse(UsageUsers):
     """
-    This method gets and returns the user from db or errors if user is not founded.
-    :return: user object or error
+    <<<<<<< HEAD
+        This method gets and returns the user from db or errors if user is not founded.
+        :return: user object or error
     """
 
     def __init__(self, request):
@@ -63,6 +66,8 @@ class UserActiveMixin:
 
 class TokenResponse(UserActiveMixin):
     """
+=======
+>>>>>>> dev
      This is for getting the token from the request.
      Example:\
      ```python

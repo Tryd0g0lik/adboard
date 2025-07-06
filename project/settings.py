@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'rest_framework',
     'bootstrap4',
@@ -50,8 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ads',
-    'adboard',
-    'weather'
+    # 'adboard',
 ]
 
 MIDDLEWARE = [
@@ -91,8 +91,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.application'
-
+# WSGI_APPLICATION = 'project.wsgi.application'
+ASGI_APPLICATION = "project.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -167,12 +167,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,  "static"),
     os.path.join(BASE_DIR,  "adboard/static"),
     os.path.join(BASE_DIR,  "ads/static"),
-    os.path.join(BASE_DIR,  "weather/static")
+    # os.path.join(BASE_DIR,  "weather/static")
 ]
 STATIC_ROOT = os.path.join(BASE_DIR,  "collectstatic/")
-# STATIC_ROOT = "/www/src/static/"
-# STATIC_ROOT = "/www/src/collectstatic"
-# STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR,  "media/")
@@ -309,4 +306,31 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes = 5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "SIGNING_KEY": SECRET_KEY,
+}
+
+
+#"""REDIS"""
+"""REDIS"""
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/0",  # 1 - номер базы Redis
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SOCKET_CONNECT_TIMEOUT": 5,  # seconds
+            "SOCKET_TIMEOUT": 5,  # seconds
+        },
+        "KEY_PREFIX": "server_",  # префикс для всех ключей
+
+    }
+}
+
+# Необязательно: использовать Redis для хранения сессий
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+"""DEBUG TOOLBAR daphne"""
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
 }
