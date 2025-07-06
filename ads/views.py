@@ -4,7 +4,7 @@ ads/views.py
 
 import os
 import logging
-<<<<<<< HEAD
+
 from django.core.exceptions import ValidationError
 from asgiref.sync import sync_to_async
 from django.http import JsonResponse
@@ -12,21 +12,15 @@ from django.http import JsonResponse
 from ads.serialisers_all.ad.serializers import AdSerializer
 from ads.serialisers_all.imageStorage.serializers import ImageStorageSerializer
 from logs import configure_logging
-=======
-from logs import configure_logging
 from project.groups import Groups
->>>>>>> dev
+
 from project.settings import BASE_DIR
 from django.shortcuts import render, redirect
 from rest_framework import status
 
-<<<<<<< HEAD
 from adrf import viewsets
 from rest_framework.response import Response
 
-
-=======
->>>>>>> dev
 from ads.forms.ad_creat import adCreatForm, FileImageForm
 from project.tokens import TokenResponse
 
@@ -34,8 +28,6 @@ configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
 log.info("START")
 
-
-<<<<<<< HEAD
 # Create your views here.
 async def async_serializer_validate(serializer):
     """
@@ -239,9 +231,6 @@ class AsyncAdsView(viewsets.ModelViewSet):
         response.data = {"detail": ["User is not authenticated. New ad is not saved. "]}
         return response
 
-
-=======
->>>>>>> dev
 def ads_page(request):
     theme = request.GET.get("theme", "dark")
 
@@ -293,10 +282,7 @@ def ad_page(request, *args, **kwargs):
         except Exception as er:
             log.exception("ERROR => %s", er)
             return redirect(to="/users/login/")
-<<<<<<< HEAD
-=======
-        # files = os.listdir(f"{BASE_DIR}/ads/static/"
->>>>>>> dev
+
         files = os.listdir(f"{BASE_DIR}/collectstatic/ads/scripts")
         files = ["ads/scripts/" + file for file in files]
         css_file = "styles/index.css"

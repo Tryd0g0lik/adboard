@@ -12,7 +12,7 @@ configure_logging(logging.INFO)
 log = logging.getLogger(__name__)
 
 
-<<<<<<< HEAD
+
 def serializer_validate(serializer):
     is_valid = serializer.is_valid()
     if not is_valid:
@@ -327,9 +327,6 @@ class LogingViewSet(ViewSet):
         hash_password = hash.hasher(password, salt[:50])
         return hash_password
 
-
-=======
->>>>>>> dev
 def user_view(request):
     form = UserLogin()
     title = "Войдите в профиль"

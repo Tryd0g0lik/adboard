@@ -15,7 +15,6 @@ from project.user_of_request import UsageUsers
 
 class TokenResponse(UsageUsers):
     """
-    <<<<<<< HEAD
         This method gets and returns the user from db or errors if user is not founded.
         :return: user object or error
     """

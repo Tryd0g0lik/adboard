@@ -1,0 +1,38 @@
+{
+  "status": "done",
+  "assets": {
+    "scripts/main-another-75493e46ec8ed56b6401.js": {
+      "name": "scripts/main-another-75493e46ec8ed56b6401.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\weather\\static\\weather\\scripts\\main-another-75493e46ec8ed56b6401.js",
+      "publicPath": "/scripts/main-another-75493e46ec8ed56b6401.js"
+    },
+    "scripts/main-index-75493e46ec8ed56b6401.js": {
+      "name": "scripts/main-index-75493e46ec8ed56b6401.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\weather\\static\\weather\\scripts\\main-index-75493e46ec8ed56b6401.js",
+      "publicPath": "/scripts/main-index-75493e46ec8ed56b6401.js"
+    },
+    "scripts/main-runtime-75493e46ec8ed56b6401.js": {
+      "name": "scripts/main-runtime-75493e46ec8ed56b6401.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\weather\\static\\weather\\scripts\\main-runtime-75493e46ec8ed56b6401.js",
+      "publicPath": "/scripts/main-runtime-75493e46ec8ed56b6401.js"
+    },
+    "scripts/main-shared-75493e46ec8ed56b6401.js": {
+      "name": "scripts/main-shared-75493e46ec8ed56b6401.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\weather\\static\\weather\\scripts\\main-shared-75493e46ec8ed56b6401.js",
+      "publicPath": "/scripts/main-shared-75493e46ec8ed56b6401.js"
+    }
+  },
+  "chunks": {
+    "another": [
+      "scripts/main-another-75493e46ec8ed56b6401.js"
+    ],
+    "index": [
+      "scripts/main-index-75493e46ec8ed56b6401.js"
+    ],
+    "shared": [
+      "scripts/main-runtime-75493e46ec8ed56b6401.js",
+      "scripts/main-shared-75493e46ec8ed56b6401.js"
+    ]
+  },
+  "publicPath": "/"
+}

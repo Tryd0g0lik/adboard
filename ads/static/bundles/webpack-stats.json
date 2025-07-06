@@ -1,0 +1,38 @@
+{
+  "status": "done",
+  "assets": {
+    "scripts/main-another-eacd7fa63809cf606c96.js": {
+      "name": "scripts/main-another-eacd7fa63809cf606c96.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\ads\\static\\ads\\scripts\\main-another-eacd7fa63809cf606c96.js",
+      "publicPath": "/scripts/main-another-eacd7fa63809cf606c96.js"
+    },
+    "scripts/main-index-eacd7fa63809cf606c96.js": {
+      "name": "scripts/main-index-eacd7fa63809cf606c96.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\ads\\static\\ads\\scripts\\main-index-eacd7fa63809cf606c96.js",
+      "publicPath": "/scripts/main-index-eacd7fa63809cf606c96.js"
+    },
+    "scripts/main-runtime-eacd7fa63809cf606c96.js": {
+      "name": "scripts/main-runtime-eacd7fa63809cf606c96.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\ads\\static\\ads\\scripts\\main-runtime-eacd7fa63809cf606c96.js",
+      "publicPath": "/scripts/main-runtime-eacd7fa63809cf606c96.js"
+    },
+    "scripts/main-shared-eacd7fa63809cf606c96.js": {
+      "name": "scripts/main-shared-eacd7fa63809cf606c96.js",
+      "path": "E:\\OpenServer\\domains\\t-Py-Dj-adboard\\ads\\static\\ads\\scripts\\main-shared-eacd7fa63809cf606c96.js",
+      "publicPath": "/scripts/main-shared-eacd7fa63809cf606c96.js"
+    }
+  },
+  "chunks": {
+    "another": [
+      "scripts/main-another-eacd7fa63809cf606c96.js"
+    ],
+    "index": [
+      "scripts/main-index-eacd7fa63809cf606c96.js"
+    ],
+    "shared": [
+      "scripts/main-runtime-eacd7fa63809cf606c96.js",
+      "scripts/main-shared-eacd7fa63809cf606c96.js"
+    ]
+  },
+  "publicPath": "/"
+}
