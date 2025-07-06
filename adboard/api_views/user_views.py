@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import Dict, Optional, TypeVar
 
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth.models import User, AbstractBaseUser
 from django.contrib.auth import authenticate, login
 from asgiref.sync import sync_to_async
