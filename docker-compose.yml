@@ -30,7 +30,7 @@ services:
         python3 ./manage.py migrate
         python3 ./manage.py collectstatic --clear --noinput
         python3 ./manage.py create_author_group
-        daphne -p 8000 project.asgi:application
+        daphne -b 0.0.0.0 -p 8000 project.asgi:application
 
     volumes:
        - volume_static:/www/src/collectstatic
