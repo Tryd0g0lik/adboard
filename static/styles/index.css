@@ -222,6 +222,13 @@ h6 {
   color: var(--bs-heading-color);
 }
 
+.form .row:first-child,
+.page-title .title {
+  color: var(--bs-highlight-color);
+  display: inline-block;
+  padding-left: 16px;
+}
+
 body {
   background-color: var(--bs-body-bg);
 }
@@ -244,6 +251,7 @@ input[type=file] {
   background: var(--bs-tertiary-bg);
 }
 
+/* ---- NAVBAR ---- */
 nav a:visited,
 nav a:hover,
 nav a:active {
@@ -255,6 +263,11 @@ ul {
   margin: 0;
 }
 
+div#navbarSupportedContent {
+  background-color: var(--bs-tertiary-bg);
+}
+
+/* ---- PAGINATION ---- */
 #pagination {
   padding-top: 20px;
 }
@@ -264,15 +277,16 @@ ul {
   background-color: var(--bs-light-bg-subtle);
 }
 
+/* ---- MESSAGES  -----*/
 .invalid {
   color: var(--bs-danger-text-emphasis);
 }
 
+/* ---- FORMS ----*/
 div.hidden {
   display: block;
 }
 
-/* ---- FORMS ----*/
 .form {
   display: flex;
   justify-content: flex-start;
@@ -286,10 +300,6 @@ div.hidden {
   margin: 0;
 }
 
-/*.form>.mb-3:first-child,
-.form>.mb-3:nth-child(2) {
-  width: 280px;
-} */
 .ads-form,
 #form-register,
 #form-register label,
@@ -354,8 +364,12 @@ div.hidden {
 .ad-view .ad-view-container > div {
   overflow: hidden;
 }
+.ad-view .ad-view-container > div.ad-view-container-checkbox {
+  width: 16px;
+}
 .ad-view .ad-view-container > .ad-view-content {
   max-width: 700px;
+  display: inline-block;
 }
 .ad-view .ad-view-container > .ad-view-title {
   max-width: 200px;
@@ -383,9 +397,6 @@ div.hidden {
   display: inline-block;
   width: 100%;
 }
-.ad-view .ad-view-content {
-  display: none;
-}
 .ad-view .ad-view .ad-view-container {
   display: flex;
   justify-content: space-around;
@@ -403,6 +414,10 @@ div.hidden {
 }
 #ad-page-container .ad-view {
   padding: 0 15px 15px;
+}
+#ad-page-container .ad-view .ad-view-container > .ad-view-title {
+  max-width: none;
+  text-align: left;
 }
 #ad-page-container .ad-view-container {
   max-height: none;
@@ -429,7 +444,48 @@ div.hidden {
   font-size: clamp(18px, 2rem, 2.5rem);
 }
 
-@media all and (max-width: 768px) {
+@media all and (max-width: 1280px) {
+  /* ---- ADS ---- */
+  .ad-view .ad-view-container > .ad-view-content {
+    max-width: 500px;
+  }
+}
+@media all and (max-width: 1180px) {
+  .navbar.bg-base-100.shadow-sm {
+    text-align: center;
+    justify-content: left;
+  }
+  .title {
+    width: 100%;
+    padding: 0;
+    text-align: center;
+  }
+  section#form-login {
+    width: 100%;
+  }
+  section#form-login > div {
+    text-align: center;
+  }
+  label.form-label {
+    text-align: left;
+  }
+  /* ---- ADS ---- */
+  .ad-view .ad-view-container {
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+  }
+  .ad-view .ad-view-container > div.ad-view-container-checkbox {
+    overflow: initial;
+  }
+  .ad-view .ad-view-container > .ad-view-title {
+    width: 100%;
+    max-width: 300px;
+    padding-left: 5px;
+  }
+}
+@media all and (max-width: 991px) {
+  /* ---- NAVBAR ---- */
   .navbar-nav > .container-fluid {
     border: 2px solid, #fff;
     position: relative;
@@ -438,7 +494,7 @@ div.hidden {
     width: 20px;
     height: 15px;
   }
-  .navbar-nav > .container-fluid::befor {
+  .navbar-nav > .container-fluid::before {
     content: "hi";
     font-size: 0.2px;
     display: inline-block;
@@ -453,6 +509,15 @@ div.hidden {
   .navbar-nav > .container-fluid.active .navbar-collapse {
     display: inline-block;
   }
+  .navbar-nav > .container-fluid.active div#navbarSupportedContent {
+    min-width: 240px;
+    width: 100%;
+    max-width: 280px;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 30px;
+  }
   .navbar-nav .nav-item {
     border: 0px;
     border-bottom: 1px solid var(--bs-border-color);
@@ -464,20 +529,52 @@ div.hidden {
     top: -3px;
     left: 0;
     border: 0;
+    background: none;
+    z-index: 3;
   }
-  div#navbarSupportedContent {
-    background-color: var(--bs-tertiary-bg);
+  .navbar-nav button.navbar-toggler span.navbar-toggler-icon {
+    display: none;
   }
-}
-@media all and (max-width: 400px) {
+  /* ---- FORMS ---- */
+  .form {
+    justify-content: center;
+  }
+  form.ads-form.row.g-3.needs-validation {
+    padding-left: 16px;
+  }
+  /* ---- ADS ---- */
+  div.ad-view-container div.ad-view-container-checkbox {
+    width: 16px;
+    display: block;
+    overflow: initial;
+  }
   .ad-view .ad-view-container {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     min-height: 34px;
-    flex-direction: column;
+    flex-direction: row;
   }
-  .form > .mb-3:first-child, .form > .mb-3:nth-child(2) {
+  .ad-view .ad-view-container .ad-view-title {
+    max-width: none;
+    text-align: left;
+    width: 100%;
+    padding-left: 5px;
+    padding-top: 5px;
+    max-height: 34px;
+    min-height: 34px;
+  }
+  .ad-view .ad-view-container div.ad-view-content {
+    display: none;
+  }
+}
+@media all and (max-width: 400px) {
+  body {
+    font-size: 14px;
+  }
+  /* ---- FORMS ---- */
+  .form > .mb-3:first-child,
+  .form > .mb-3:nth-child(2) {
     margin: 0 auto;
   }
   .form .ads-form,
@@ -485,8 +582,45 @@ div.hidden {
   #form-login {
     width: inherit;
   }
-  body {
-    font-size: 14px;
+  .ad-view .ad-view-container > div.ad-view-footer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-height: inherit;
+    max-height: inherit;
+    width: calc(100% - 16px);
+    min-width: initial;
+    max-width: none;
+    text-align: right;
+  }
+  .ad-view-container {
+    position: relative;
+  }
+  button.ad-moving.btn.btn-primary {
+    min-height: inherit;
+    max-height: initial;
+    min-width: inherit;
+    width: 100%;
+    max-width: inherit;
+    background-color: inherit;
+    border: 0;
+    color: var(--bs-body-bg);
+  }
+  /* ---- PAGINATION ----*/
+  section#pagination {
+    position: relative;
+  }
+  .pagination {
+    max-width: 280px;
+  }
+  li.page-item:first-child,
+  li.page-item:last-child {
+    width: 90px;
+    padding: 0;
+  }
+  a.page-link {
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }
 :root,
