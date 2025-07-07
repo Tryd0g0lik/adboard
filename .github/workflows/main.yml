@@ -36,7 +36,7 @@ jobs:
           # expect /home/denis/adboard/pull.exp # команда для выполнения на удаленном сервере
           #            bash /home/denis/adboard/pull.sh
           script: |
-            bash /home/denis/adboard/pull.exp
+            expect /home/denis/adboard/pull.exp
 
 
 #  deploy_menu:
