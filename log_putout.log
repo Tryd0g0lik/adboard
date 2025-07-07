@@ -1,8 +1,0 @@
-[2025-07-07 07:28:43.266] WARNING - root:79 - Log file log_putout.log was cleared (3548 lines exceeded limit of 3000)
-[2025-07-07 07:41:18.717] INFO - django.utils.autoreload:266 - E:\OpenServer\domains\t-Py-Dj-adboard\project\settings.py changed, reloading.
-[2025-07-07 07:41:21.107] INFO - ads.api_views.api_files:23 - START
-[2025-07-07 07:41:21.113] INFO - ads.api_views.api_ads:27 - START
-[2025-07-07 07:41:21.137] INFO - ads.views:18 - START
-[2025-07-07 07:41:21.429] INFO - daphne.server:120 - HTTP/2 support not enabled (install the http2 and tls Twisted extras)
-[2025-07-07 07:41:21.429] INFO - daphne.server:129 - Configuring endpoint tcp:port=8000:interface=127.0.0.1
-[2025-07-07 07:41:21.430] INFO - daphne.server:160 - Listening on TCP address 127.0.0.1:8000
