@@ -315,7 +315,7 @@ SIMPLE_JWT = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://0.0.0.0:6379/0",  # 1 - номер базы Redis
+        "LOCATION": "redis://83.166.245.209:6379/0",  # 1 - номер базы Redis
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "SOCKET_CONNECT_TIMEOUT": 5,  # seconds
