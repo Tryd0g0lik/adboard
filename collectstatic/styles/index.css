@@ -196,20 +196,13 @@ a:hover {
 /*!**************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/style.scss ***!
   \**************************************************************************************************************************************************************************************/
--p,
-a,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+p,
 span,
 label,
 button,
 textarea.form-control,
 textarea.form-control:focus,
--a:not([href]):not([class]),
+a:not([href]):not([class]),
 input[type=text],
 input[type=password],
 input[type=email],
@@ -220,18 +213,28 @@ select {
   color: var(--bs-body-color);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--bs-heading-color);
+}
+
 body {
   background-color: var(--bs-body-bg);
 }
 
--nav ul,
-nav a,
-nav a:visited,
-nav a:hover,
-nav a:active,
+a {
+  color: var(--bs-primary-text-emphasis);
+}
+
+nav ul,
 input[type=text],
 input[type=password],
 select,
+nav a,
 textarea.ad-full__description,
 textarea.ad-full__description:focus,
 textarea.ad-full__description:focus,
@@ -239,6 +242,12 @@ textarea.ad-full__description:hover,
 textarea.ad-full__description:active,
 input[type=file] {
   background: var(--bs-tertiary-bg);
+}
+
+nav a:visited,
+nav a:hover,
+nav a:active {
+  color: var(--bs-link-hover-color);
 }
 
 ul {
@@ -273,6 +282,9 @@ div.hidden {
   font-size: 12px;
   color: var(--info);
 }
+.form label {
+  margin: 0;
+}
 
 /*.form>.mb-3:first-child,
 .form>.mb-3:nth-child(2) {
@@ -291,8 +303,18 @@ div.hidden {
   width: 250px;
 }
 
+.ads-collections-list {
+  position: relative;
+}
 .ads-collections-list .ad-view {
   padding-bottom: 15px;
+}
+.ads-collections-list #remove-all {
+  position: none;
+  width: 100%;
+  max-width: 85px;
+  min-height: 25px;
+  max-height: 25px;
 }
 
 /* ---- PUBLICK COLLECTION ADS ----*/
@@ -314,6 +336,9 @@ div.hidden {
   max-width: 320px;
 }
 
+.ad-view {
+  /** ADS */
+}
 .ad-view div.ad-view {
   overflow: hidden;
   text-align: left;
@@ -338,6 +363,7 @@ div.hidden {
 .ad-view .ad-view-container > .ad-view-footer {
   width: 100%;
   max-width: 100px;
+  text-align: right;
 }
 .ad-view h2,
 .ad-view div.ad-view-content,
@@ -349,6 +375,20 @@ div.hidden {
   max-height: 28px;
   line-height: 1;
   vertical-align: top;
+}
+.ad-view .ad-view-title {
+  max-width: 300px;
+}
+.ad-view .ad-view .ad-view-container > .ad-view-title h2 {
+  display: inline-block;
+  width: 100%;
+}
+.ad-view .ad-view-content {
+  display: none;
+}
+.ad-view .ad-view .ad-view-container {
+  display: flex;
+  justify-content: space-around;
 }
 
 .ads-form__full-image-file,
@@ -382,10 +422,53 @@ div.hidden {
   min-width: 280px;
   width: 100%;
 }
+#ad-page-container .ad-view-container > div.ad-view-container-checkbox {
+  display: none;
+}
 #ad-page-container h2 {
   font-size: clamp(18px, 2rem, 2.5rem);
 }
 
+@media all and (max-width: 768px) {
+  .navbar-nav > .container-fluid {
+    border: 2px solid, #fff;
+    position: relative;
+    border-left: 0;
+    border-right: 0;
+    width: 20px;
+    height: 15px;
+  }
+  .navbar-nav > .container-fluid::befor {
+    content: "hi";
+    font-size: 0.2px;
+    display: inline-block;
+    position: absolute;
+    top: calc(50% - 2px);
+    border: 0px solid #fff;
+    width: 100%;
+    min-height: 2px;
+    max-height: 2px;
+    background-color: #fff;
+  }
+  .navbar-nav > .container-fluid.active .navbar-collapse {
+    display: inline-block;
+  }
+  .navbar-nav .nav-item {
+    border: 0px;
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  .navbar-nav button.navbar-toggler {
+    width: 22px;
+    height: 17px;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    border: 0;
+  }
+  div#navbarSupportedContent {
+    background-color: var(--bs-tertiary-bg);
+  }
+}
 @media all and (max-width: 400px) {
   .ad-view .ad-view-container {
     display: flex;

@@ -3439,3 +3439,110 @@ Call log:
 [2025-07-07 06:07:23.771] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-d2b720da9c13a288dfd1.js 404 [0.04, 127.0.0.1:49748]
 [2025-07-07 06:07:23.852] WARNING - django.request:241 - Not Found: /favicon.ico
 [2025-07-07 06:07:23.853] WARNING - django.channels.server:189 - HTTP GET /favicon.ico 404 [0.02, 127.0.0.1:61739]
+[2025-07-07 06:30:15.387] INFO - ads.api_views.api_files:23 - START
+[2025-07-07 06:30:15.393] INFO - ads.api_views.api_ads:27 - START
+[2025-07-07 06:30:15.416] INFO - ads.views:18 - START
+[2025-07-07 06:30:15.723] INFO - daphne.server:120 - HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+[2025-07-07 06:30:15.724] INFO - daphne.server:129 - Configuring endpoint tcp:port=8000:interface=127.0.0.1
+[2025-07-07 06:30:15.725] INFO - daphne.server:160 - Listening on TCP address 127.0.0.1:8000
+[2025-07-07 06:30:26.568] INFO - django.channels.server:181 - HTTP GET / 200 [0.03, 127.0.0.1:59055]
+[2025-07-07 06:30:26.638] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-another-d2b720da9c13a288dfd1.js 404 [0.05, 127.0.0.1:60668]
+[2025-07-07 06:30:26.639] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-index-d2b720da9c13a288dfd1.js 404 [0.04, 127.0.0.1:60670]
+[2025-07-07 06:30:26.665] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-runtime-d2b720da9c13a288dfd1.js 404 [0.02, 127.0.0.1:60670]
+[2025-07-07 06:30:26.685] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-d2b720da9c13a288dfd1.js 404 [0.01, 127.0.0.1:60670]
+[2025-07-07 06:30:26.700] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-index-cf339ac8802bd9137d31.js 200 [0.10, 127.0.0.1:60669]
+[2025-07-07 06:30:26.703] INFO - django.channels.server:181 - HTTP GET /static/styles/index.css 200 [0.11, 127.0.0.1:60672]
+[2025-07-07 06:30:26.705] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-runtime-cf339ac8802bd9137d31.js 200 [0.11, 127.0.0.1:60671]
+[2025-07-07 06:30:26.705] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-another-cf339ac8802bd9137d31.js 200 [0.11, 127.0.0.1:59055]
+[2025-07-07 06:30:26.713] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-shared-cf339ac8802bd9137d31.js 200 [0.06, 127.0.0.1:60668]
+[2025-07-07 06:30:26.803] WARNING - django.request:241 - Not Found: /favicon.ico
+[2025-07-07 06:30:26.804] WARNING - django.channels.server:189 - HTTP GET /favicon.ico 404 [0.02, 127.0.0.1:60668]
+[2025-07-07 06:30:29.689] INFO - django.channels.server:187 - HTTP GET /users/register 301 [0.02, 127.0.0.1:60668]
+[2025-07-07 06:30:29.722] INFO - django.channels.server:181 - HTTP GET /users/register/ 200 [0.03, 127.0.0.1:60668]
+[2025-07-07 06:30:29.785] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-another-d2b720da9c13a288dfd1.js 404 [0.04, 127.0.0.1:60668]
+[2025-07-07 06:30:29.788] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-index-d2b720da9c13a288dfd1.js 404 [0.05, 127.0.0.1:60671]
+[2025-07-07 06:30:29.789] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-d2b720da9c13a288dfd1.js 404 [0.05, 127.0.0.1:60669]
+[2025-07-07 06:30:29.790] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-runtime-d2b720da9c13a288dfd1.js 404 [0.05, 127.0.0.1:59055]
+[2025-07-07 06:30:32.609] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:30:32.610] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.03, 127.0.0.1:59055]
+[2025-07-07 06:39:55.070] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-d2b720da9c13a288dfd1.js 404 [0.02, 127.0.0.1:58386]
+[2025-07-07 06:40:43.043] INFO - django.channels.server:181 - HTTP GET / 200 [0.01, 127.0.0.1:58386]
+[2025-07-07 06:40:43.179] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-another-d2b720da9c13a288dfd1.js 404 [0.07, 127.0.0.1:53318]
+[2025-07-07 06:40:43.182] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-runtime-d2b720da9c13a288dfd1.js 404 [0.07, 127.0.0.1:51197]
+[2025-07-07 06:40:43.183] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-index-d2b720da9c13a288dfd1.js 404 [0.07, 127.0.0.1:51194]
+[2025-07-07 06:40:43.184] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-another-cf339ac8802bd9137d31.js 404 [0.07, 127.0.0.1:58386]
+[2025-07-07 06:40:43.186] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-runtime-cf339ac8802bd9137d31.js 404 [0.07, 127.0.0.1:51196]
+[2025-07-07 06:40:43.187] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-index-cf339ac8802bd9137d31.js 404 [0.07, 127.0.0.1:51193]
+[2025-07-07 06:40:43.217] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-d2b720da9c13a288dfd1.js 404 [0.03, 127.0.0.1:51194]
+[2025-07-07 06:40:43.218] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-cf339ac8802bd9137d31.js 404 [0.03, 127.0.0.1:53318]
+[2025-07-07 06:40:45.178] INFO - django.channels.server:187 - HTTP GET /users/login 301 [0.02, 127.0.0.1:53318]
+[2025-07-07 06:40:45.196] INFO - django.channels.server:181 - HTTP GET /users/login/ 200 [0.01, 127.0.0.1:53318]
+[2025-07-07 06:40:45.284] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-another-d2b720da9c13a288dfd1.js 404 [0.07, 127.0.0.1:51194]
+[2025-07-07 06:40:45.285] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-index-d2b720da9c13a288dfd1.js 404 [0.07, 127.0.0.1:51196]
+[2025-07-07 06:40:45.286] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-runtime-d2b720da9c13a288dfd1.js 404 [0.07, 127.0.0.1:51197]
+[2025-07-07 06:40:45.287] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-another-cf339ac8802bd9137d31.js 404 [0.07, 127.0.0.1:53318]
+[2025-07-07 06:40:45.288] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-runtime-cf339ac8802bd9137d31.js 404 [0.07, 127.0.0.1:58386]
+[2025-07-07 06:40:45.290] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-index-cf339ac8802bd9137d31.js 404 [0.07, 127.0.0.1:51193]
+[2025-07-07 06:40:45.317] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-d2b720da9c13a288dfd1.js 404 [0.02, 127.0.0.1:53318]
+[2025-07-07 06:40:45.318] WARNING - django.channels.server:189 - HTTP GET /static/adboard/scripts/main-shared-cf339ac8802bd9137d31.js 404 [0.02, 127.0.0.1:51194]
+[2025-07-07 06:41:09.202] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:41:09.203] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:51194]
+[2025-07-07 06:41:53.232] INFO - django.channels.server:181 - HTTP GET /users/login/ 200 [0.04, 127.0.0.1:51194]
+[2025-07-07 06:41:53.303] INFO - django.channels.server:181 - HTTP GET /static/styles/index.css 200 [0.03, 127.0.0.1:51194]
+[2025-07-07 06:41:53.330] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-another-0f69b5c73ec861b835e0.js 200 [0.05, 127.0.0.1:54144]
+[2025-07-07 06:41:53.332] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-shared-0f69b5c73ec861b835e0.js 200 [0.05, 127.0.0.1:59900]
+[2025-07-07 06:41:53.333] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-index-0f69b5c73ec861b835e0.js 200 [0.05, 127.0.0.1:59898]
+[2025-07-07 06:41:53.337] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-runtime-0f69b5c73ec861b835e0.js 200 [0.06, 127.0.0.1:59899]
+[2025-07-07 06:41:53.554] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:41:53.555] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.27, 127.0.0.1:59902]
+[2025-07-07 06:41:56.493] WARNING - django.request:241 - Not Found: /favicon.ico
+[2025-07-07 06:41:56.494] WARNING - django.channels.server:189 - HTTP GET /favicon.ico 404 [0.02, 127.0.0.1:59902]
+[2025-07-07 06:41:59.232] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:41:59.233] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:59902]
+[2025-07-07 06:44:33.411] INFO - django.channels.server:181 - HTTP GET /users/login/ 200 [0.21, 127.0.0.1:55048]
+[2025-07-07 06:44:33.688] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-index-9da98847a34d8bd062a9.js 200 [0.03, 127.0.0.1:60986]
+[2025-07-07 06:44:33.690] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-runtime-9da98847a34d8bd062a9.js 200 [0.04, 127.0.0.1:60987]
+[2025-07-07 06:44:33.695] INFO - django.channels.server:181 - HTTP GET /static/styles/index.css 200 [0.05, 127.0.0.1:55048]
+[2025-07-07 06:44:33.698] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-shared-9da98847a34d8bd062a9.js 200 [0.04, 127.0.0.1:60988]
+[2025-07-07 06:44:33.700] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-another-9da98847a34d8bd062a9.js 200 [0.04, 127.0.0.1:55049]
+[2025-07-07 06:44:34.355] WARNING - django.request:241 - Not Found: /favicon.ico
+[2025-07-07 06:44:34.357] WARNING - django.channels.server:189 - HTTP GET /favicon.ico 404 [0.09, 127.0.0.1:60988]
+[2025-07-07 06:44:46.199] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:44:46.199] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:60988]
+[2025-07-07 06:47:47.736] INFO - django.channels.server:181 - HTTP GET /users/login/ 200 [0.01, 127.0.0.1:58088]
+[2025-07-07 06:47:47.764] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-another-9da98847a34d8bd062a9.js 304 [0.01, 127.0.0.1:58088]
+[2025-07-07 06:47:47.766] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-index-9da98847a34d8bd062a9.js 304 [0.01, 127.0.0.1:58089]
+[2025-07-07 06:47:47.767] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-runtime-9da98847a34d8bd062a9.js 304 [0.01, 127.0.0.1:52914]
+[2025-07-07 06:47:47.768] INFO - django.channels.server:185 - HTTP GET /static/adboard/scripts/main-shared-9da98847a34d8bd062a9.js 304 [0.01, 127.0.0.1:52915]
+[2025-07-07 06:47:47.795] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:47:47.796] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:52915]
+[2025-07-07 06:47:49.486] INFO - django.channels.server:181 - HTTP GET /users/login/ 200 [0.01, 127.0.0.1:52915]
+[2025-07-07 06:47:49.531] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:47:49.532] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:52915]
+[2025-07-07 06:47:54.105] INFO - django.channels.server:181 - HTTP GET /users/login/ 200 [0.01, 127.0.0.1:52915]
+[2025-07-07 06:47:54.155] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:47:54.156] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:52915]
+[2025-07-07 06:47:58.186] WARNING - django.request:241 - Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-07-07 06:47:58.187] WARNING - django.channels.server:189 - HTTP GET /.well-known/appspecific/com.chrome.devtools.json 404 [0.02, 127.0.0.1:52915]
+[2025-07-07 06:50:11.997] INFO - django.channels.server:181 - HTTP GET /users/login/ 200 [0.01, 127.0.0.1:56373]
+[2025-07-07 06:50:12.030] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-runtime-675f5ba982410310000c.js 200 [0.01, 127.0.0.1:62299]
+[2025-07-07 06:50:12.030] INFO - django.channels.server:181 - HTTP GET /static/styles/index.css 200 [0.01, 127.0.0.1:56373]
+[2025-07-07 06:50:12.031] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-another-675f5ba982410310000c.js 200 [0.01, 127.0.0.1:56374]
+[2025-07-07 06:50:12.033] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-index-675f5ba982410310000c.js 200 [0.01, 127.0.0.1:62298]
+[2025-07-07 06:50:12.035] INFO - django.channels.server:181 - HTTP GET /static/adboard/scripts/main-shared-675f5ba982410310000c.js 200 [0.02, 127.0.0.1:62300]
+[2025-07-07 06:50:12.644] WARNING - django.request:241 - Not Found: /favicon.ico
+[2025-07-07 06:50:12.645] WARNING - django.channels.server:189 - HTTP GET /favicon.ico 404 [0.02, 127.0.0.1:62300]
+[2025-07-07 06:54:04.584] INFO - django.utils.autoreload:266 - E:\OpenServer\domains\t-Py-Dj-adboard\project\settings.py changed, reloading.
+[2025-07-07 06:54:06.970] INFO - ads.api_views.api_files:23 - START
+[2025-07-07 06:54:06.976] INFO - ads.api_views.api_ads:27 - START
+[2025-07-07 06:54:07.000] INFO - ads.views:18 - START
+[2025-07-07 06:54:07.393] INFO - daphne.server:120 - HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+[2025-07-07 06:54:07.393] INFO - daphne.server:129 - Configuring endpoint tcp:port=8000:interface=127.0.0.1
+[2025-07-07 06:54:07.394] INFO - daphne.server:160 - Listening on TCP address 127.0.0.1:8000
+[2025-07-07 06:58:40.873] INFO - django.utils.autoreload:266 - E:\OpenServer\domains\t-Py-Dj-adboard\project\settings.py changed, reloading.
+[2025-07-07 06:58:43.280] INFO - ads.api_views.api_files:23 - START
+[2025-07-07 06:58:43.286] INFO - ads.api_views.api_ads:27 - START
+[2025-07-07 06:58:43.308] INFO - ads.views:18 - START
+[2025-07-07 06:58:43.606] INFO - daphne.server:120 - HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+[2025-07-07 06:58:43.606] INFO - daphne.server:129 - Configuring endpoint tcp:port=8000:interface=127.0.0.1
+[2025-07-07 06:58:43.607] INFO - daphne.server:160 - Listening on TCP address 127.0.0.1:8000
